@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QScopedPointer>
+#include "AddOrder.h"
 #include "DataBase/DataBaseApi.h"
 #include "Orders.h"
 
@@ -22,6 +23,7 @@ class MainWindow : public QMainWindow {
   Ui::MainWindow *ui;
   DataBaseApi::DataBaseApi mDataBaseApi;
   QScopedPointer<BackEnd::Orders> mOrders;
+  QScopedPointer<BackEnd::AddOrder> mAddOrder;
 };
 
 #endif  // MAINWINDOW_H

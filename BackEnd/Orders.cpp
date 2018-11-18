@@ -21,6 +21,8 @@ Orders::Orders(Ui::MainWindow *ui, DataBaseApi::DataBaseApi &dataBaseApi)
           SLOT(wyswietlPressed()));
   connect(ui->ordersTabCalendar, SIGNAL(selectionChanged()), this,
           SLOT(chosenDateChanged()));
+
+  printEmptyTable();
 }
 
 void Orders::printEmptyTable(void) {

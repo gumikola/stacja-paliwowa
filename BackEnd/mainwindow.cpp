@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include <QMap>
 #include <QScopedPointer>
+#include "AddOrder.h"
 #include "Orders.h"
 #include "ui_mainwindow.h"
 
@@ -20,4 +21,5 @@ void MainWindow::makeObjects() {
 
   // making objects
   mOrders.reset(new BackEnd::Orders(ui, mDataBaseApi));
+  mAddOrder.reset(new BackEnd::AddOrder(ui, mDataBaseApi));
 }

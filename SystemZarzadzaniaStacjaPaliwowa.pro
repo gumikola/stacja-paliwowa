@@ -31,7 +31,8 @@ SOURCES += \
     DataBase/DataBaseApi.cpp \ 
     Algorithms/ClientSuggestion.cpp \
     Algorithms/GetFuelPriceFromWeb.cpp \ 
-    Algorithms/SugestedPriceforClient.cpp
+    Algorithms/SugestedPriceforClient.cpp\
+    BackEnd/AddOrder.cpp
 
 HEADERS += \
     BackEnd/mainwindow.h \
@@ -39,7 +40,8 @@ HEADERS += \
     DataBase/DataBaseApi.h \
     Algorithms/ClientSuggestion.h \
     Algorithms/GetFuelPriceFromWeb.h \
-    Algorithms/SugestedPriceForClient.h
+    Algorithms/SugestedPriceForClient.h\
+    BackEnd/AddOrder.h
 
 FORMS += \
     mainwindow.ui
