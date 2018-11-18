@@ -31,14 +31,14 @@ struct CustomerStruct {
   QString name;
   QString city;
   QString street;
-  QString propertuNumber;
+  QString propertyNumber;
 
   CustomerStruct(QString name = nullptr, QString city = nullptr,
-                 QString street = nullptr, QString propertuNumber = nullptr)
+                 QString street = nullptr, QString propertyNumber = nullptr)
       : name(name),
         city(city),
         street(street),
-        propertuNumber(propertuNumber) {}
+        propertyNumber(propertyNumber) {}
 };
 
 struct OrdersStruct {
