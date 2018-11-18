@@ -24,15 +24,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
-    Orders.cpp \
-    DataBaseApi.cpp
+    BackEnd/main.cpp \
+    BackEnd/mainwindow.cpp \
+    BackEnd/Orders.cpp \
+    DataBase/DataBaseApi.cpp
 
 HEADERS += \
-        mainwindow.h \
-    Orders.h \
-    DataBaseApi.h
+    BackEnd/mainwindow.h \
+    BackEnd/Orders.h \
+    DataBase/DataBaseApi.h
 
 FORMS += \
-        mainwindow.ui
+    mainwindow.ui
