@@ -1,14 +1,23 @@
 #include "mainwindow.h"
+#include <QMap>
+#include <QScopedPointer>
+#include "Orders.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
-    ui->setupUi(this);
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow) {
+  ui->setupUi(this);
 }
 
-MainWindow::~MainWindow()
-{
-    delete ui;
+MainWindow::~MainWindow() { delete ui; }
+
+void MainWindow::makeObjects() {
+  // first set fill level of fuel tanks
+  QMap<QString, QMap<QString, uint32_t>> fuelTanksFillLevel =
+      mDataBaseApi.getTanksFillLevel();
+
+  // #TO_DO
+
+  // making objects
+  mOrders.reset(new Orders(ui, mDataBaseApi));
 }

@@ -2,21 +2,26 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QScopedPointer>
+#include "DataBaseApi.h"
+#include "Orders.h"
 
 namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
+class MainWindow : public QMainWindow {
+  Q_OBJECT
 
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+ public:
+  explicit MainWindow(QWidget *parent = nullptr);
+  ~MainWindow();
+  void makeObjects();
 
-private:
-    Ui::MainWindow *ui;
+ private:
+  Ui::MainWindow *ui;
+  DataBaseApi mDataBaseApi;
+  QScopedPointer<Orders> mOrders;
 };
 
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H
