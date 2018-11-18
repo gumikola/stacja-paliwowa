@@ -32,7 +32,8 @@ SOURCES += \
     Algorithms/ClientSuggestion.cpp \
     Algorithms/GetFuelPriceFromWeb.cpp \ 
     Algorithms/SugestedPriceforClient.cpp\
-    BackEnd/AddOrder.cpp
+    BackEnd/AddOrder.cpp \
+    Common.cpp
 
 HEADERS += \
     BackEnd/mainwindow.h \
@@ -41,7 +42,8 @@ HEADERS += \
     Algorithms/ClientSuggestion.h \
     Algorithms/GetFuelPriceFromWeb.h \
     Algorithms/SugestedPriceForClient.h\
-    BackEnd/AddOrder.h
+    BackEnd/AddOrder.h \
+    Common.h
 
 FORMS += \
     mainwindow.ui

@@ -6,8 +6,10 @@
 #include <QMainWindow>
 #include <QObject>
 #include <QPushButton>
+#include <QString>
 #include <QTableWidget>
 #include <QTextEdit>
+#include "Common.h"
 #include "DataBase/DataBaseApi.h"
 #include "ui_mainwindow.h"
 
@@ -28,6 +30,14 @@ class AddOrder : public QObject {
   QLineEdit &mTotalPrice;
   QComboBox &mFuelTypeBox;
   DataBaseApi::DataBaseApi mDatabaseApi;
+  Common::FuelType mChoosenFuelType;
+
+  QString getOrdererName();
+  uint getAmount();
+  QString getCity();
+  uint getIncome();
+  uint getNumber();
+  QString getStreet();
 
  public:
   AddOrder(Ui::MainWindow *ui, DataBaseApi::DataBaseApi &databaseApi);
@@ -38,6 +48,7 @@ class AddOrder : public QObject {
 
   void calculatePressed();
   void addOrderPressed();
+  void fuelTypeChanged(int);
 };
 
 }  // namespace BackEnd

@@ -901,7 +901,7 @@ przycisk 'Wyświetl'</string>
             </font>
            </property>
            <property name="text">
-            <string> Nr domu: </string>
+            <string> Nr posesji: </string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -1002,7 +1002,7 @@ przycisk 'Wyświetl'</string>
           <widget class="QComboBox" name="addOrderTabFuelTypeBox">
            <property name="minimumSize">
             <size>
-             <width>150</width>
+             <width>180</width>
              <height>0</height>
             </size>
            </property>
@@ -1011,6 +1011,11 @@ przycisk 'Wyświetl'</string>
              <pointsize>14</pointsize>
             </font>
            </property>
+           <item>
+            <property name="text">
+             <string>Wybierz typ paliwa</string>
+            </property>
+           </item>
            <item>
             <property name="text">
              <string>Olej napędowy</string>
