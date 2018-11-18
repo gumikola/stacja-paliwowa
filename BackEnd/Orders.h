@@ -11,6 +11,8 @@
 
 #include "ui_mainwindow.h"
 
+namespace BackEnd {
+
 class Orders : QObject {
   Q_OBJECT
   QTableWidget &mOrders;
@@ -30,5 +32,7 @@ class Orders : QObject {
   void wyswietlPressed();
   void chosenDateChanged();
 };
+
+}  // namespace BackEnd
 
 #endif  // ORDERS_H

@@ -9,6 +9,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+namespace BackEnd {
+
 Orders::Orders(Ui::MainWindow *ui, DataBaseApi::DataBaseApi &dataBaseApi)
     : mOrders(*ui->ordersTabOrdersTable),
       mWyswietlButton(*ui->ordersTabWyswietlButton),
@@ -42,3 +44,4 @@ void Orders::chosenDateChanged() {
   qDebug("chosenDateChanged pressed %d:%d:%d", mSelectedDate.day(),
          mSelectedDate.month(), mSelectedDate.year());
 }
+}  // namespace BackEnd

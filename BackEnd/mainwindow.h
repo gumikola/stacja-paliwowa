@@ -21,7 +21,7 @@ class MainWindow : public QMainWindow {
  private:
   Ui::MainWindow *ui;
   DataBaseApi::DataBaseApi mDataBaseApi;
-  QScopedPointer<Orders> mOrders;
+  QScopedPointer<BackEnd::Orders> mOrders;
 };
 
 #endif  // MAINWINDOW_H

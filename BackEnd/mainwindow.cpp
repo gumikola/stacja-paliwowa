@@ -19,5 +19,5 @@ void MainWindow::makeObjects() {
   // #TO_DO
 
   // making objects
-  mOrders.reset(new Orders(ui, mDataBaseApi));
+  mOrders.reset(new BackEnd::Orders(ui, mDataBaseApi));
 }
