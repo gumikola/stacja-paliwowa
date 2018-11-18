@@ -42,6 +42,7 @@ void Orders::wyswietlPressed() { qDebug("wystiwetl preseses"); }
 
 void Orders::chosenDateChanged() {
   mSelectedDate = mCalendar.selectedDate();
+  mDataBaseApi.getOrdersByDate(mSelectedDate);
 
   qDebug("chosenDateChanged pressed %d:%d:%d", mSelectedDate.day(),
          mSelectedDate.month(), mSelectedDate.year());

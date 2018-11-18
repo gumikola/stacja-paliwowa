@@ -1,9 +1,7 @@
 #include "DataBaseApi.h"
 
 namespace DataBaseApi {
-DataBaseApi::DataBaseApi()
-    : driverName("QSQLITE"),
-      pathDatabase("/home/mguz/workspace/stacja-paliwowa/sqlite.db") {
+DataBaseApi::DataBaseApi() {
   driverDatabase = QSqlDatabase::addDatabase(driverName);
   driverDatabase.setDatabaseName(pathDatabase);
 
@@ -15,20 +13,47 @@ DataBaseApi::DataBaseApi()
 
 QMap<QString, QMap<QString, uint32_t> > DataBaseApi::getTanksFillLevel(void) {
   QMap<QString, QMap<QString, uint32_t> > data;
-  QSqlQuery query;
+  QSqlQuery q;
 
-  query.prepare("SELECT * FROM Magazyny ");
+  q.prepare("SELECT * FROM Magazyny ");
 
-  if (query.exec()) {
-    QMap<QString, uint> tmp;
-    while (query.next()) {
-      tmp.insert(query.value("Typ_paliwa_Nazwa").toString() + " " +
-                     query.value("ID").toString(),
-                 query.value("Zawartosc").toUInt());
-      data.insert(query.value("Miejsce").toString(), tmp);
+  if (q.exec()) {
+    QMap<QString, uint> mapTmp;
+    QString stringTmp;
+    while (q.next()) {
+      stringTmp = QString("%1 %1").arg(q.value("Typ_paliwa_Nazwa").toString(),
+                                       q.value("ID").toString());
+      mapTmp.insert(stringTmp, q.value("Zawartosc").toUInt());
+      data.insert(q.value("Miejsce").toString(), mapTmp);
     }
   }
 
   return data;
 }
-}  // namespace databaseApi
+
+QVector<Common::OrdersStruct> DataBaseApi::getOrdersByDate(QDate date) {
+  QVector<Common::OrdersStruct> data;
+  QSqlQuery q;
+
+  q.prepare(QString("SELECT * FROM Zamowienia left join Klienci_hurtowi on "
+                    "Zamowienia.Klienci_hurtowi_ID=Klienci_hurtowi.ID WHERE "
+                    "`Data` LIKE '%1'")
+                .arg(date.toString("'%'yyyy-MM-dd'%'")));
+
+  if (q.exec()) {
+    while (q.next()) {
+      data.push_back(Common::OrdersStruct(q.value("Ilosc").toUInt(),
+                                  q.value("Data").toDate(),
+                                  q.value("Cena").toDouble(),
+                                  Common::CustomerStruct(q.value("Odbiorca").toString(),
+                                                 q.value("Miasto").toString(),
+                                                 q.value("Ulica").toString(),
+                                                 q.value("Numer").toString()),
+                                  q.value("Typ_Paliwa_Nazwa").toString()));
+    }
+  }
+
+  return data;
+}
+
+}  // namespace DataBaseApi

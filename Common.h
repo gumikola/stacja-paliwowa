@@ -10,8 +10,6 @@ enum class FuelType { ON, OO, PB95, PB98, ERR };
 
 QString getFuelTypeName(const FuelType &type);
 
-}  // namespace Common
-
 struct OrderParametersOutput {
   QTime mTravelTime;
   uint mTotalPrice;
@@ -28,5 +26,39 @@ struct OrderParametersOutput {
         mDistance(distance),
         mIncome(income) {}
 };
+
+struct CustomerStruct {
+  QString name;
+  QString city;
+  QString street;
+  QString propertuNumber;
+
+  CustomerStruct(QString name = nullptr, QString city = nullptr,
+                 QString street = nullptr, QString propertuNumber = nullptr)
+      : name(name),
+        city(city),
+        street(street),
+        propertuNumber(propertuNumber) {}
+};
+
+struct OrdersStruct {
+  uint amout;
+  QDate date;
+  double totalPrice;
+  CustomerStruct customer;
+  QString fuelType;
+
+  OrdersStruct(uint amout = 0, QDate date = QDate().currentDate(),
+               double totalPrice = 0,
+               CustomerStruct customer = CustomerStruct(),
+               QString fuelType = nullptr)
+      : amout(amout),
+        date(date),
+        totalPrice(totalPrice),
+        customer(customer),
+        fuelType(fuelType) {}
+};
+
+}  // namespace Common
 
 #endif  // COMMON_H
