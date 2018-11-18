@@ -36,8 +36,9 @@ class AddOrder : public QObject {
   uint getAmount();
   QString getCity();
   uint getIncome();
-  uint getNumber();
+  QString getNumber();
   QString getStreet();
+  void clearWindow();
 
  public:
   AddOrder(Ui::MainWindow *ui, DataBaseApi::DataBaseApi &databaseApi);

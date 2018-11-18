@@ -80,17 +80,12 @@ uint AddOrder::getIncome() {
   return income;
 }
 
-uint AddOrder::getNumber() {
+QString AddOrder::getNumber() {
   QString tmp = mNumber.text();
 
   if (not tmp.size()) throw QString("Pole numer posesji nie moze byc puste!");
 
-  bool result = true;
-  uint number = tmp.toUInt(&result);
-
-  if (result == false) throw QString("Błędna wartość w polu numer posesji!");
-
-  return number;
+  return tmp;
 }
 
 QString AddOrder::getStreet() {
@@ -101,14 +96,20 @@ QString AddOrder::getStreet() {
   return tmp;
 }
 
+void AddOrder::clearWindow() {}
+
 void AddOrder::calculatePressed() {
   try {
-    getAmount();
-    getCity();
-    getIncome();
-    getNumber();
     getOrdererName();
     getStreet();
+    getNumber();
+    getCity();
+    if (mChoosenFuelType == Common::FuelType::ERR)
+      throw QString("Nie wybrano typu paliwa!");
+    getAmount();
+    getIncome();
+
+    mAddOrderButton.setEnabled(true);
 
   } catch (QString &e) {
     QMessageBox msgBox;
