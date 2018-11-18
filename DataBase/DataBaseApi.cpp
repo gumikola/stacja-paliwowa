@@ -2,7 +2,7 @@
 
 DataBaseApi::DataBaseApi()
     : driverName("QSQLITE"),
-      pathDatabase("/home/mguz/workspace/stacja-paliwowasqlite.db") {
+      pathDatabase("/home/mguz/workspace/stacja-paliwowa/sqlite.db") {
   driverDatabase = QSqlDatabase::addDatabase(driverName);
   driverDatabase.setDatabaseName(pathDatabase);
 
