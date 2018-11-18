@@ -28,6 +28,8 @@ class AddOrder : public QObject {
   QLineEdit &mOrdererName;
   QLineEdit &mStreet;
   QLineEdit &mTotalPrice;
+  QLineEdit &mDistance;
+  QLineEdit &mTravelTime;
   QComboBox &mFuelTypeBox;
   DataBaseApi::DataBaseApi mDatabaseApi;
   Common::FuelType mChoosenFuelType;

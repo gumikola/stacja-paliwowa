@@ -27,9 +27,17 @@ AddOrder::AddOrder(Ui::MainWindow *ui, DataBaseApi::DataBaseApi &databaseApi)
       mOrdererName(*ui->addOrderTabOrdererName),
       mStreet(*ui->addOrderTabStreet),
       mTotalPrice(*ui->addOrderTabTotalPrice),
+      mDistance(*ui->addOrderTabDistance),
+      mTravelTime(*ui->addOrderTabTravelTime),
       mFuelTypeBox(*ui->addOrderTabFuelTypeBox),
       mDatabaseApi(databaseApi),
       mChoosenFuelType(Common::FuelType::ERR) {
+  //
+  mMargin.setText(QString("---"));
+  mDistance.setText(QString("---"));
+  mTravelTime.setText(QString("---"));
+  mTotalPrice.setText(QString("---"));
+
   connect(ui->addOrderTabAddOrderButton, SIGNAL(pressed()), this,
           SLOT(addOrderPressed()));
   connect(ui->addOrderTabCalculateButton, SIGNAL(pressed()), this,
@@ -96,7 +104,19 @@ QString AddOrder::getStreet() {
   return tmp;
 }
 
-void AddOrder::clearWindow() {}
+void AddOrder::clearWindow() {
+  mOrdererName.clear();
+  mStreet.clear();
+  mNumber.clear();
+  mCity.clear();
+  mFuelTypeBox.setCurrentIndex(0);
+  mAmount.clear();
+  mIncome.clear();
+  mMargin.setText(QString("---"));
+  mDistance.setText(QString("---"));
+  mTravelTime.setText(QString("---"));
+  mTotalPrice.setText(QString("---"));
+}
 
 void AddOrder::calculatePressed() {
   try {
@@ -120,7 +140,10 @@ void AddOrder::calculatePressed() {
   qDebug("calculatePressed");
 }
 
-void AddOrder::addOrderPressed() { qDebug("addOrderPressed"); }
+void AddOrder::addOrderPressed() {
+  clearWindow();
+  qDebug("addOrderPressed");
+}
 
 void AddOrder::fuelTypeChanged(int typeID) {
   qDebug("FuelType changed to %d", typeID);
