@@ -4,12 +4,13 @@
 #include <QMap>
 #include <QtSql/QtSql>
 
+namespace DataBaseApi {
 class DataBaseApi {
-private:
-    QString driverName;
-    QString pathDatabase;
+ private:
+  QString driverName;
+  QString pathDatabase;
 
-    QSqlDatabase driverDatabase;
+  QSqlDatabase driverDatabase;
 
  public:
   DataBaseApi();
@@ -17,5 +18,7 @@ private:
   // TODO: Get all order from choosed date
   QMap<QString, QMap<QString, uint32_t>> getTanksFillLevel(void);
 };
+
+}  // namespace databaseApi
 
 #endif  // DATABASEAPI_H

@@ -20,7 +20,7 @@ class MainWindow : public QMainWindow {
 
  private:
   Ui::MainWindow *ui;
-  DataBaseApi mDataBaseApi;
+  DataBaseApi::DataBaseApi mDataBaseApi;
   QScopedPointer<Orders> mOrders;
 };
 

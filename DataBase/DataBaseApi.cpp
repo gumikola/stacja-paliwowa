@@ -1,5 +1,6 @@
 #include "DataBaseApi.h"
 
+namespace DataBaseApi {
 DataBaseApi::DataBaseApi()
     : driverName("QSQLITE"),
       pathDatabase("/home/mguz/workspace/stacja-paliwowa/sqlite.db") {
@@ -21,7 +22,8 @@ QMap<QString, QMap<QString, uint32_t> > DataBaseApi::getTanksFillLevel(void) {
   if (query.exec()) {
     QMap<QString, uint> tmp;
     while (query.next()) {
-      tmp.insert(query.value("Typ_paliwa_Nazwa").toString() + " " + query.value("ID").toString(),
+      tmp.insert(query.value("Typ_paliwa_Nazwa").toString() + " " +
+                     query.value("ID").toString(),
                  query.value("Zawartosc").toUInt());
       data.insert(query.value("Miejsce").toString(), tmp);
     }
@@ -29,3 +31,4 @@ QMap<QString, QMap<QString, uint32_t> > DataBaseApi::getTanksFillLevel(void) {
 
   return data;
 }
+}  // namespace databaseApi

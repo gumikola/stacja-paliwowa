@@ -17,12 +17,12 @@ class Orders : QObject {
   QPushButton &mWyswietlButton;
   QCalendarWidget &mCalendar;
   QTextEdit &mAdditionalInformation;
-  DataBaseApi mDataBaseApi;
+  DataBaseApi::DataBaseApi mDataBaseApi;
 
   QDate mSelectedDate;
 
  public:
-  Orders(Ui::MainWindow *ui, DataBaseApi &dataBaseApi);
+  Orders(Ui::MainWindow *ui, DataBaseApi::DataBaseApi &dataBaseApi);
 
   void printEmptyTable(void);
 

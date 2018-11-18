@@ -9,7 +9,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-Orders::Orders(Ui::MainWindow *ui, DataBaseApi &dataBaseApi)
+Orders::Orders(Ui::MainWindow *ui, DataBaseApi::DataBaseApi &dataBaseApi)
     : mOrders(*ui->ordersTabOrdersTable),
       mWyswietlButton(*ui->ordersTabWyswietlButton),
       mCalendar(*ui->ordersTabCalendar),
