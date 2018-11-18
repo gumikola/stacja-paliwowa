@@ -7,7 +7,7 @@
 #include <QPushButton>
 #include <QTableWidget>
 #include <QTextEdit>
-#include "DataBaseApi.h"
+#include "DataBase/DataBaseApi.h"
 
 #include "ui_mainwindow.h"
 

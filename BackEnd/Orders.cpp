@@ -5,7 +5,7 @@
 #include <QTableWidget>
 #include <QTableWidgetItem>
 #include <QTextEdit>
-#include "DataBaseApi.h"
+#include "DataBase/DataBaseApi.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
