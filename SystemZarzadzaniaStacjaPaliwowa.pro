@@ -4,12 +4,13 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui sql network svg xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = SystemZarzadzaniaStacjaPaliwowa
 TEMPLATE = app
+CONFIG += openssl-linked
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -27,12 +28,18 @@ SOURCES += \
     BackEnd/main.cpp \
     BackEnd/mainwindow.cpp \
     BackEnd/Orders.cpp \
-    DataBase/DataBaseApi.cpp
+    DataBase/DataBaseApi.cpp \ 
+    Algorithms/ClientSuggestion.cpp \
+    Algorithms/GetFuelPriceFromWeb.cpp \ 
+    Algorithms/SugestedPriceforClient.cpp
 
 HEADERS += \
     BackEnd/mainwindow.h \
     BackEnd/Orders.h \
-    DataBase/DataBaseApi.h
+    DataBase/DataBaseApi.h \
+    Algorithms/ClientSuggestion.h \
+    Algorithms/GetFuelPriceFromWeb.h \
+    Algorithms/SugestedPriceForClient.h
 
 FORMS += \
     mainwindow.ui
