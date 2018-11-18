@@ -1,5 +1,6 @@
 #ifndef COMMON_H
 #define COMMON_H
+#include <QDate>
 #include <QString>
 #include <QTime>
 
@@ -11,11 +12,21 @@ QString getFuelTypeName(const FuelType &type);
 
 }  // namespace Common
 
-struct OrderParameters {
+struct OrderParametersOutput {
   QTime mTravelTime;
   uint mTotalPrice;
   double mMargin;
   double mDistance;
+  uint mIncome;
+
+  OrderParametersOutput() {}
+  OrderParametersOutput(QTime travelTime, uint totalPrice, double margin,
+                        double distance, uint income)
+      : mTravelTime(travelTime),
+        mTotalPrice(totalPrice),
+        mMargin(margin),
+        mDistance(distance),
+        mIncome(income) {}
 };
 
 #endif  // COMMON_H
