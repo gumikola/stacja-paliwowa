@@ -14,7 +14,7 @@ MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::makeObjects() {
   // first set fill level of fuel tanks
-  QMap<QString, QMap<QString, uint32_t>> fuelTanksFillLevel =
+  QMap<Common::FuelTankType, uint32_t> fuelTanksFillLevel =
       mDataBaseApi.getTanksFillLevel();
 
   // #TO_DO

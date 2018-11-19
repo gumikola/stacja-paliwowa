@@ -50,4 +50,24 @@ QString getFuelTankTypeName(const FuelTankType &type) {
   }
 }
 
+FuelTankType getFuelTankEnum(QString type) {
+  if (QString("ON") == type) {
+    return FuelTankType::ON;
+  } else if (QString("ON 1") == type) {
+    return FuelTankType::ON1;
+  } else if (QString("ON 2") == type) {
+    return FuelTankType::ON2;
+  } else if (QString("ON 3") == type) {
+    return FuelTankType::ON3;
+  } else if (QString("OO") == type) {
+    return FuelTankType::OO;
+  } else if (QString("PB95") == type) {
+    return FuelTankType::PB95;
+  } else if (QString("PB98") == type) {
+    return FuelTankType::PB98;
+  } else {
+    throw QString("Wrong fuel type");
+  }
+}
+
 }  // namespace Common

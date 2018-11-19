@@ -11,20 +11,16 @@ DataBaseApi::DataBaseApi() {
   }
 }
 
-QMap<QString, QMap<QString, uint32_t> > DataBaseApi::getTanksFillLevel(void) {
-  QMap<QString, QMap<QString, uint32_t> > data;
+QMap<Common::FuelTankType, uint32_t> DataBaseApi::getTanksFillLevel(void) {
+  QMap<Common::FuelTankType, uint32_t> data;
   QSqlQuery q;
 
   q.prepare("SELECT * FROM Magazyny ");
 
   if (q.exec()) {
-    QMap<QString, uint> mapTmp;
-    QString stringTmp;
     while (q.next()) {
-      stringTmp = q.value("Typ_paliwa_Nazwa").toString() + QString(" ") +
-                  q.value("ID").toString();
-      mapTmp.insert(stringTmp, q.value("Zawartosc").toUInt());
-      data.insert(q.value("Miejsce").toString(), mapTmp);
+      data.insert(Common::getFuelTankEnum(q.value("Zbiornik").toString()),
+                  q.value("Zawartosc").toUInt());
     }
   }
 
