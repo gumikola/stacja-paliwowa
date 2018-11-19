@@ -13,12 +13,12 @@ class DataBaseApi {
   const QString driverName = "QSQLITE";
 
   // miki
-    const QString pathDatabase = "../stacja-paliwowa/sqlite.db";
+  //    const QString pathDatabase = "../stacja-paliwowa/sqlite.db";
 
   // luki
-//  const QString pathDatabase =
-//      "E:\\Studia\\9_sem\\Projekty\\System_zarzadzania_stacja_paliw\\stacja-"
-//      "paliwowa\\sqlite.db";
+  const QString pathDatabase =
+      "E:\\Studia\\9_sem\\Projekty\\System_zarzadzania_stacja_paliw\\stacja-"
+      "paliwowa\\sqlite.db";
 
   QSqlDatabase driverDatabase;
 

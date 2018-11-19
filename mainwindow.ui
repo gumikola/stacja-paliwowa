@@ -17,32 +17,6 @@
    <bool>true</bool>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="addOrderButton">
-    <property name="geometry">
-     <rect>
-      <x>680</x>
-      <y>520</y>
-      <width>131</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Dodaj zamówienie</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="addOrderButton_2">
-    <property name="geometry">
-     <rect>
-      <x>810</x>
-      <y>520</y>
-      <width>131</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Dodaj zamówienie</string>
-    </property>
-   </widget>
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>

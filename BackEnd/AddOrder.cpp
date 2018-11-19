@@ -133,6 +133,7 @@ void AddOrder::calculatePressed() {
 
   } catch (QString &e) {
     QMessageBox msgBox;
+    msgBox.setFont(QFont(QString("Arial"), 14));
     msgBox.setText(e);
     msgBox.exec();
   }
@@ -141,7 +142,13 @@ void AddOrder::calculatePressed() {
 }
 
 void AddOrder::addOrderPressed() {
+  QMessageBox msgBox;
+  msgBox.setFont(QFont(QString("Arial"), 14));
+  msgBox.setText(QString("Zamówienie dodane."));
+  msgBox.exec();
+
   clearWindow();
+
   qDebug("addOrderPressed");
 }
 
