@@ -8,6 +8,8 @@ namespace Common {
 
 enum class FuelType { ON, OO, PB95, PB98, ERR };
 
+enum class FuelTankType { ON, ON1, ON2, ON3, OO, PB95, PB98, ERR };
+
 QString getFuelTypeName(const FuelType &type);
 
 struct OrderParametersOutput {
