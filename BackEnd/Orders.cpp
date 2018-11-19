@@ -38,7 +38,11 @@ void Orders::printEmptyTable(void) {
   mOrders.setItem(rowCnt, columnCnt, new QTableWidgetItem("drugi"));
 }
 
-void Orders::wyswietlPressed() { qDebug("wystiwetl preseses"); }
+void Orders::wyswietlPressed() {
+  QVector<Common::OrdersStruct> orders =
+      mDataBaseApi.getOrdersByDate(mSelectedDate);
+  qDebug("wystiwetl preseses");
+}
 
 void Orders::chosenDateChanged() {
   mSelectedDate = mCalendar.selectedDate();

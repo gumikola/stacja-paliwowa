@@ -11,7 +11,14 @@ namespace DataBaseApi {
 class DataBaseApi {
  private:
   const QString driverName = "QSQLITE";
-  const QString pathDatabase = "../stacja-paliwowa/sqlite.db";
+
+  // miki
+  //  const QString pathDatabase = "../stacja-paliwowa/sqlite.db";
+
+  // luki
+  const QString pathDatabase =
+      "E:\\Studia\\9_sem\\Projekty\\System_zarzadzania_stacja_paliw\\stacja-"
+      "paliwowa\\sqlite.db";
 
   QSqlDatabase driverDatabase;
 

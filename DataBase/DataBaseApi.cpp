@@ -21,8 +21,8 @@ QMap<QString, QMap<QString, uint32_t> > DataBaseApi::getTanksFillLevel(void) {
     QMap<QString, uint> mapTmp;
     QString stringTmp;
     while (q.next()) {
-      stringTmp = QString("%1 %1").arg(q.value("Typ_paliwa_Nazwa").toString(),
-                                       q.value("ID").toString());
+      stringTmp = q.value("Typ_paliwa_Nazwa").toString() + QString(" ") +
+                  q.value("ID").toString();
       mapTmp.insert(stringTmp, q.value("Zawartosc").toUInt());
       data.insert(q.value("Miejsce").toString(), mapTmp);
     }
@@ -42,14 +42,13 @@ QVector<Common::OrdersStruct> DataBaseApi::getOrdersByDate(QDate date) {
 
   if (q.exec()) {
     while (q.next()) {
-      data.push_back(Common::OrdersStruct(q.value("Ilosc").toUInt(),
-                                  q.value("Data").toDate(),
-                                  q.value("Cena").toDouble(),
-                                  Common::CustomerStruct(q.value("Odbiorca").toString(),
-                                                 q.value("Miasto").toString(),
-                                                 q.value("Ulica").toString(),
-                                                 q.value("Numer").toString()),
-                                  q.value("Typ_Paliwa_Nazwa").toString()));
+      data.push_back(Common::OrdersStruct(
+          q.value("Ilosc").toUInt(), q.value("Data").toDate(),
+          q.value("Cena").toDouble(),
+          Common::CustomerStruct(
+              q.value("Odbiorca").toString(), q.value("Miasto").toString(),
+              q.value("Ulica").toString(), q.value("Numer").toString()),
+          q.value("Typ_Paliwa_Nazwa").toString()));
     }
   }
 
