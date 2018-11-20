@@ -11,6 +11,10 @@ DataBaseApi::DataBaseApi() {
   }
 }
 
+DataBaseApi::~DataBaseApi() {
+    driverDatabase.close();
+}
+
 QMap<Common::FuelTankType, uint32_t> DataBaseApi::getTanksFillLevel(void) {
   QMap<Common::FuelTankType, uint32_t> data;
   QSqlQuery q;
