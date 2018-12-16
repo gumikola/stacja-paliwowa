@@ -3,6 +3,7 @@
 #include <functional>
 #include "Common.h"
 #include <QDebug>
+#include <QException>
 #include <QJsonObject>
 #include <QString>
 #include <QTime>
@@ -12,6 +13,7 @@ class GoogleApi
 {
     QByteArray                    jsonResponse;
     const Common::CustomerStruct& mCustomer;
+    void                          CheckResponse(QJsonDocument response);
 
 public:
     GoogleApi(const Common::CustomerStruct& customer);

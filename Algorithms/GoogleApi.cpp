@@ -20,7 +20,7 @@ GoogleApi::GoogleApi(const Common::CustomerStruct& customer)
 QString GoogleApi::GetDistanceFromJson()
 {
     QJsonDocument response = QJsonDocument::fromJson(jsonResponse);
-
+    CheckResponse(response);
     QString distance = response.object()
                            .value("routes")
                            .toArray()[0]
@@ -40,7 +40,8 @@ QString GoogleApi::GetDistanceFromJson()
 QString GoogleApi::GetTimeFromJson()
 {
     QJsonDocument response = QJsonDocument::fromJson(jsonResponse);
-    int           time     = response.object()
+    CheckResponse(response);
+    int time = response.object()
                    .value("routes")
                    .toArray()[0]
                    .toObject()
@@ -52,5 +53,13 @@ QString GoogleApi::GetTimeFromJson()
                    .value("value")
                    .toInt();
     return QString::number(time);
+}
+void GoogleApi::CheckResponse(QJsonDocument response)
+{
+    QString status = response.object().value("status").toString();
+    if (status == "NOT_FOUND")
+    {
+        throw QString("Nie znaleziono lokalizacji");
+    }
 }
 } // namespace Algorithms

@@ -52,7 +52,7 @@ Common::OrderParametersOutput SugestedPriceForClient::GetOrderStruct(void)
     OutputOrder.mDistance   = customer.GetDistanceFromJson().toDouble();
     OutputOrder.mTravelTime = time.addSecs(customer.GetTimeFromJson().toInt());
     OutputOrder.mTotalPrice = GetPriceForClient();
-    OutputOrder.mMargin     = OutputOrder.mTotalPrice - mEstablishedProfit;
+    OutputOrder.mMargin     = (OutputOrder.mTotalPrice - mEstablishedProfit);
     return OutputOrder;
 }
 } // namespace Algorithms

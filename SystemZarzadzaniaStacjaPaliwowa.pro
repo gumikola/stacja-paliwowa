@@ -34,7 +34,8 @@ SOURCES += \
     Algorithms/GoogleApi.cpp \
     BackEnd/AddOrder.cpp \
     Common.cpp \
-    BackEnd/main.cpp
+    BackEnd/main.cpp \
+    Algorithms/CalculateRoute.cpp
 
 HEADERS += \
     BackEnd/mainwindow.h \
@@ -45,7 +46,8 @@ HEADERS += \
     Algorithms/SugestedPriceForClient.h \
     Algorithms/GoogleApi.h \
     BackEnd/AddOrder.h \
-    Common.h
+    Common.h \
+    Algorithms/CalculateRoute.h
 #    Algorithms/testy_igora.aaa \
 #    Algorithms/testy_igora.aaa \
 
