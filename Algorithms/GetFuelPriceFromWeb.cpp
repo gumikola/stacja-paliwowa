@@ -2,11 +2,11 @@
 
 namespace Algorithms {
 
-GetFuelPriceFromWeb::GetFuelPriceFromWeb(const QString &URL) : mURL(URL) {
+GetFuelPriceFromWeb::GetFuelPriceFromWeb() {
   QNetworkRequest request;
   request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
   QNetworkAccessManager manager;
-  QNetworkReply *response = manager.get(QNetworkRequest(QUrl(mURL)));
+  QNetworkReply *response = manager.get(QNetworkRequest(QUrl(Common::URL)));
   QEventLoop event;
 
   QObject::connect(response, SIGNAL(finished()), &event, SLOT(quit()));
@@ -20,15 +20,15 @@ double GetFuelPriceFromWeb::MatchRegex(QString Regex) {
   return price;
 }
 double GetFuelPriceFromWeb::Get95Price() {
-  return MatchRegex("(?<=Pb95Price\">)(.*[0-9])(?=</span>&nbsp;)");
+  return MatchRegex("(?<=Pb95Price\">)(.*[0-9])(?=</span>&nbsp;)") / 1000;
 }
 double GetFuelPriceFromWeb::Get98Price() {
-  return MatchRegex("(?<=Pb98Price\">)(.*[0-9])(?=</span>&nbsp;)");
+  return MatchRegex("(?<=Pb98Price\">)(.*[0-9])(?=</span>&nbsp;)") / 1000;
 }
 double GetFuelPriceFromWeb::GetONPrice() {
-  return MatchRegex("(?<=EkodiselPrice\">)(.*[0-9])(?=</span>&nbsp;)");
+  return MatchRegex("(?<=EkodiselPrice\">)(.*[0-9])(?=</span>&nbsp;)") / 1000;
 }
 double GetFuelPriceFromWeb::GetOOPrice() {
-  return MatchRegex("(?<=EkotermPrice\">)(.*[0-9])(?=</span>&nbsp;)");
+  return MatchRegex("(?<=EkotermPrice\">)(.*[0-9])(?=</span>&nbsp;)") / 1000;
 }
 }  // namespace Algorithms

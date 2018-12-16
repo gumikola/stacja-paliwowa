@@ -7,7 +7,7 @@
 QT       += core gui sql network svg xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
+# trzeba dodać do instalacji qt w Tools/mingw530_32/opt/bin dllki ssleay32.dll i libleay32.dll
 TARGET = SystemZarzadzaniaStacjaPaliwowa
 TEMPLATE = app
 CONFIG += openssl-linked
@@ -25,15 +25,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-    BackEnd/main.cpp \
     BackEnd/mainwindow.cpp \
     BackEnd/Orders.cpp \
-    DataBase/DataBaseApi.cpp \ 
+    DataBase/DataBaseApi.cpp \
     Algorithms/ClientSuggestion.cpp \
     Algorithms/GetFuelPriceFromWeb.cpp \ 
     Algorithms/SugestedPriceforClient.cpp\
+    Algorithms/GoogleApi.cpp \
     BackEnd/AddOrder.cpp \
-    Common.cpp
+    Common.cpp \
+    BackEnd/main.cpp
 
 HEADERS += \
     BackEnd/mainwindow.h \
@@ -41,9 +42,12 @@ HEADERS += \
     DataBase/DataBaseApi.h \
     Algorithms/ClientSuggestion.h \
     Algorithms/GetFuelPriceFromWeb.h \
-    Algorithms/SugestedPriceForClient.h\
+    Algorithms/SugestedPriceForClient.h \
+    Algorithms/GoogleApi.h \
     BackEnd/AddOrder.h \
     Common.h
+#    Algorithms/testy_igora.aaa \
+#    Algorithms/testy_igora.aaa \
 
 FORMS += \
     mainwindow.ui
