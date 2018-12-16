@@ -13,21 +13,23 @@ class DataBaseApi {
   const QString driverName = "QSQLITE";
 
   // miki
-  //    const QString pathDatabase = "../stacja-paliwowa/sqlite.db";
+      const QString pathDatabase = "../stacja-paliwowa/sqlite.db";
 
   // luki
-  const QString pathDatabase =
-      "E:\\Studia\\9_sem\\Projekty\\System_zarzadzania_stacja_paliw\\stacja-"
-      "paliwowa\\sqlite.db";
+//  const QString pathDatabase =
+//      "E:\\Studia\\9_sem\\Projekty\\System_zarzadzania_stacja_paliw\\stacja-"
+//      "paliwowa\\sqlite.db";
 
   QSqlDatabase driverDatabase;
 
  public:
   DataBaseApi();
   ~DataBaseApi();
-  // TODO: Add table with current price of petrol
+  // TODO: Clean db table definitions
   QMap<Common::FuelTankType, uint32_t> getTanksFillLevel(void);
   QVector<Common::OrdersStruct> getOrdersByDate(QDate date);
+  void addCustomer(Common::CustomerStruct &order);
+  void addOrder(Common::CustomerStruct &customer);
 };
 
 }  // namespace DataBaseApi

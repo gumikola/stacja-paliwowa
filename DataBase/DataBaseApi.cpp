@@ -11,9 +11,7 @@ DataBaseApi::DataBaseApi() {
   }
 }
 
-DataBaseApi::~DataBaseApi() {
-    driverDatabase.close();
-}
+DataBaseApi::~DataBaseApi() { driverDatabase.close(); }
 
 QMap<Common::FuelTankType, uint32_t> DataBaseApi::getTanksFillLevel(void) {
   QMap<Common::FuelTankType, uint32_t> data;
@@ -53,6 +51,36 @@ QVector<Common::OrdersStruct> DataBaseApi::getOrdersByDate(QDate date) {
   }
 
   return data;
+}
+
+int addCustomer(Common::CustomerStruct &customer) {
+  QSqlQuery q;
+
+  q.prepare(
+      "INSERT OR REPLACE INTO "
+      "`Klienci_hurtowi`(`Odbiorca`,`Miasto`,`Ulica`,`Numer`) VALUES "
+      "(name,city,street,propertyNumber)");
+  q.bindValue(":name", customer.name);
+  q.bindValue(":city", customer.city);
+  q.bindValue(":street", customer.street);
+  q.bindValue(":propertyNumber", customer.propertyNumber);
+
+  q.exec();
+  return q.lastInsertId().toInt();
+}
+
+void addOrder(Common::OrdersStruct &order) {
+  QSqlQuery q;
+
+  q.prepare(
+      "INSERT INTO "
+      "`Zamowienia`(`Ilosc`,`Data`,`Cena`,`Klienci_hurtowi_ID`,`Typ_paliwa_"
+      "Nazwa`) VALUES (amount,date,price,client_id,fuelType)");
+  q.bindValue(":amount", order.amout);
+  q.bindValue(":date", order.date);
+  q.bindValue(":price", order.totalPrice);
+  q.bindValue(":client_id",addCustomer(order.customer));
+  q.bindValue(":fuelType", order.fuelType);
 }
 
 }  // namespace DataBaseApi
