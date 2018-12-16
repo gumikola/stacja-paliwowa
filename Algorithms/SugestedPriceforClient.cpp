@@ -25,18 +25,18 @@ uint SugestedPriceForClient::GetPriceForClient(void)
 
 double SugestedPriceForClient::GetSalaryCost(void)
 {
-    return (mSalaryForDriverPerHour * (OutputOrder.mTravelTime.hour() + OutputOrder.mTravelTime.minute() / 60));
+    return (mSalaryForDriverPerHour * (mOutputOrder.mTravelTime.hour() + mOutputOrder.mTravelTime.minute() / 60));
 }
 
 double SugestedPriceForClient::GetDeprececatCost(void)
 {
-    return (mDeprecationCostPerKilometer * OutputOrder.mDistance);
+    return (mDeprecationCostPerKilometer * mOutputOrder.mDistance);
 }
 
 double SugestedPriceForClient::GetFuelCost(void)
 {
     Algorithms::GetFuelPriceFromWeb price;
-    return ((OutputOrder.mDistance * mAverageFuelConsumptiom) / 100) * price.GetONPrice();
+    return ((mOutputOrder.mDistance * mAverageFuelConsumptiom) / 100) * price.GetONPrice();
 }
 
 double SugestedPriceForClient::GetWholesalePrice(void)
@@ -47,12 +47,16 @@ double SugestedPriceForClient::GetWholesalePrice(void)
 
 Common::OrderParametersOutput SugestedPriceForClient::GetOrderStruct(void)
 {
+    return mOutputOrder;
+}
+
+void SugestedPriceForClient::CalculateParameters()
+{
     Algorithms::GoogleApi customer(mCustomer);
-    QTime                 time(0, 0, 0);
-    OutputOrder.mDistance   = customer.GetDistanceFromJson().toDouble();
-    OutputOrder.mTravelTime = time.addSecs(customer.GetTimeFromJson().toInt());
-    OutputOrder.mTotalPrice = GetPriceForClient();
-    OutputOrder.mMargin     = OutputOrder.mTotalPrice - mEstablishedProfit;
-    return OutputOrder;
+    QTime                 time;
+    mOutputOrder.mDistance   = customer.GetDistanceFromJson().toDouble();
+    mOutputOrder.mTravelTime = time.addSecs(customer.GetTimeFromJson().toInt());
+    mOutputOrder.mTotalPrice = GetPriceForClient();
+    mOutputOrder.mMargin     = mOutputOrder.mTotalPrice - mEstablishedProfit;
 }
 } // namespace Algorithms

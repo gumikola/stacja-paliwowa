@@ -39,14 +39,15 @@ class AddOrder : public QObject
     Common::FuelType         mChoosenFuelType;
     QDate                    mSelectedDate;
 
-    QString getOrdererName();
-    uint    getAmount();
-    QString getCity();
-    uint    getIncome();
-    QString getNumber();
-    QString getStreet();
-    void    clearWindow();
-    QDate   getDate();
+    QString          getOrdererName();
+    uint             getAmount();
+    QString          getCity();
+    uint             getIncome();
+    QString          getNumber();
+    QString          getStreet();
+    void             clearWindow();
+    QDate            getDate();
+    Common::FuelType getFuelType();
 
 public:
     AddOrder(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& databaseApi);

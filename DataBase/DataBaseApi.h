@@ -32,8 +32,8 @@ public:
     // TODO: Add table with current price of petrol
     QMap<Common::FuelTankType, uint32_t> getTanksFillLevel(void);
     QVector<Common::OrdersStruct>        getOrdersByDate(QDate date);
-    void                                 addCustomer(Common::CustomerStruct& order);
-    void                                 addOrder(Common::CustomerStruct& customer);
+    int                                  addCustomer(const Common::CustomerStruct& customer);
+    void                                 addOrder(const Common::OrdersStruct& order);
 };
 
 } // namespace DataBaseApi

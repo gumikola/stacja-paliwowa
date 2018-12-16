@@ -61,7 +61,7 @@ QVector<Common::OrdersStruct> DataBaseApi::getOrdersByDate(QDate date)
     return data;
 }
 
-int addCustomer(Common::CustomerStruct& customer)
+int DataBaseApi::addCustomer(const Common::CustomerStruct& customer)
 {
     QSqlQuery q;
 
@@ -77,7 +77,7 @@ int addCustomer(Common::CustomerStruct& customer)
     return q.lastInsertId().toInt();
 }
 
-void addOrder(Common::OrdersStruct& order)
+void DataBaseApi::addOrder(const Common::OrdersStruct& order)
 {
     QSqlQuery q;
 

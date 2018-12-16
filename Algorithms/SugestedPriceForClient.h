@@ -15,7 +15,7 @@ class SugestedPriceForClient
     const double                  mDeprecationCostPerKilometer; //#TODO
     const double                  mAverageFuelConsumptiom;
     const Common::CustomerStruct& mCustomer;
-    Common::OrderParametersOutput OutputOrder;
+    Common::OrderParametersOutput mOutputOrder;
 
 public:
     SugestedPriceForClient(Common::OrdersStruct& order);
@@ -26,6 +26,7 @@ public:
     double                        GetFuelCost(void);
     double                        GetWholesalePrice(void);
     Common::OrderParametersOutput GetOrderStruct(void);
+    void                          CalculateParameters(void);
 };
 } // namespace Algorithms
 #endif // SUGESTEDPRICEFORCLIENT_H

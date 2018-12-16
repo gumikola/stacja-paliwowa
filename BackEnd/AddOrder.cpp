@@ -1,4 +1,5 @@
 #include "AddOrder.h"
+#include "Algorithms/SugestedPriceForClient.h"
 #include "Common.h"
 #include "DataBase/DataBaseApi.h"
 #include "ui_mainwindow.h"
@@ -132,6 +133,13 @@ QString AddOrder::getStreet()
     return tmp;
 }
 
+Common::FuelType AddOrder::getFuelType()
+{
+    if (mChoosenFuelType == Common::FuelType::ERR)
+        throw QString("Nie wybrano typu paliwa!");
+
+    return mChoosenFuelType;
+}
 void AddOrder::clearWindow()
 {
     mOrdererName.clear();
@@ -155,10 +163,19 @@ void AddOrder::calculatePressed()
         getStreet();
         getNumber();
         getCity();
-        if (mChoosenFuelType == Common::FuelType::ERR)
-            throw QString("Nie wybrano typu paliwa!");
+        getFuelType();
         getAmount();
         getIncome();
+
+        Common::OrdersStruct tmp;
+
+        tmp.amount   = getAmount();
+        tmp.customer = Common::CustomerStruct(getOrdererName(), getCity(), getStreet(), getNumber());
+        tmp.date     = getDate();
+        tmp.fuelType = Common::getFuelTypeName(getFuelType());
+
+        Algorithms::SugestedPriceForClient price(tmp);
+        price.CalculateParameters();
 
         mAddOrderButton.setEnabled(true);
     }
@@ -182,7 +199,10 @@ void AddOrder::addOrderPressed()
     tmp.amount   = getAmount();
     tmp.customer = Common::CustomerStruct(getOrdererName(), getCity(), getStreet(), getNumber());
     tmp.date     = getDate();
-    //  tmp.fuelType = get
+    tmp.fuelType = Common::getFuelTypeName(getFuelType());
+    Algorithms::SugestedPriceForClient price(tmp);
+    price.CalculateParameters();
+    mDatabaseApi.addOrder(tmp);
 
     msgBox.setFont(QFont(QString("Arial"), 14));
     msgBox.setText(QString("Zamówienie dodane."));
