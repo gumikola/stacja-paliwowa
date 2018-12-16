@@ -12,13 +12,17 @@ class DataBaseApi {
  private:
   const QString driverName = "QSQLITE";
 
+#ifdef __linux__
   // miki
   const QString pathDatabase = "../stacja-paliwowa/sqlite.db";
-
+#elif _WIN32
   // luki
-  //  const QString pathDatabase =
-  //      "E:\\Studia\\9_sem\\Projekty\\System_zarzadzania_stacja_paliw\\stacja-"
-  //      "paliwowa\\sqlite.db";
+  const QString pathDatabase =
+        "E:\\Studia\\9_sem\\Projekty\\System_zarzadzania_stacja_paliw\\stacja-"
+        "paliwowa\\sqlite.db";
+#else
+#error Not supported
+#endif
 
   QSqlDatabase driverDatabase;
 
