@@ -4,15 +4,15 @@
 #include <QString>
 #include <QtNetwork>
 #include <functional>
+#include <Common.h>
 
 namespace Algorithms {
 
 class GetFuelPriceFromWeb {
-  const QString &mURL;
   QString mPageSourceCode;
 
  public:
-  GetFuelPriceFromWeb(const QString &URL);
+  GetFuelPriceFromWeb();
   double MatchRegex(QString Regex);
   double Get95Price();
   double Get98Price();

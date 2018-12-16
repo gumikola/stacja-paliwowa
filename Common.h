@@ -10,6 +10,8 @@ enum class FuelType { ON, OO, PB95, PB98, ERR };
 
 enum class FuelTankType { ON, ON1, ON2, ON3, OO, PB95, PB98, ERR };
 
+static QString URL =
+    "https://www.orlen.pl/PL/DlaBiznesu/HurtoweCenyPaliw/Strony/default.aspx";
 QString getFuelTypeName(const FuelType &type);
 FuelTankType getFuelTankEnum(QString type);
 
@@ -45,21 +47,23 @@ struct CustomerStruct {
 };
 
 struct OrdersStruct {
-  uint amout;
+  uint amount;
   QDate date;
   double totalPrice;
   CustomerStruct customer;
   QString fuelType;
+  uint establishedProfit;
 
   OrdersStruct(uint amout = 0, QDate date = QDate().currentDate(),
                double totalPrice = 0,
                CustomerStruct customer = CustomerStruct(),
-               QString fuelType = nullptr)
-      : amout(amout),
+               QString fuelType = nullptr, uint establishedProfit = 0)
+      : amount(amout),
         date(date),
         totalPrice(totalPrice),
         customer(customer),
-        fuelType(fuelType) {}
+        fuelType(fuelType),
+        establishedProfit(establishedProfit) {}
 };
 
 }  // namespace Common
