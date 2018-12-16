@@ -76,7 +76,7 @@ void addOrder(Common::OrdersStruct &order) {
       "INSERT INTO "
       "`Zamowienia`(`Ilosc`,`Data`,`Cena`,`Klienci_hurtowi_ID`,`Typ_paliwa_"
       "Nazwa`) VALUES (amount,date,price,client_id,fuelType)");
-  q.bindValue(":amount", order.amout);
+  q.bindValue(":amount", order.amount);
   q.bindValue(":date", order.date);
   q.bindValue(":price", order.totalPrice);
   q.bindValue(":client_id",addCustomer(order.customer));
