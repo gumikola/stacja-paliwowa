@@ -32,6 +32,10 @@ QMap<Common::FuelTankType, uint32_t> DataBaseApi::getTanksFillLevel(void)
             data.insert(Common::getFuelTankEnum(q.value("Zbiornik").toString()), q.value("Zawartosc").toUInt());
         }
     }
+    else
+    {
+        qDebug() << q.lastError();
+    }
 
     return data;
 }
@@ -57,6 +61,10 @@ QVector<Common::OrdersStruct> DataBaseApi::getOrdersByDate(QDate date)
                 q.value("Typ_Paliwa_Nazwa").toString()));
         }
     }
+    else
+    {
+        qDebug() << q.lastError();
+    }
 
     return data;
 }
@@ -67,13 +75,15 @@ int DataBaseApi::addCustomer(const Common::CustomerStruct& customer)
 
     q.prepare("INSERT OR REPLACE INTO "
               "`Klienci_hurtowi`(`Odbiorca`,`Miasto`,`Ulica`,`Numer`) VALUES "
-              "(name,city,street,propertyNumber)");
-    q.bindValue(":name", customer.name);
-    q.bindValue(":city", customer.city);
-    q.bindValue(":street", customer.street);
-    q.bindValue(":propertyNumber", customer.propertyNumber);
+              "(?,?,?,?)");
+    q.bindValue(0, customer.name);
+    q.bindValue(1, customer.city);
+    q.bindValue(2, customer.street);
+    q.bindValue(3, customer.propertyNumber);
 
     q.exec();
+    if (q.lastError().isValid())
+        qDebug() << q.lastError();
     return q.lastInsertId().toInt();
 }
 
@@ -83,12 +93,16 @@ void DataBaseApi::addOrder(const Common::OrdersStruct& order)
 
     q.prepare("INSERT INTO "
               "`Zamowienia`(`Ilosc`,`Data`,`Cena`,`Klienci_hurtowi_ID`,`Typ_paliwa_"
-              "Nazwa`) VALUES (amount,date,price,client_id,fuelType)");
-    q.bindValue(":amount", order.amount);
-    q.bindValue(":date", order.date);
-    q.bindValue(":price", order.totalPrice);
-    q.bindValue(":client_id", addCustomer(order.customer));
-    q.bindValue(":fuelType", order.fuelType);
+              "Nazwa`) VALUES (?,?,?,?,?)");
+    q.bindValue(0, order.amount);
+    q.bindValue(1, order.date);
+    q.bindValue(2, order.totalPrice);
+    q.bindValue(3, addCustomer(order.customer));
+    q.bindValue(4, order.fuelType);
+
+    q.exec();
+    if (q.lastError().isValid())
+        qDebug() << q.lastError();
 }
 
 } // namespace DataBaseApi
