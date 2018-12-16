@@ -1,5 +1,6 @@
 #include "AddOrder.h"
 #include <QComboBox>
+#include <QDate>
 #include <QLineEdit>
 #include <QMainWindow>
 #include <QMessageBox>
@@ -9,7 +10,6 @@
 #include <QString>
 #include <QTableWidget>
 #include <QTextEdit>
-
 #include "Common.h"
 #include "DataBase/DataBaseApi.h"
 #include "ui_mainwindow.h"
@@ -30,6 +30,7 @@ AddOrder::AddOrder(Ui::MainWindow *ui, DataBaseApi::DataBaseApi &databaseApi)
       mDistance(*ui->addOrderTabDistance),
       mTravelTime(*ui->addOrderTabTravelTime),
       mFuelTypeBox(*ui->addOrderTabFuelTypeBox),
+      mDate(*ui->addOrderTabDate),
       mDatabaseApi(databaseApi),
       mChoosenFuelType(Common::FuelType::ERR) {
   //
@@ -44,6 +45,21 @@ AddOrder::AddOrder(Ui::MainWindow *ui, DataBaseApi::DataBaseApi &databaseApi)
           SLOT(calculatePressed()));
   connect(ui->addOrderTabFuelTypeBox, SIGNAL(currentIndexChanged(int)), this,
           SLOT(fuelTypeChanged(int)));
+  connect(ui->addOrderTabDate, SIGNAL(selectionChanged()), this,
+          SLOT(chosenDateChanged()));
+}
+
+void AddOrder::chosenDateChanged() {
+  mSelectedDate = mDate.selectedDate();
+
+  qDebug("chosenDateChanged pressed %d:%d:%d", mSelectedDate.day(),
+         mSelectedDate.month(), mSelectedDate.year());
+}
+
+QDate AddOrder::getDate() {
+  if (mSelectedDate.isNull())
+    throw QString("Data realizacji zamowienia nie zostala dodana!");
+  return mSelectedDate;
 }
 
 QString AddOrder::getOrdererName() {
@@ -143,12 +159,20 @@ void AddOrder::calculatePressed() {
 
 void AddOrder::addOrderPressed() {
   QMessageBox msgBox;
+
+  Common::OrdersStruct tmp;
+
+  tmp.amount = getAmount();
+  tmp.customer = Common::CustomerStruct(getOrdererName(), getCity(),
+                                        getStreet(), getNumber());
+  tmp.date = getDate();
+  //  tmp.fuelType = get
+
   msgBox.setFont(QFont(QString("Arial"), 14));
   msgBox.setText(QString("Zamówienie dodane."));
   msgBox.exec();
 
   clearWindow();
-
   qDebug("addOrderPressed");
 }
 

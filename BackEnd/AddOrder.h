@@ -1,7 +1,9 @@
 #ifndef ADDORDER_H
 #define ADDORDER_H
 
+#include <QCalendarWidget>
 #include <QComboBox>
+#include <QDate>
 #include <QLineEdit>
 #include <QMainWindow>
 #include <QObject>
@@ -31,8 +33,10 @@ class AddOrder : public QObject {
   QLineEdit &mDistance;
   QLineEdit &mTravelTime;
   QComboBox &mFuelTypeBox;
+  QCalendarWidget &mDate;
   DataBaseApi::DataBaseApi mDatabaseApi;
   Common::FuelType mChoosenFuelType;
+  QDate mSelectedDate;
 
   QString getOrdererName();
   uint getAmount();
@@ -41,6 +45,7 @@ class AddOrder : public QObject {
   QString getNumber();
   QString getStreet();
   void clearWindow();
+  QDate getDate();
 
  public:
   AddOrder(Ui::MainWindow *ui, DataBaseApi::DataBaseApi &databaseApi);
@@ -52,6 +57,7 @@ class AddOrder : public QObject {
   void calculatePressed();
   void addOrderPressed();
   void fuelTypeChanged(int);
+  void chosenDateChanged();
 };
 
 }  // namespace BackEnd
