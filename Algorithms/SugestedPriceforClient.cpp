@@ -25,18 +25,18 @@ uint SugestedPriceForClient::GetPriceForClient(void)
 
 double SugestedPriceForClient::GetSalaryCost(void)
 {
-    return (mSalaryForDriverPerHour * (OutputOrder.mTravelTime.hour() + OutputOrder.mTravelTime.minute() / 60));
+    return (mSalaryForDriverPerHour * (mOutputOrder.mTravelTime.hour() + mOutputOrder.mTravelTime.minute() / 60));
 }
 
 double SugestedPriceForClient::GetDeprececatCost(void)
 {
-    return (mDeprecationCostPerKilometer * OutputOrder.mDistance);
+    return (mDeprecationCostPerKilometer * mOutputOrder.mDistance);
 }
 
 double SugestedPriceForClient::GetFuelCost(void)
 {
     Algorithms::GetFuelPriceFromWeb price;
-    return ((OutputOrder.mDistance * mAverageFuelConsumptiom) / 100) * price.GetONPrice();
+    return ((mOutputOrder.mDistance * mAverageFuelConsumptiom) / 100) * price.GetONPrice();
 }
 
 double SugestedPriceForClient::GetWholesalePrice(void)
