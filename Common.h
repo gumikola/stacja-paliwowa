@@ -27,6 +27,8 @@ enum class FuelTankType
     ERR
 };
 
+const QStringList FuelTankName = QStringList{"ON", "ON1", "ON2", "ON3", "OO", "PB95", "PB98", "ERR"};
+
 static QString URL = "https://www.orlen.pl/PL/DlaBiznesu/HurtoweCenyPaliw/Strony/default.aspx";
 QString        getFuelTypeName(const FuelType& type);
 FuelTankType   getFuelTankEnum(QString type);

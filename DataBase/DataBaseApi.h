@@ -34,6 +34,7 @@ public:
     QVector<Common::OrdersStruct>        getOrdersByDate(QDate date);
     int                                  addCustomer(const Common::CustomerStruct& customer);
     void                                 addOrder(const Common::OrdersStruct& order);
+    void                                 updateTankFillLevel(Common::FuelTankType tank, double number);
 };
 
 } // namespace DataBaseApi

@@ -105,4 +105,17 @@ void DataBaseApi::addOrder(const Common::OrdersStruct& order)
         qDebug() << q.lastError();
 }
 
+void DataBaseApi::updateTankFillLevel(Common::FuelTankType tank, double number)
+{
+    QSqlQuery q;
+
+    q.prepare("UPDATE Magazyny SET `Zawartosc` = ? WHERE `Zbiornik` = ?;");
+    q.bindValue(0, number);
+    q.bindValue(1, Common::FuelTankName.at(static_cast<int>(tank)));
+
+    q.exec();
+    if (q.lastError().isValid())
+        qDebug() << q.lastError();
+}
+
 } // namespace DataBaseApi
