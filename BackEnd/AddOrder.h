@@ -1,6 +1,9 @@
 #ifndef ADDORDER_H
 #define ADDORDER_H
 
+#include "Common.h"
+#include "DataBase/DataBaseApi.h"
+#include "ui_mainwindow.h"
 #include <QCalendarWidget>
 #include <QComboBox>
 #include <QDate>
@@ -11,55 +14,53 @@
 #include <QString>
 #include <QTableWidget>
 #include <QTextEdit>
-#include "Common.h"
-#include "DataBase/DataBaseApi.h"
-#include "ui_mainwindow.h"
 
 namespace BackEnd {
 
-class AddOrder : public QObject {
-  Q_OBJECT
+class AddOrder : public QObject
+{
+    Q_OBJECT
 
-  QPushButton &mAddOrderButton;
-  QPushButton &mCalculateButton;
-  QLineEdit &mAmount;
-  QLineEdit &mCity;
-  QLineEdit &mIncome;
-  QLineEdit &mMargin;
-  QLineEdit &mNumber;
-  QLineEdit &mOrdererName;
-  QLineEdit &mStreet;
-  QLineEdit &mTotalPrice;
-  QLineEdit &mDistance;
-  QLineEdit &mTravelTime;
-  QComboBox &mFuelTypeBox;
-  QCalendarWidget &mDate;
-  DataBaseApi::DataBaseApi mDatabaseApi;
-  Common::FuelType mChoosenFuelType;
-  QDate mSelectedDate;
+    QPushButton&             mAddOrderButton;
+    QPushButton&             mCalculateButton;
+    QLineEdit&               mAmount;
+    QLineEdit&               mCity;
+    QLineEdit&               mIncome;
+    QLineEdit&               mMargin;
+    QLineEdit&               mNumber;
+    QLineEdit&               mOrdererName;
+    QLineEdit&               mStreet;
+    QLineEdit&               mTotalPrice;
+    QLineEdit&               mDistance;
+    QLineEdit&               mTravelTime;
+    QComboBox&               mFuelTypeBox;
+    QCalendarWidget&         mDate;
+    DataBaseApi::DataBaseApi mDatabaseApi;
+    Common::FuelType         mChoosenFuelType;
+    QDate                    mSelectedDate;
 
-  QString getOrdererName();
-  uint getAmount();
-  QString getCity();
-  uint getIncome();
-  QString getNumber();
-  QString getStreet();
-  void clearWindow();
-  QDate getDate();
+    QString getOrdererName();
+    uint    getAmount();
+    QString getCity();
+    uint    getIncome();
+    QString getNumber();
+    QString getStreet();
+    void    clearWindow();
+    QDate   getDate();
 
- public:
-  AddOrder(Ui::MainWindow *ui, DataBaseApi::DataBaseApi &databaseApi);
+public:
+    AddOrder(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& databaseApi);
 
- signals:
+signals:
 
- public slots:
+public slots:
 
-  void calculatePressed();
-  void addOrderPressed();
-  void fuelTypeChanged(int);
-  void chosenDateChanged();
+    void calculatePressed();
+    void addOrderPressed();
+    void fuelTypeChanged(int);
+    void chosenDateChanged();
 };
 
-}  // namespace BackEnd
+} // namespace BackEnd
 
-#endif  // ADDORDER_H
+#endif // ADDORDER_H

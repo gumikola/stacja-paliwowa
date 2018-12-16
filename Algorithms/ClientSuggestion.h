@@ -6,13 +6,14 @@
 
 namespace Algorithms {
 
-class ClientSuggestion {
-  const QVector<QString> &mPreviousOrderedProductsList;
+class ClientSuggestion
+{
+    const QVector<QString>& mPreviousOrderedProductsList;
 
- public:
-  ClientSuggestion(const QVector<QString> &PreviousOrderedProductsList);
-  QVector<QString> GetSuggestedProducts(void);
-  uint GetNumberOfElemnts(QString);
+public:
+    ClientSuggestion(const QVector<QString>& PreviousOrderedProductsList);
+    QVector<QString> GetSuggestedProducts(void);
+    uint             GetNumberOfElemnts(QString);
 };
-}  // namespace Algorithms
-#endif  // CLIENT_SUGGESTION_H
+} // namespace Algorithms
+#endif // CLIENT_SUGGESTION_H

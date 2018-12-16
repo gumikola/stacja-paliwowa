@@ -8,34 +8,34 @@
 
 namespace DataBaseApi {
 
-class DataBaseApi {
- private:
-  const QString driverName = "QSQLITE";
+class DataBaseApi
+{
+private:
+    const QString driverName = "QSQLITE";
 
 #ifdef __linux__
-  // miki
-  const QString pathDatabase = "../stacja-paliwowa/sqlite.db";
+    // miki
+    const QString pathDatabase = "../stacja-paliwowa/sqlite.db";
 #elif _WIN32
-  // luki
-  const QString pathDatabase =
-        "E:\\Studia\\9_sem\\Projekty\\System_zarzadzania_stacja_paliw\\stacja-"
-        "paliwowa\\sqlite.db";
+    // luki
+    const QString pathDatabase = "E:\\Studia\\9_sem\\Projekty\\System_zarzadzania_stacja_paliw\\stacja-"
+                                 "paliwowa\\sqlite.db";
 #else
 #error Not supported
 #endif
 
-  QSqlDatabase driverDatabase;
+    QSqlDatabase driverDatabase;
 
- public:
-  DataBaseApi();
-  ~DataBaseApi();
-  // TODO: Add table with current price of petrol
-  QMap<Common::FuelTankType, uint32_t> getTanksFillLevel(void);
-  QVector<Common::OrdersStruct> getOrdersByDate(QDate date);
-  void addCustomer(Common::CustomerStruct &order);
-  void addOrder(Common::CustomerStruct &customer);
+public:
+    DataBaseApi();
+    ~DataBaseApi();
+    // TODO: Add table with current price of petrol
+    QMap<Common::FuelTankType, uint32_t> getTanksFillLevel(void);
+    QVector<Common::OrdersStruct>        getOrdersByDate(QDate date);
+    void                                 addCustomer(Common::CustomerStruct& order);
+    void                                 addOrder(Common::CustomerStruct& customer);
 };
 
-}  // namespace DataBaseApi
+} // namespace DataBaseApi
 
-#endif  // DATABASEAPI_H
+#endif // DATABASEAPI_H

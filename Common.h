@@ -6,66 +6,88 @@
 
 namespace Common {
 
-enum class FuelType { ON, OO, PB95, PB98, ERR };
-
-enum class FuelTankType { ON, ON1, ON2, ON3, OO, PB95, PB98, ERR };
-
-static QString URL =
-    "https://www.orlen.pl/PL/DlaBiznesu/HurtoweCenyPaliw/Strony/default.aspx";
-QString getFuelTypeName(const FuelType &type);
-FuelTankType getFuelTankEnum(QString type);
-
-struct OrderParametersOutput {
-  QTime mTravelTime;
-  uint mTotalPrice;
-  double mMargin;
-  double mDistance;
-  uint mIncome;
-
-  OrderParametersOutput() {}
-  OrderParametersOutput(QTime travelTime, uint totalPrice, double margin,
-                        double distance, uint income)
-      : mTravelTime(travelTime),
-        mTotalPrice(totalPrice),
-        mMargin(margin),
-        mDistance(distance),
-        mIncome(income) {}
+enum class FuelType
+{
+    ON,
+    OO,
+    PB95,
+    PB98,
+    ERR
 };
 
-struct CustomerStruct {
-  QString name;
-  QString city;
-  QString street;
-  QString propertyNumber;
-
-  CustomerStruct(QString name = nullptr, QString city = nullptr,
-                 QString street = nullptr, QString propertyNumber = nullptr)
-      : name(name),
-        city(city),
-        street(street),
-        propertyNumber(propertyNumber) {}
+enum class FuelTankType
+{
+    ON,
+    ON1,
+    ON2,
+    ON3,
+    OO,
+    PB95,
+    PB98,
+    ERR
 };
 
-struct OrdersStruct {
-  uint amount;
-  QDate date;
-  double totalPrice;
-  CustomerStruct customer;
-  QString fuelType;
-  uint establishedProfit;
+static QString URL = "https://www.orlen.pl/PL/DlaBiznesu/HurtoweCenyPaliw/Strony/default.aspx";
+QString        getFuelTypeName(const FuelType& type);
+FuelTankType   getFuelTankEnum(QString type);
 
-  OrdersStruct(uint amout = 0, QDate date = QDate().currentDate(),
-               double totalPrice = 0,
-               CustomerStruct customer = CustomerStruct(),
-               QString fuelType = nullptr, uint establishedProfit = 0)
-      : amount(amout),
-        date(date),
-        totalPrice(totalPrice),
-        customer(customer),
-        fuelType(fuelType),
-        establishedProfit(establishedProfit) {}
+struct OrderParametersOutput
+{
+    QTime  mTravelTime;
+    uint   mTotalPrice;
+    double mMargin;
+    double mDistance;
+    uint   mIncome;
+
+    OrderParametersOutput() {}
+    OrderParametersOutput(QTime travelTime, uint totalPrice, double margin, double distance, uint income)
+        : mTravelTime(travelTime)
+        , mTotalPrice(totalPrice)
+        , mMargin(margin)
+        , mDistance(distance)
+        , mIncome(income)
+    {
+    }
 };
 
-}  // namespace Common
+struct CustomerStruct
+{
+    QString name;
+    QString city;
+    QString street;
+    QString propertyNumber;
 
-#endif  // COMMON_H
+    CustomerStruct(QString name = nullptr, QString city = nullptr, QString street = nullptr,
+                   QString propertyNumber = nullptr)
+        : name(name)
+        , city(city)
+        , street(street)
+        , propertyNumber(propertyNumber)
+    {
+    }
+};
+
+struct OrdersStruct
+{
+    uint           amount;
+    QDate          date;
+    double         totalPrice;
+    CustomerStruct customer;
+    QString        fuelType;
+    uint           establishedProfit;
+
+    OrdersStruct(uint amout = 0, QDate date = QDate().currentDate(), double totalPrice = 0,
+                 CustomerStruct customer = CustomerStruct(), QString fuelType = nullptr, uint establishedProfit = 0)
+        : amount(amout)
+        , date(date)
+        , totalPrice(totalPrice)
+        , customer(customer)
+        , fuelType(fuelType)
+        , establishedProfit(establishedProfit)
+    {
+    }
+};
+
+} // namespace Common
+
+#endif // COMMON_H
