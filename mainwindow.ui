@@ -823,7 +823,7 @@ przycisk 'Wyświetl'</string>
             </font>
            </property>
            <property name="text">
-            <string/>
+            <string>Igor</string>
            </property>
            <property name="frame">
             <bool>true</bool>
@@ -864,7 +864,7 @@ przycisk 'Wyświetl'</string>
             </font>
            </property>
            <property name="text">
-            <string/>
+            <string>Lipowa</string>
            </property>
            <property name="frame">
             <bool>true</bool>
@@ -906,7 +906,7 @@ przycisk 'Wyświetl'</string>
             </font>
            </property>
            <property name="text">
-            <string/>
+            <string>19</string>
            </property>
            <property name="frame">
             <bool>true</bool>
@@ -945,7 +945,7 @@ przycisk 'Wyświetl'</string>
           </font>
          </property>
          <property name="text">
-          <string/>
+          <string>Mysiliborz</string>
          </property>
          <property name="frame">
           <bool>true</bool>
@@ -1105,7 +1105,7 @@ przycisk 'Wyświetl'</string>
                 </font>
                </property>
                <property name="text">
-                <string/>
+                <string>1000</string>
                </property>
                <property name="frame">
                 <bool>true</bool>
@@ -1154,7 +1154,7 @@ przycisk 'Wyświetl'</string>
                 </font>
                </property>
                <property name="text">
-                <string/>
+                <string>300</string>
                </property>
                <property name="frame">
                 <bool>true</bool>
@@ -1197,7 +1197,7 @@ przycisk 'Wyświetl'</string>
                 </font>
                </property>
                <property name="text">
-                <string> Obliczona marża: </string>
+                <string>Cena za litr:</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -1205,7 +1205,7 @@ przycisk 'Wyświetl'</string>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="addOrderTabMargin">
+              <widget class="QLineEdit" name="addOrderTabPricePerLiter">
                <property name="maximumSize">
                 <size>
                  <width>75</width>
@@ -1269,7 +1269,7 @@ przycisk 'Wyświetl'</string>
               <widget class="QLineEdit" name="addOrderTabTravelTime">
                <property name="maximumSize">
                 <size>
-                 <width>75</width>
+                 <width>100</width>
                  <height>16777215</height>
                 </size>
                </property>
@@ -1334,6 +1334,12 @@ przycisk 'Wyświetl'</string>
              </item>
              <item>
               <widget class="QLineEdit" name="addOrderTabDistance">
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="maximumSize">
                 <size>
                  <width>75</width>

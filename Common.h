@@ -35,7 +35,7 @@ struct OrderParametersOutput
 {
     QTime  mTravelTime;
     uint   mTotalPrice;
-    double mMargin;
+    double mPricePerLiter;
     double mDistance;
     uint   mIncome;
 
@@ -43,7 +43,7 @@ struct OrderParametersOutput
     OrderParametersOutput(QTime travelTime, uint totalPrice, double margin, double distance, uint income)
         : mTravelTime(travelTime)
         , mTotalPrice(totalPrice)
-        , mMargin(margin)
+        , mPricePerLiter(margin)
         , mDistance(distance)
         , mIncome(income)
     {

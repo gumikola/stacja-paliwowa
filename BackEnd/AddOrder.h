@@ -26,7 +26,7 @@ class AddOrder : public QObject
     QLineEdit&               mAmount;
     QLineEdit&               mCity;
     QLineEdit&               mIncome;
-    QLineEdit&               mMargin;
+    QLineEdit&               mPricePerLiter;
     QLineEdit&               mNumber;
     QLineEdit&               mOrdererName;
     QLineEdit&               mStreet;

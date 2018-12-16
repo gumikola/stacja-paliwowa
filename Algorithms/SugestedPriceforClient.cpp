@@ -53,10 +53,10 @@ Common::OrderParametersOutput SugestedPriceForClient::GetOrderStruct(void)
 void SugestedPriceForClient::CalculateParameters()
 {
     Algorithms::GoogleApi customer(mCustomer);
-    QTime                 time;
-    mOutputOrder.mDistance   = customer.GetDistanceFromJson().toDouble();
-    mOutputOrder.mTravelTime = time.addSecs(customer.GetTimeFromJson().toInt());
-    mOutputOrder.mTotalPrice = GetPriceForClient();
-    mOutputOrder.mMargin     = mOutputOrder.mTotalPrice - mEstablishedProfit;
+    QTime                 time(0, 0, 0);
+    mOutputOrder.mDistance      = customer.GetDistanceFromJson().toDouble();
+    mOutputOrder.mTravelTime    = time.addSecs(customer.GetTimeFromJson().toInt());
+    mOutputOrder.mTotalPrice    = GetPriceForClient();
+    mOutputOrder.mPricePerLiter = static_cast<double>(mOutputOrder.mTotalPrice) / static_cast<double>(mQuantity);
 }
 } // namespace Algorithms

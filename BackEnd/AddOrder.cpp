@@ -23,7 +23,7 @@ AddOrder::AddOrder(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& databaseApi)
     , mAmount(*ui->addOrderTabAmount)
     , mCity(*ui->addOrderTabCity)
     , mIncome(*ui->addOrderTabIncome)
-    , mMargin(*ui->addOrderTabMargin)
+    , mPricePerLiter(*ui->addOrderTabPricePerLiter)
     , mNumber(*ui->addOrderTabNumber)
     , mOrdererName(*ui->addOrderTabOrdererName)
     , mStreet(*ui->addOrderTabStreet)
@@ -36,7 +36,7 @@ AddOrder::AddOrder(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& databaseApi)
     , mChoosenFuelType(Common::FuelType::ERR)
 {
     //
-    mMargin.setText(QString("---"));
+    mPricePerLiter.setText(QString("---"));
     mDistance.setText(QString("---"));
     mTravelTime.setText(QString("---"));
     mTotalPrice.setText(QString("---"));
@@ -149,7 +149,7 @@ void AddOrder::clearWindow()
     mFuelTypeBox.setCurrentIndex(0);
     mAmount.clear();
     mIncome.clear();
-    mMargin.setText(QString("---"));
+    mPricePerLiter.setText(QString("---"));
     mDistance.setText(QString("---"));
     mTravelTime.setText(QString("---"));
     mTotalPrice.setText(QString("---"));
@@ -169,13 +169,19 @@ void AddOrder::calculatePressed()
 
         Common::OrdersStruct tmp;
 
-        tmp.amount   = getAmount();
-        tmp.customer = Common::CustomerStruct(getOrdererName(), getCity(), getStreet(), getNumber());
-        tmp.date     = getDate();
-        tmp.fuelType = Common::getFuelTypeName(getFuelType());
+        tmp.amount            = getAmount();
+        tmp.customer          = Common::CustomerStruct(getOrdererName(), getCity(), getStreet(), getNumber());
+        tmp.date              = getDate();
+        tmp.fuelType          = Common::getFuelTypeName(getFuelType());
+        tmp.establishedProfit = getIncome();
 
         Algorithms::SugestedPriceForClient price(tmp);
         price.CalculateParameters();
+        QString buffer;
+        mPricePerLiter.setText(buffer.setNum(price.GetOrderStruct().mPricePerLiter, 'f', 2));
+        mDistance.setText(buffer.setNum(price.GetOrderStruct().mDistance, 'f', 1));
+        mTravelTime.setText(price.GetOrderStruct().mTravelTime.toString());
+        mTotalPrice.setText(buffer.setNum(price.GetOrderStruct().mTotalPrice));
 
         mAddOrderButton.setEnabled(true);
     }
@@ -193,22 +199,36 @@ void AddOrder::calculatePressed()
 void AddOrder::addOrderPressed()
 {
     QMessageBox msgBox;
+    try
+    {
+        Common::OrdersStruct tmp;
 
-    Common::OrdersStruct tmp;
+        tmp.amount            = getAmount();
+        tmp.customer          = Common::CustomerStruct(getOrdererName(), getCity(), getStreet(), getNumber());
+        tmp.date              = getDate();
+        tmp.establishedProfit = getIncome();
+        tmp.fuelType          = Common::getFuelTypeName(getFuelType());
 
-    tmp.amount   = getAmount();
-    tmp.customer = Common::CustomerStruct(getOrdererName(), getCity(), getStreet(), getNumber());
-    tmp.date     = getDate();
-    tmp.fuelType = Common::getFuelTypeName(getFuelType());
-    Algorithms::SugestedPriceForClient price(tmp);
-    price.CalculateParameters();
-    mDatabaseApi.addOrder(tmp);
+        Algorithms::SugestedPriceForClient price(tmp);
+        price.CalculateParameters();
 
-    msgBox.setFont(QFont(QString("Arial"), 14));
-    msgBox.setText(QString("Zamówienie dodane."));
-    msgBox.exec();
+        tmp.totalPrice = price.GetOrderStruct().mTotalPrice;
+        mDatabaseApi.addOrder(tmp);
 
-    clearWindow();
+        msgBox.setFont(QFont(QString("Arial"), 14));
+        msgBox.setText(QString("Zamówienie dodane."));
+        msgBox.exec();
+
+        clearWindow();
+    }
+    catch (QString& e)
+    {
+        QMessageBox msgBox;
+        msgBox.setFont(QFont(QString("Arial"), 14));
+        msgBox.setText(e);
+        msgBox.exec();
+    }
+
     qDebug("addOrderPressed");
 }
 
