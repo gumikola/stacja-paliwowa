@@ -26,21 +26,54 @@ Orders::Orders(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& dataBaseApi)
 
 void Orders::printEmptyTable(void)
 {
-    int rowCnt    = 0;
     int columnCnt = 0;
 
-    mOrders.insertRow(rowCnt);
     mOrders.insertColumn(columnCnt);
+    mOrders.setHorizontalHeaderItem(columnCnt++, new QTableWidgetItem("Nazwa"));
 
-    mOrders.setItem(rowCnt, columnCnt, new QTableWidgetItem("pierwszy"));
+    mOrders.insertColumn(columnCnt);
+    mOrders.setHorizontalHeaderItem(columnCnt++, new QTableWidgetItem("Miasto"));
 
-    mOrders.insertColumn(++columnCnt);
-    mOrders.setItem(rowCnt, columnCnt, new QTableWidgetItem("drugi"));
+    mOrders.insertColumn(columnCnt);
+    mOrders.setHorizontalHeaderItem(columnCnt++, new QTableWidgetItem("Ulica"));
+
+    mOrders.insertColumn(columnCnt);
+    mOrders.setHorizontalHeaderItem(columnCnt++, new QTableWidgetItem("Numer"));
+
+    mOrders.insertColumn(columnCnt);
+    mOrders.setHorizontalHeaderItem(columnCnt++, new QTableWidgetItem("Ilosc"));
+
+    mOrders.insertColumn(columnCnt);
+    mOrders.setHorizontalHeaderItem(columnCnt++, new QTableWidgetItem("Cena sumaryczna"));
+
+    mOrders.insertColumn(columnCnt);
+    mOrders.setHorizontalHeaderItem(columnCnt++, new QTableWidgetItem("Przychód"));
+}
+
+void Orders::printOrders()
+{
+    QVector<Common::OrdersStruct> orders = mDataBaseApi.getOrdersByDate(mSelectedDate);
+    int                           rowCnt = 0;
+    mOrders.setRowCount(0);
+    for (Common::OrdersStruct order : orders)
+    {
+        int columnCnt = 0;
+        mOrders.insertRow(rowCnt);
+        mOrders.setItem(rowCnt, columnCnt++, new QTableWidgetItem(order.customer.name));
+        mOrders.setItem(rowCnt, columnCnt++, new QTableWidgetItem(order.customer.city));
+        mOrders.setItem(rowCnt, columnCnt++, new QTableWidgetItem(order.customer.street));
+        mOrders.setItem(rowCnt, columnCnt++, new QTableWidgetItem(order.customer.propertyNumber));
+        mOrders.setItem(rowCnt, columnCnt++, new QTableWidgetItem(QString::number(order.amount)));
+        mOrders.setItem(rowCnt, columnCnt++, new QTableWidgetItem(QString::number(order.totalPrice)));
+        mOrders.setItem(rowCnt, columnCnt++, new QTableWidgetItem(QString::number(order.establishedProfit)));
+
+        rowCnt++;
+    }
 }
 
 void Orders::wyswietlPressed()
 {
-    QVector<Common::OrdersStruct> orders = mDataBaseApi.getOrdersByDate(mSelectedDate);
+    printOrders();
     qDebug("wystiwetl preseses");
 }
 
@@ -49,6 +82,7 @@ void Orders::chosenDateChanged()
     mSelectedDate = mCalendar.selectedDate();
     mDataBaseApi.getOrdersByDate(mSelectedDate);
 
+    printOrders();
     qDebug("chosenDateChanged pressed %d:%d:%d", mSelectedDate.day(), mSelectedDate.month(), mSelectedDate.year());
 }
 } // namespace BackEnd

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>961</width>
+    <width>1191</width>
     <height>684</height>
    </rect>
   </property>
@@ -20,8 +20,8 @@
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>690</x>
-      <y>70</y>
+      <x>940</x>
+      <y>60</y>
       <width>251</width>
       <height>201</height>
      </rect>
@@ -302,8 +302,8 @@
    <widget class="QWidget" name="gridLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>690</x>
-      <y>340</y>
+      <x>940</x>
+      <y>310</y>
       <width>251</width>
       <height>171</height>
      </rect>
@@ -552,7 +552,7 @@
      <rect>
       <x>20</x>
       <y>0</y>
-      <width>671</width>
+      <width>921</width>
       <height>631</height>
      </rect>
     </property>
@@ -569,7 +569,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="main">
      <property name="autoFillBackground">
@@ -603,8 +603,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>661</width>
-        <height>88</height>
+        <width>901</width>
+        <height>61</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -638,10 +638,10 @@
      <widget class="QCalendarWidget" name="ordersTabCalendar">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>180</y>
-        <width>261</width>
-        <height>221</height>
+        <x>320</x>
+        <y>70</y>
+        <width>371</width>
+        <height>191</height>
        </rect>
       </property>
       <property name="font">
@@ -657,20 +657,20 @@
      <widget class="QTableWidget" name="ordersTabOrdersTable">
       <property name="geometry">
        <rect>
-        <x>280</x>
-        <y>100</y>
-        <width>381</width>
-        <height>491</height>
+        <x>0</x>
+        <y>270</y>
+        <width>911</width>
+        <height>321</height>
        </rect>
       </property>
      </widget>
      <widget class="QTextEdit" name="ordersTabAdditionalInfoText">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>470</y>
-        <width>261</width>
-        <height>111</height>
+        <x>700</x>
+        <y>70</y>
+        <width>201</width>
+        <height>191</height>
        </rect>
       </property>
       <property name="readOnly">
@@ -680,7 +680,7 @@
      <widget class="QLabel" name="label_18">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>30</x>
         <y>100</y>
         <width>261</width>
         <height>71</height>
@@ -703,8 +703,8 @@ przycisk 'Wyświetl'</string>
      <widget class="QPushButton" name="ordersTabWyswietlButton">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>410</y>
+        <x>30</x>
+        <y>200</y>
         <width>261</width>
         <height>51</height>
        </rect>
@@ -728,8 +728,8 @@ przycisk 'Wyświetl'</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>530</y>
-        <width>261</width>
+        <y>540</y>
+        <width>441</width>
         <height>41</height>
        </rect>
       </property>
@@ -748,9 +748,9 @@ przycisk 'Wyświetl'</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>290</x>
-        <y>530</y>
-        <width>361</width>
+        <x>470</x>
+        <y>540</y>
+        <width>431</width>
         <height>41</height>
        </rect>
       </property>
@@ -768,7 +768,7 @@ przycisk 'Wyświetl'</string>
        <rect>
         <x>10</x>
         <y>15</y>
-        <width>651</width>
+        <width>901</width>
         <height>511</height>
        </rect>
       </property>
@@ -1424,6 +1424,11 @@ przycisk 'Wyświetl'</string>
       </layout>
      </widget>
     </widget>
+    <widget class="QWidget" name="changeTankFillLevelTab">
+     <attribute name="title">
+      <string>Aktualizuj zawartość zbiorników</string>
+     </attribute>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -1431,7 +1436,7 @@ przycisk 'Wyświetl'</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>961</width>
+     <width>1191</width>
      <height>21</height>
     </rect>
    </property>

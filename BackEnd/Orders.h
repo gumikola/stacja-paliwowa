@@ -24,6 +24,8 @@ class Orders : QObject
 
     QDate mSelectedDate;
 
+    void printOrders();
+
 public:
     Orders(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& dataBaseApi);
 

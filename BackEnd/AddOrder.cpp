@@ -177,11 +177,10 @@ void AddOrder::calculatePressed()
 
         Algorithms::SugestedPriceForClient price(tmp);
         price.CalculateParameters();
-        QString buffer;
-        mPricePerLiter.setText(buffer.setNum(price.GetOrderStruct().mPricePerLiter, 'f', 2));
-        mDistance.setText(buffer.setNum(price.GetOrderStruct().mDistance, 'f', 1));
+        mPricePerLiter.setText(QString::number(price.GetOrderStruct().mPricePerLiter, 'f', 2));
+        mDistance.setText(QString::number(price.GetOrderStruct().mDistance, 'f', 1));
         mTravelTime.setText(price.GetOrderStruct().mTravelTime.toString());
-        mTotalPrice.setText(buffer.setNum(price.GetOrderStruct().mTotalPrice));
+        mTotalPrice.setText(QString::number(price.GetOrderStruct().mTotalPrice));
 
         mAddOrderButton.setEnabled(true);
     }
