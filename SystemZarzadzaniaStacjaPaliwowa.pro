@@ -37,11 +37,9 @@ SOURCES += \
     Common.cpp \
     BackEnd/main.cpp \
     Algorithms/CalculateRoute.cpp \
-<<<<<<< HEAD
-    BackEnd/UpdateTanksFillLevel.cpp
-=======
+    BackEnd/UpdateTanksFillLevel.cpp \
     Algorithms/CalculateOrder.cpp
->>>>>>> added order calculation without google api
+
 
 HEADERS += \
     BackEnd/mainwindow.h \
@@ -54,13 +52,9 @@ HEADERS += \
     BackEnd/AddOrder.h \
     Common.h \
     Algorithms/CalculateRoute.h \
-<<<<<<< HEAD
-    BackEnd/UpdateTanksFillLevel.h
-=======
+    BackEnd/UpdateTanksFillLevel.h \
     Algorithms/CalculateOrder.h
->>>>>>> added order calculation without google api
-#    Algorithms/testy_igora.aaa \
-#    Algorithms/testy_igora.aaa \
+
 
 FORMS += \
     mainwindow.ui
