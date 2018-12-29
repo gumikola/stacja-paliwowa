@@ -20,6 +20,20 @@ MainWindow::~MainWindow()
 void MainWindow::makeObjects()
 {
     // first set fill level of fuel tanks
+    displayTanksFillLevel();
+
+    // #TO_DO
+
+    // making objects
+    mOrders.reset(new BackEnd::Orders(ui, mDataBaseApi));
+    mAddOrder.reset(new BackEnd::AddOrder(ui, mDataBaseApi));
+    mUpdateTanksFillLevel.reset(new BackEnd::UpdateTanksFillLevel(ui, mDataBaseApi));
+
+    QObject::connect(mUpdateTanksFillLevel.get(), SIGNAL(tanksFillLevelChanged()), this, SLOT(displayTanksFillLevel()));
+}
+
+void MainWindow::displayTanksFillLevel()
+{
     QMap<Common::FuelTankType, uint32_t> fuelTanksFillLevel = mDataBaseApi.getTanksFillLevel();
 
     ui->FuelTankStation95->display(static_cast<int>(fuelTanksFillLevel[Common::FuelTankType::PB95]));
@@ -29,10 +43,4 @@ void MainWindow::makeObjects()
     ui->FuelTankStorageON2->display(static_cast<int>(fuelTanksFillLevel[Common::FuelTankType::ON2]));
     ui->FuelTankStorageON3->display(static_cast<int>(fuelTanksFillLevel[Common::FuelTankType::ON3]));
     ui->FuelTankStorageOO4->display(static_cast<int>(fuelTanksFillLevel[Common::FuelTankType::OO]));
-
-    // #TO_DO
-
-    // making objects
-    mOrders.reset(new BackEnd::Orders(ui, mDataBaseApi));
-    mAddOrder.reset(new BackEnd::AddOrder(ui, mDataBaseApi));
 }

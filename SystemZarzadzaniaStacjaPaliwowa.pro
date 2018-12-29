@@ -36,7 +36,8 @@ SOURCES += \
     BackEnd/AddOrder.cpp \
     Common.cpp \
     BackEnd/main.cpp \
-    Algorithms/CalculateRoute.cpp
+    Algorithms/CalculateRoute.cpp \
+    BackEnd/UpdateTanksFillLevel.cpp
 
 HEADERS += \
     BackEnd/mainwindow.h \
@@ -48,7 +49,8 @@ HEADERS += \
     Algorithms/GoogleApi.h \
     BackEnd/AddOrder.h \
     Common.h \
-    Algorithms/CalculateRoute.h
+    Algorithms/CalculateRoute.h \
+    BackEnd/UpdateTanksFillLevel.h
 #    Algorithms/testy_igora.aaa \
 #    Algorithms/testy_igora.aaa \
 
