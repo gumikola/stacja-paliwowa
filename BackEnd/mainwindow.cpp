@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "AddOrder.h"
+#include "FuelPriceChart.h"
 #include "Orders.h"
 #include "ui_mainwindow.h"
 #include <QMap>
@@ -28,6 +29,7 @@ void MainWindow::makeObjects()
     mOrders.reset(new BackEnd::Orders(ui, mDataBaseApi));
     mAddOrder.reset(new BackEnd::AddOrder(ui, mDataBaseApi));
     mUpdateTanksFillLevel.reset(new BackEnd::UpdateTanksFillLevel(ui, mDataBaseApi));
+    mFuelPriceChart.reset(new BackEnd::FuelPriceChart(ui, mDataBaseApi));
 
     QObject::connect(mUpdateTanksFillLevel.get(), SIGNAL(tanksFillLevelChanged()), this, SLOT(displayTanksFillLevel()));
 }

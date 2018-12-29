@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql network svg xml
+QT       += core gui sql network svg xml charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 # trzeba dodać do instalacji qt w Tools/mingw530_32/opt/bin dllki ssleay32.dll i libleay32.dll
@@ -38,8 +38,8 @@ SOURCES += \
     BackEnd/main.cpp \
     Algorithms/CalculateRoute.cpp \
     BackEnd/UpdateTanksFillLevel.cpp \
-    Algorithms/CalculateOrder.cpp
-
+    Algorithms/CalculateOrder.cpp \
+    BackEnd/FuelPriceChart.cpp
 
 HEADERS += \
     BackEnd/mainwindow.h \
@@ -53,6 +53,7 @@ HEADERS += \
     Common.h \
     Algorithms/CalculateRoute.h \
     BackEnd/UpdateTanksFillLevel.h \
+    BackEnd/FuelPriceChart.h \
     Algorithms/CalculateOrder.h
 
 

@@ -3,6 +3,7 @@
 
 #include "AddOrder.h"
 #include "DataBase/DataBaseApi.h"
+#include "FuelPriceChart.h"
 #include "Orders.h"
 #include "UpdateTanksFillLevel.h"
 #include <QMainWindow>
@@ -30,6 +31,7 @@ private:
     QScopedPointer<BackEnd::Orders>               mOrders;
     QScopedPointer<BackEnd::AddOrder>             mAddOrder;
     QScopedPointer<BackEnd::UpdateTanksFillLevel> mUpdateTanksFillLevel;
+    QScopedPointer<BackEnd::FuelPriceChart>       mFuelPriceChart;
 };
 
 #endif // MAINWINDOW_H
