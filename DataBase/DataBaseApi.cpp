@@ -58,7 +58,7 @@ QVector<Common::OrdersStruct> DataBaseApi::getOrdersByDate(QDate date)
                 q.value("Ilosc").toUInt(), q.value("Data").toDate(), q.value("Cena").toDouble(),
                 Common::CustomerStruct(q.value("Odbiorca").toString(), q.value("Miasto").toString(),
                                        q.value("Ulica").toString(), q.value("Numer").toString()),
-                q.value("Typ_Paliwa_Nazwa").toString()));
+                q.value("Typ_Paliwa_Nazwa").toString(), q.value("Przychod").toDouble()));
         }
     }
     else
@@ -93,12 +93,13 @@ void DataBaseApi::addOrder(const Common::OrdersStruct& order)
 
     q.prepare("INSERT INTO "
               "`Zamowienia`(`Ilosc`,`Data`,`Cena`,`Klienci_hurtowi_ID`,`Typ_paliwa_"
-              "Nazwa`) VALUES (?,?,?,?,?)");
+              "Nazwa`,`Marza`) VALUES (?,?,?,?,?,?)");
     q.bindValue(0, order.amount);
     q.bindValue(1, order.date);
     q.bindValue(2, order.totalPrice);
     q.bindValue(3, addCustomer(order.customer));
     q.bindValue(4, order.fuelType);
+    q.bindValue(5, order.establishedProfit);
 
     q.exec();
     if (q.lastError().isValid())
@@ -112,6 +113,21 @@ void DataBaseApi::updateTankFillLevel(Common::FuelTankType tank, double number)
     q.prepare("UPDATE Magazyny SET `Zawartosc` = ? WHERE `Zbiornik` = ?;");
     q.bindValue(0, number);
     q.bindValue(1, Common::getFuelTankTypeName(tank));
+
+    q.exec();
+    if (q.lastError().isValid())
+        qDebug() << q.lastError();
+}
+
+void DataBaseApi::addPriceOfPetrol(double price, QDate date, Common::FuelType type)
+{
+    QSqlQuery q;
+
+    q.prepare("INSERT INTO "
+              "`Cena_paliwa`(`Data`,`Cena`,`Typ_paliwa) VALUES (?,?,?)");
+    q.bindValue(0, date);
+    q.bindValue(1, price);
+    q.bindValue(2, Common::getFuelTypeName(type));
 
     q.exec();
     if (q.lastError().isValid())
