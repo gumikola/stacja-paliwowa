@@ -79,7 +79,8 @@ QVector<QVector<Common::OrdersStruct>> CalculateOrder::GetOrder()
     }
     else // jak trasa przekorczy 8 h
     {
-        order = CalculateOrderFor2Or1Trucks(true);
+        order.second = 0;
+        order        = CalculateOrderFor2Or1Trucks(true);
         returnVector.clear();
         int i = 1;
         while (!order.first[i].isHome)
@@ -209,7 +210,7 @@ CalculateOrder::CalculateOrderFor2Or1Trucks(bool twoTrucks)
     returnPair.first = bestOrder;
     returnPair.second =
         qMax(CalculateTime(bestOrder, twoTrucks).first, CalculateTime(bestOrder, twoTrucks).second);
-    qDebug() << bestDuration;
+    qDebug() << returnPair.second;
     return returnPair;
 }
 
