@@ -75,11 +75,11 @@ struct OrdersStruct
     QDate          date;
     double         totalPrice;
     CustomerStruct customer;
-    QString        fuelType;
+    FuelType        fuelType;
     uint           establishedProfit;
 
     OrdersStruct(uint amout = 0, QDate date = QDate().currentDate(), double totalPrice = 0,
-                 CustomerStruct customer = CustomerStruct(), QString fuelType = nullptr, uint establishedProfit = 0)
+                 CustomerStruct customer = CustomerStruct(),  FuelType fuelType = FuelType::ERR, uint establishedProfit = 0)
         : amount(amout)
         , date(date)
         , totalPrice(totalPrice)

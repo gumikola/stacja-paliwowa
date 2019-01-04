@@ -61,7 +61,7 @@ QVector<Common::OrdersStruct> DataBaseApi::getOrdersByDate(QDate date)
                 q.value("Ilosc").toUInt(), q.value("Data").toDate(), q.value("Cena").toDouble(),
                 Common::CustomerStruct(q.value("Odbiorca").toString(), q.value("Miasto").toString(),
                                        q.value("Ulica").toString(), q.value("Numer").toString()),
-                q.value("Typ_Paliwa_Nazwa").toString(), q.value("Przychod").toDouble()));
+                Common::getFuelTypeEnum(q.value("Typ_Paliwa_Nazwa").toString()), q.value("Przychod").toDouble()));
         }
     }
     else
@@ -101,7 +101,7 @@ void DataBaseApi::addOrder(const Common::OrdersStruct& order)
     q.bindValue(1, order.date);
     q.bindValue(2, order.totalPrice);
     q.bindValue(3, addCustomer(order.customer));
-    q.bindValue(4, order.fuelType);
+    q.bindValue(4, Common::getFuelTypeName(order.fuelType));
     q.bindValue(5, order.establishedProfit);
 
     q.exec();

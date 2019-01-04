@@ -172,7 +172,7 @@ void AddOrder::calculatePressed()
         tmp.amount            = getAmount();
         tmp.customer          = Common::CustomerStruct(getOrdererName(), getCity(), getStreet(), getNumber());
         tmp.date              = getDate();
-        tmp.fuelType          = Common::getFuelTypeName(getFuelType());
+        tmp.fuelType          = getFuelType();
         tmp.establishedProfit = getIncome();
 
         Algorithms::SugestedPriceForClient price(tmp);
@@ -206,7 +206,7 @@ void AddOrder::addOrderPressed()
         tmp.customer          = Common::CustomerStruct(getOrdererName(), getCity(), getStreet(), getNumber());
         tmp.date              = getDate();
         tmp.establishedProfit = getIncome();
-        tmp.fuelType          = Common::getFuelTypeName(getFuelType());
+        tmp.fuelType          = getFuelType();
 
         Algorithms::SugestedPriceForClient price(tmp);
         price.CalculateParameters();
