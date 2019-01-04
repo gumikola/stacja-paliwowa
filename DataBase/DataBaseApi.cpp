@@ -4,7 +4,10 @@ namespace DataBaseApi {
 DataBaseApi::DataBaseApi()
 {
     driverDatabase = QSqlDatabase::addDatabase(driverName);
-    driverDatabase.setDatabaseName(pathDatabase);
+
+    QString absolutePathDatabase = QDir::currentPath().split("build")[0] + pathDatabase;
+    qDebug() << absolutePathDatabase;
+    driverDatabase.setDatabaseName(absolutePathDatabase);
 
     // Checking DB connection
     if (driverDatabase.open() == false)
