@@ -24,6 +24,30 @@ QString getFuelTypeName(const FuelType& type)
     }
 }
 
+FuelType getFuelTypeEnum(QString type)
+{
+    if (QString("ON") == type)
+    {
+        return FuelType::ON;
+    }
+    else if (QString("OO") == type)
+    {
+        return FuelType::OO;
+    }
+    else if (QString("PB95") == type)
+    {
+        return FuelType::PB95;
+    }
+    else if (QString("PB98") == type)
+    {
+        return FuelType::PB98;
+    }
+    else
+    {
+        throw QString("Wrong fuel type");
+    }
+}
+
 QString getFuelTankTypeName(const FuelTankType& type)
 {
     switch (type)

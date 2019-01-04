@@ -122,19 +122,44 @@ void DataBaseApi::updateTankFillLevel(Common::FuelTankType tank, double number)
         qDebug() << q.lastError();
 }
 
-void DataBaseApi::addPriceOfPetrol(double price, QDate date, Common::FuelType type)
+void DataBaseApi::addPriceOfPetrol(Common::PetrolInfoStruct info)
 {
     QSqlQuery q;
 
     q.prepare("INSERT INTO "
-              "`Cena_paliwa`(`Data`,`Cena`,`Typ_paliwa) VALUES (?,?,?)");
-    q.bindValue(0, date);
-    q.bindValue(1, price);
-    q.bindValue(2, Common::getFuelTypeName(type));
+              "`Cena_paliwa`(`Data`,`Cena`,`Typ_paliwa`) VALUES (?,?,?)");
+    q.bindValue(0, info.date);
+    q.bindValue(1, info.price);
+    q.bindValue(2, Common::getFuelTypeName(info.fuelType));
 
     q.exec();
     if (q.lastError().isValid())
         qDebug() << q.lastError();
+}
+
+QVector<Common::PetrolInfoStruct> DataBaseApi::getPriceOfPetrol(uint nbrOfElements, Common::FuelType fuelType)
+{
+    QVector<Common::PetrolInfoStruct> data;
+    QSqlQuery                         q;
+
+    q.prepare(QString("select * from Cena_paliwa where Typ_paliwa=(?) order by Data LIMIT (?)"));
+    q.bindValue(0,Common::getFuelTypeName(fuelType));
+    q.bindValue(1, nbrOfElements);
+
+    if (q.exec())
+    {
+        while (q.next())
+        {
+            data.push_back(Common::PetrolInfoStruct(q.value("Cena").toDouble(), q.value("Data").toDate(),
+                                                    Common::getFuelTypeEnum(q.value("Typ_paliwa").toString())));
+        }
+    }
+    else
+    {
+        qDebug() << q.lastError();
+    }
+
+    return data;
 }
 
 } // namespace DataBaseApi

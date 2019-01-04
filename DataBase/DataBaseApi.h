@@ -25,7 +25,8 @@ public:
     int                                  addCustomer(const Common::CustomerStruct& customer);
     void                                 addOrder(const Common::OrdersStruct& order);
     void                                 updateTankFillLevel(Common::FuelTankType tank, double number);
-    void                                 addPriceOfPetrol(double price, QDate date, Common::FuelType type);
+    void                                 addPriceOfPetrol(Common::PetrolInfoStruct info);
+    QVector<Common::PetrolInfoStruct>    getPriceOfPetrol(uint nbrOfElements, Common::FuelType fuelType);
 };
 
 } // namespace DataBaseApi

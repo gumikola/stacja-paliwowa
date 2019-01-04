@@ -29,8 +29,9 @@ enum class FuelTankType
 
 static QString URL = "https://www.orlen.pl/PL/DlaBiznesu/HurtoweCenyPaliw/Strony/default.aspx";
 QString        getFuelTypeName(const FuelType& type);
-FuelTankType   getFuelTankEnum(QString type);
+FuelType       getFuelTypeEnum(QString type);
 QString        getFuelTankTypeName(const FuelTankType& type);
+FuelTankType   getFuelTankEnum(QString type);
 
 struct OrderParametersOutput
 {
@@ -85,6 +86,20 @@ struct OrdersStruct
         , customer(customer)
         , fuelType(fuelType)
         , establishedProfit(establishedProfit)
+    {
+    }
+};
+
+struct PetrolInfoStruct
+{
+    double   price;
+    QDate    date;
+    FuelType fuelType;
+
+    PetrolInfoStruct(double price = 0, QDate date = QDate().currentDate(), FuelType fuelType = FuelType::ERR)
+        : price(price)
+        , date(date)
+        , fuelType(fuelType)
     {
     }
 };
