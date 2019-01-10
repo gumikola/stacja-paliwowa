@@ -6,8 +6,8 @@ CalculateRoute::CalculateRoute(const QVector<Common::OrdersStruct> Customers)
     QString CustomersStr;
     for (int i = 0; i < Customers.size(); i++)
     {
-        CustomersStr = CustomersStr + mCustomers[i].customer.street + "_" + mCustomers[i].customer.propertyNumber +
-                       "_" + mCustomers[i].customer.city;
+        CustomersStr = CustomersStr + mCustomers[i].customer.street + "_" +
+                       mCustomers[i].customer.propertyNumber + "_" + mCustomers[i].customer.city;
         if (i != mCustomers.size() - 1)
             CustomersStr = CustomersStr + "|";
         else
@@ -16,7 +16,7 @@ CalculateRoute::CalculateRoute(const QVector<Common::OrdersStruct> Customers)
     QString URL = "https://maps.googleapis.com/maps/api/directions/"
                   "json?origin=Cynamonowa_15_Wrocław"
                   "&destination=Bacciarellego_40D_Wrocław&waypoints=optimize:true|" +
-                  CustomersStr + "key=AIzaSyAzEDsdnI3vIet51Z1LOeLACxPlV542X2g";
+                  CustomersStr + "key=AIzaSyA6B9rzXYJzjFXloNN8bmmpHYA3Rl9UAdw";
     qDebug() << URL << endl;
     QNetworkRequest request;
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
@@ -31,7 +31,8 @@ QVector<Common::OrdersStruct> CalculateRoute::CalculateOrder()
 {
     QVector<Common::OrdersStruct> ReturnStruct;
     QJsonDocument                 response = QJsonDocument::fromJson(jsonResponse);
-    QJsonArray Order = response.object().value("routes").toArray()[0].toObject().value("waypoint_order").toArray();
+    QJsonArray                    Order =
+        response.object().value("routes").toArray()[0].toObject().value("waypoint_order").toArray();
 
     for (int i = 0; i < Order.size(); i++)
     {

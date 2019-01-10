@@ -30,7 +30,7 @@ QVector<int> CalculateOrder::GetDistanceVector(QVector<Common::CustomerStruct> c
     QString URL = "https://maps.googleapis.com/maps/api/distancematrix/"
                   "json?origins=" +
                   originString + "destinations=" + destinationString +
-                  "key=AIzaSyAzEDsdnI3vIet51Z1LOeLACxPlV542X2g";
+                  "key=AIzaSyA6B9rzXYJzjFXloNN8bmmpHYA3Rl9UAdw";
     QNetworkRequest request;
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
     QNetworkAccessManager manager;
