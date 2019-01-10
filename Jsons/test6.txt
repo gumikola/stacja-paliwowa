@@ -1,0 +1,1169 @@
+{
+    "destination_addresses": [
+        "Królewiecka 1, 74-300 Myślibórz, Polska",
+        "Łużycka 19, 74-300 Myślibórz, Polska",
+        "Lipiańska 1, 74-200 Pyrzyce, Polska",
+        "aleja Wyzwolenia 18, 70-435 Szczecin, Polska",
+        "Królewiecka 1, 74-300 Myślibórz, Polska",
+        "Śliwkowa 7, 66-415 Kłodawa, Polska",
+        "72-514 Żółwino, Polska",
+        "Ławy 12A, 74-300 Ławy, Polska",
+        "Trzcinna 1, 74-304 Trzcinna, Polska",
+        "Królewiecka 1, 74-300 Myślibórz, Polska"
+    ],
+    "origin_addresses": [
+        "72-514 Żółwino, Polska",
+        "72-514 Żółwino, Polska",
+        "72-514 Żółwino, Polska",
+        "72-514 Żółwino, Polska",
+        "72-514 Żółwino, Polska",
+        "72-514 Żółwino, Polska",
+        "72-514 Żółwino, Polska",
+        "72-514 Żółwino, Polska",
+        "72-514 Żółwino, Polska",
+        "72-514 Żółwino, Polska"
+    ],
+    "rows": [
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151928
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6337
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "114 km",
+                        "value": 114145
+                    },
+                    "duration": {
+                        "text": "1 godz. 37 min",
+                        "value": 5798
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "94,3 km",
+                        "value": 94325
+                    },
+                    "duration": {
+                        "text": "1 godz. 23 min",
+                        "value": 4962
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "184 km",
+                        "value": 184090
+                    },
+                    "duration": {
+                        "text": "2 godz. 9 min",
+                        "value": 7761
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 m",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 min",
+                        "value": 0
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151784
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6353
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "155 km",
+                        "value": 154664
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6479
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151928
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6337
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "114 km",
+                        "value": 114145
+                    },
+                    "duration": {
+                        "text": "1 godz. 37 min",
+                        "value": 5798
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "94,3 km",
+                        "value": 94325
+                    },
+                    "duration": {
+                        "text": "1 godz. 23 min",
+                        "value": 4962
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "184 km",
+                        "value": 184090
+                    },
+                    "duration": {
+                        "text": "2 godz. 9 min",
+                        "value": 7761
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 m",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 min",
+                        "value": 0
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151784
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6353
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "155 km",
+                        "value": 154664
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6479
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151928
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6337
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "114 km",
+                        "value": 114145
+                    },
+                    "duration": {
+                        "text": "1 godz. 37 min",
+                        "value": 5798
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "94,3 km",
+                        "value": 94325
+                    },
+                    "duration": {
+                        "text": "1 godz. 23 min",
+                        "value": 4962
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "184 km",
+                        "value": 184090
+                    },
+                    "duration": {
+                        "text": "2 godz. 9 min",
+                        "value": 7761
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 m",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 min",
+                        "value": 0
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151784
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6353
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "155 km",
+                        "value": 154664
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6479
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151928
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6337
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "114 km",
+                        "value": 114145
+                    },
+                    "duration": {
+                        "text": "1 godz. 37 min",
+                        "value": 5798
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "94,3 km",
+                        "value": 94325
+                    },
+                    "duration": {
+                        "text": "1 godz. 23 min",
+                        "value": 4962
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "184 km",
+                        "value": 184090
+                    },
+                    "duration": {
+                        "text": "2 godz. 9 min",
+                        "value": 7761
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 m",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 min",
+                        "value": 0
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151784
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6353
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "155 km",
+                        "value": 154664
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6479
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151928
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6337
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "114 km",
+                        "value": 114145
+                    },
+                    "duration": {
+                        "text": "1 godz. 37 min",
+                        "value": 5798
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "94,3 km",
+                        "value": 94325
+                    },
+                    "duration": {
+                        "text": "1 godz. 23 min",
+                        "value": 4962
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "184 km",
+                        "value": 184090
+                    },
+                    "duration": {
+                        "text": "2 godz. 9 min",
+                        "value": 7761
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 m",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 min",
+                        "value": 0
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151784
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6353
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "155 km",
+                        "value": 154664
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6479
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151928
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6337
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "114 km",
+                        "value": 114145
+                    },
+                    "duration": {
+                        "text": "1 godz. 37 min",
+                        "value": 5798
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "94,3 km",
+                        "value": 94325
+                    },
+                    "duration": {
+                        "text": "1 godz. 23 min",
+                        "value": 4962
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "184 km",
+                        "value": 184090
+                    },
+                    "duration": {
+                        "text": "2 godz. 9 min",
+                        "value": 7761
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 m",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 min",
+                        "value": 0
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151784
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6353
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "155 km",
+                        "value": 154664
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6479
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151928
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6337
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "114 km",
+                        "value": 114145
+                    },
+                    "duration": {
+                        "text": "1 godz. 37 min",
+                        "value": 5798
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "94,3 km",
+                        "value": 94325
+                    },
+                    "duration": {
+                        "text": "1 godz. 23 min",
+                        "value": 4962
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "184 km",
+                        "value": 184090
+                    },
+                    "duration": {
+                        "text": "2 godz. 9 min",
+                        "value": 7761
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 m",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 min",
+                        "value": 0
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151784
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6353
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "155 km",
+                        "value": 154664
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6479
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151928
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6337
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "114 km",
+                        "value": 114145
+                    },
+                    "duration": {
+                        "text": "1 godz. 37 min",
+                        "value": 5798
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "94,3 km",
+                        "value": 94325
+                    },
+                    "duration": {
+                        "text": "1 godz. 23 min",
+                        "value": 4962
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "184 km",
+                        "value": 184090
+                    },
+                    "duration": {
+                        "text": "2 godz. 9 min",
+                        "value": 7761
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 m",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 min",
+                        "value": 0
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151784
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6353
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "155 km",
+                        "value": 154664
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6479
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151928
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6337
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "114 km",
+                        "value": 114145
+                    },
+                    "duration": {
+                        "text": "1 godz. 37 min",
+                        "value": 5798
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "94,3 km",
+                        "value": 94325
+                    },
+                    "duration": {
+                        "text": "1 godz. 23 min",
+                        "value": 4962
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "184 km",
+                        "value": 184090
+                    },
+                    "duration": {
+                        "text": "2 godz. 9 min",
+                        "value": 7761
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 m",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 min",
+                        "value": 0
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151784
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6353
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "155 km",
+                        "value": 154664
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6479
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151928
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6337
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "114 km",
+                        "value": 114145
+                    },
+                    "duration": {
+                        "text": "1 godz. 37 min",
+                        "value": 5798
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "94,3 km",
+                        "value": 94325
+                    },
+                    "duration": {
+                        "text": "1 godz. 23 min",
+                        "value": 4962
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "184 km",
+                        "value": 184090
+                    },
+                    "duration": {
+                        "text": "2 godz. 9 min",
+                        "value": 7761
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 m",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 min",
+                        "value": 0
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "152 km",
+                        "value": 151784
+                    },
+                    "duration": {
+                        "text": "1 godz. 46 min",
+                        "value": 6353
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "155 km",
+                        "value": 154664
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6479
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "153 km",
+                        "value": 153433
+                    },
+                    "duration": {
+                        "text": "1 godz. 48 min",
+                        "value": 6478
+                    },
+                    "status": "OK"
+                }
+            ]
+        }
+    ],
+    "status": "OK"
+}
