@@ -130,6 +130,9 @@ void FuelPriceChart::fillSeries(Common::FuelType fuelType)
     while (!fileStream.atEnd())
     {
         mSize++;
+        if (mSize > 60)
+            break;
+
         QString     line = fileStream.readLine();
         QStringList list = line.split(", ");
 
