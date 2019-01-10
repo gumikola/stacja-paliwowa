@@ -863,7 +863,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>921</width>
+        <width>901</width>
         <height>106</height>
        </rect>
       </property>
@@ -895,6 +895,25 @@
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <widget class="QLabel" name="label_7">
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
          <item>
           <widget class="QComboBox" name="FuelPriceTabFuelType">
            <property name="font">
@@ -928,6 +947,25 @@
              <string>PB98</string>
             </property>
            </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_6">
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
           </widget>
          </item>
         </layout>
