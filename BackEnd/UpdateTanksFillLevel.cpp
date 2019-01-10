@@ -11,25 +11,28 @@
 
 namespace BackEnd {
 
-UpdateTanksFillLevel::UpdateTanksFillLevel(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& dataBaseApi)
+UpdateTanksFillLevel::UpdateTanksFillLevel(DataBaseApi::DataBaseApi&   dataBaseApi,
+                                           const Common::FuelTankType& tank)
     : mDataBaseApi(dataBaseApi)
-    , mOperationType(*ui->changeTankFillLevelTabOperatonType)
-    , mTankType(*ui->changeTankFillLevelTabTankType)
-    , mChosenTank(*ui->changeTankFillLevelTabChosenTank)
-    , mUpdateButton(*ui->changeTankFillLevelTabUpdateButton)
-    , mAmount(*ui->changeTankFillLevelTabAmount)
+    , mUi(new Ui::EditTankFillLevel)
+    , mTank(tank)
 {
-    setDefault(0);
-    connect(ui->changeTankFillLevelTabOperatonType, SIGNAL(activated(int)), this, SLOT(operationTypeChanged(int)));
-    connect(ui->changeTankFillLevelTabTankType, SIGNAL(activated(int)), this, SLOT(tankTypeChanged(int)));
-    connect(ui->changeTankFillLevelTabChosenTank, SIGNAL(activated(int)), this, SLOT(chosenTankChanged(int)));
-    connect(ui->changeTankFillLevelTabAmount, SIGNAL(editingFinished()), this, SLOT(amountChanged()));
-    connect(ui->changeTankFillLevelTabUpdateButton, SIGNAL(pressed()), this, SLOT(updateButtonPressed()));
+    mUi->setupUi(&mDialog);
+    connect(mUi->operatonType, SIGNAL(activated(int)), this, SLOT(operationTypeChanged(int)));
+    connect(mUi->amount, SIGNAL(editingFinished()), this, SLOT(amountChanged()));
+    connect(mUi->updateButton, SIGNAL(pressed()), this, SLOT(updateButtonPressed()));
+
+    mDialog.open();
+}
+
+void UpdateTanksFillLevel::exec()
+{
+    mDialog.exec();
 }
 
 uint UpdateTanksFillLevel::getAmount(void)
 {
-    QString tmp = mAmount.text();
+    QString tmp = mUi->amount->text();
 
     if (not tmp.size())
         throw QString("Pole \"Ilość\" nie moze byc puste!");
@@ -43,120 +46,36 @@ uint UpdateTanksFillLevel::getAmount(void)
     return amount;
 }
 
-void UpdateTanksFillLevel::setDefault(uint step)
-{
-    switch (step)
-    {
-    case 0:
-        mOperationType.setEnabled(true);
-        mOperationType.setCurrentIndex(0);
-        [[clang::fallthrough]];
-    case 1:
-        mTankType.setEnabled(false);
-        mTankType.setCurrentIndex(0);
-        [[clang::fallthrough]];
-    case 2:
-        mChosenTank.setEnabled(false);
-        mChosenTank.setCurrentIndex(0);
-        mChosenTank.addItem(QString("wybierz zbiornik"));
-        [[clang::fallthrough]];
-    case 3:
-        mAmount.setText(QString(""));
-        mAmount.setEnabled(false);
-        [[clang::fallthrough]];
-    case 4:
-        mUpdateButton.setEnabled(false);
-        break;
-    }
-}
-
 void UpdateTanksFillLevel::operationTypeChanged(int index)
 {
     qDebug("operationTypeChanged to: %d", index);
     if (index)
     {
-        mTankType.setEnabled(true);
+        mUi->amount->setEnabled(true);
+        mUi->updateButton->setEnabled(true);
     }
     else
     {
-        setDefault(1);
-    }
-}
-
-void UpdateTanksFillLevel::tankTypeChanged(int index)
-{
-    qDebug("tankTypeChanged to: %d", index);
-
-    if (index)
-    {
-        mChosenTank.setEnabled(true);
-
-        mChosenTank.clear();
-        mChosenTank.addItem(QString("wybierz zbiornik"));
-
-        if (index == 1)
-        {
-            mChosenTank.addItem(QString("ON 1"));
-            mChosenTank.addItem(QString("ON 2"));
-            mChosenTank.addItem(QString("ON 3"));
-            mChosenTank.addItem(QString("OO"));
-        }
-        else if (index == 2)
-        {
-            mChosenTank.addItem(QString("ON"));
-            mChosenTank.addItem(QString("PB95"));
-            mChosenTank.addItem(QString("PB98"));
-        }
-    }
-    else
-    {
-        setDefault(2);
-    }
-}
-
-void UpdateTanksFillLevel::chosenTankChanged(int index)
-{
-    qDebug("chosenTankChanged to: %d", index);
-
-    if (index)
-    {
-        mAmount.setEnabled(true);
-    }
-    else
-    {
-        setDefault(3);
+        mUi->amount->setEnabled(false);
+        mUi->updateButton->setEnabled(false);
     }
 }
 
 void UpdateTanksFillLevel::amountChanged()
 {
-    try
-    {
-        qDebug("amountChanged to: %d l", getAmount());
-        mUpdateButton.setEnabled(true);
-    }
-    catch (QString& e)
-    {
-        setDefault(4);
-        QMessageBox msgBox;
-        msgBox.setFont(QFont(QString("Arial"), 14));
-        msgBox.setText(e);
-        msgBox.exec();
-    }
+    mUi->updateButton->setEnabled(true);
 }
 
 uint32_t UpdateTanksFillLevel::calculateTankFillLevel()
 {
-    if (mOperationType.currentIndex() == 1)
+    if (mUi->operatonType->currentIndex() == 1)
         return getAmount();
 
-    qDebug("Debug value = %u", static_cast<uint>(Common::getFuelTankEnum(mChosenTank.currentText())));
+    uint32_t actualFillLvl = mDataBaseApi.getTanksFillLevel()[mTank];
 
-    uint32_t actualFillLvl = mDataBaseApi.getTanksFillLevel()[Common::getFuelTankEnum(mChosenTank.currentText())];
-
-    if (mOperationType.currentIndex() == 2)
+    if (mUi->operatonType->currentIndex() == 2)
         return actualFillLvl + getAmount();
-    else if (mOperationType.currentIndex() == 3)
+    else if (mUi->operatonType->currentIndex() == 3)
         return actualFillLvl - getAmount();
     else
     {
@@ -171,13 +90,15 @@ void UpdateTanksFillLevel::updateButtonPressed()
     {
         qDebug("updateButtonPressed");
         QMap<Common::FuelTankType, uint32_t> tmp = mDataBaseApi.getTanksFillLevel();
-        mDataBaseApi.updateTankFillLevel(Common::getFuelTankEnum(mChosenTank.currentText()), calculateTankFillLevel());
+        mDataBaseApi.updateTankFillLevel(mTank, calculateTankFillLevel());
         emit tanksFillLevelChanged();
 
         QMessageBox msgBox;
         msgBox.setFont(QFont(QString("Arial"), 14));
         msgBox.setText(QString("Pomyślnie zapisano do bazy danych."));
         msgBox.exec();
+
+        mDialog.close();
     }
     catch (QString& e)
     {

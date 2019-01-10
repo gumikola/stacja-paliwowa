@@ -1,6 +1,7 @@
 #include "mainwindow.h"
-#include "AddOrder.h"
+#include "ClientsTab.h"
 #include "FuelPriceChart.h"
+#include "FuelTanks.h"
 #include "Orders.h"
 #include "ui_mainwindow.h"
 #include <QMap>
@@ -21,28 +22,13 @@ MainWindow::~MainWindow()
 void MainWindow::makeObjects()
 {
     // first set fill level of fuel tanks
-    displayTanksFillLevel();
 
     // #TO_DO
 
     // making objects
     mOrders.reset(new BackEnd::Orders(ui, mDataBaseApi));
-    mAddOrder.reset(new BackEnd::AddOrder(ui, mDataBaseApi));
-    mUpdateTanksFillLevel.reset(new BackEnd::UpdateTanksFillLevel(ui, mDataBaseApi));
     mFuelPriceChart.reset(new BackEnd::FuelPriceChart(ui, mDataBaseApi));
-
-    QObject::connect(mUpdateTanksFillLevel.get(), SIGNAL(tanksFillLevelChanged()), this, SLOT(displayTanksFillLevel()));
-}
-
-void MainWindow::displayTanksFillLevel()
-{
-    QMap<Common::FuelTankType, uint32_t> fuelTanksFillLevel = mDataBaseApi.getTanksFillLevel();
-
-    ui->FuelTankStation95->display(static_cast<int>(fuelTanksFillLevel[Common::FuelTankType::PB95]));
-    ui->FuelTankStation98->display(static_cast<int>(fuelTanksFillLevel[Common::FuelTankType::PB98]));
-    ui->FuelTankStationON->display(static_cast<int>(fuelTanksFillLevel[Common::FuelTankType::ON]));
-    ui->FuelTankStorageON1->display(static_cast<int>(fuelTanksFillLevel[Common::FuelTankType::ON1]));
-    ui->FuelTankStorageON2->display(static_cast<int>(fuelTanksFillLevel[Common::FuelTankType::ON2]));
-    ui->FuelTankStorageON3->display(static_cast<int>(fuelTanksFillLevel[Common::FuelTankType::ON3]));
-    ui->FuelTankStorageOO4->display(static_cast<int>(fuelTanksFillLevel[Common::FuelTankType::OO]));
+    mFuelTanks.reset(new BackEnd::FuelTanks(ui, mDataBaseApi));
+    mClientsTab.reset(new BackEnd::ClientsTab(ui, mDataBaseApi));
+    mFuelTanks.get()->displayTanksFillLevel();
 }

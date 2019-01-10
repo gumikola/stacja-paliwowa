@@ -1,37 +1,36 @@
 #ifndef UPDATETANKSFILLLEVEL_H
 #define UPDATETANKSFILLLEVEL_H
 
-#include "DataBase/DataBaseApi.h"
-#include "QLineEdit"
-#include "ui_mainwindow.h"
-#include <QComboBox>
+#include <Common.h>
+#include "ui_edit_tank_fill_lvl.h"
+#include <QDialog>
+#include <QMessageBox>
 #include <QObject>
-#include <QPushButton>
+
+namespace DataBaseApi {
+class DataBaseApi;
+} // namespace DataBaseApi
 
 namespace BackEnd {
 
 class UpdateTanksFillLevel : public QObject
 {
     Q_OBJECT
-    DataBaseApi::DataBaseApi& mDataBaseApi;
-    QComboBox&                mOperationType;
-    QComboBox&                mTankType;
-    QComboBox&                mChosenTank;
-    QPushButton&              mUpdateButton;
-    QLineEdit&                mAmount;
+    DataBaseApi::DataBaseApi&   mDataBaseApi;
+    Ui_EditTankFillLevel*       mUi;
+    const Common::FuelTankType& mTank;
+    QDialog                     mDialog;
 
 public:
-    UpdateTanksFillLevel(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& dataBaseApi);
+    UpdateTanksFillLevel(DataBaseApi::DataBaseApi& dataBaseApi, const Common::FuelTankType& tank);
+    void exec();
 
 private slots:
     void operationTypeChanged(int);
-    void tankTypeChanged(int);
-    void chosenTankChanged(int);
     void amountChanged();
     void updateButtonPressed(void);
 
 private:
-    void     setDefault(uint step);
     uint     getAmount(void);
     uint32_t calculateTankFillLevel();
 

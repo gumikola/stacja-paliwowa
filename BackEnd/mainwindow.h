@@ -1,17 +1,20 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "AddOrder.h"
 #include "DataBase/DataBaseApi.h"
-#include "FuelPriceChart.h"
-#include "Orders.h"
-#include "UpdateTanksFillLevel.h"
 #include <QMainWindow>
 #include <QScopedPointer>
 
 namespace Ui {
 class MainWindow;
 }
+
+namespace BackEnd {
+class Orders;
+class FuelPriceChart;
+class FuelTanks;
+class ClientsTab;
+} // namespace BackEnd
 
 class MainWindow : public QMainWindow
 {
@@ -22,16 +25,13 @@ public:
     ~MainWindow();
     void makeObjects();
 
-private slots:
-    void displayTanksFillLevel(void);
-
 private:
-    Ui::MainWindow*                               ui;
-    DataBaseApi::DataBaseApi                      mDataBaseApi;
-    QScopedPointer<BackEnd::Orders>               mOrders;
-    QScopedPointer<BackEnd::AddOrder>             mAddOrder;
-    QScopedPointer<BackEnd::UpdateTanksFillLevel> mUpdateTanksFillLevel;
-    QScopedPointer<BackEnd::FuelPriceChart>       mFuelPriceChart;
+    Ui::MainWindow*                         ui;
+    DataBaseApi::DataBaseApi                mDataBaseApi;
+    QScopedPointer<BackEnd::Orders>         mOrders;
+    QScopedPointer<BackEnd::FuelPriceChart> mFuelPriceChart;
+    QScopedPointer<BackEnd::FuelTanks>      mFuelTanks;
+    QScopedPointer<BackEnd::ClientsTab>     mClientsTab;
 };
 
 #endif // MAINWINDOW_H

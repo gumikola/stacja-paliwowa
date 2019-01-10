@@ -21,6 +21,7 @@ class Orders : QObject
     QCalendarWidget&         mCalendar;
     QTextEdit&               mAdditionalInformation;
     DataBaseApi::DataBaseApi mDataBaseApi;
+    QPushButton&             mAddOrderButton;
 
     QDate mSelectedDate;
 
@@ -35,6 +36,7 @@ public:
 private slots:
     void wyswietlPressed();
     void chosenDateChanged();
+    void addOrderPressed();
 };
 
 } // namespace BackEnd

@@ -2,8 +2,7 @@
 #define ADDORDER_H
 
 #include "Common.h"
-#include "DataBase/DataBaseApi.h"
-#include "ui_mainwindow.h"
+#include "ui_add_order.h"
 #include <QCalendarWidget>
 #include <QComboBox>
 #include <QDate>
@@ -15,29 +14,21 @@
 #include <QTableWidget>
 #include <QTextEdit>
 
+namespace DataBaseApi {
+class DataBaseApi;
+} // namespace DataBaseApi
+
 namespace BackEnd {
 
 class AddOrder : public QObject
 {
     Q_OBJECT
 
-    QPushButton&             mAddOrderButton;
-    QPushButton&             mCalculateButton;
-    QLineEdit&               mAmount;
-    QLineEdit&               mCity;
-    QLineEdit&               mIncome;
-    QLineEdit&               mPricePerLiter;
-    QLineEdit&               mNumber;
-    QLineEdit&               mOrdererName;
-    QLineEdit&               mStreet;
-    QLineEdit&               mTotalPrice;
-    QLineEdit&               mDistance;
-    QLineEdit&               mTravelTime;
-    QComboBox&               mFuelTypeBox;
-    QCalendarWidget&         mDate;
-    DataBaseApi::DataBaseApi mDatabaseApi;
-    Common::FuelType         mChoosenFuelType;
-    QDate                    mSelectedDate;
+    Ui::AddOrder*             mUi;
+    DataBaseApi::DataBaseApi& mDatabaseApi;
+    Common::FuelType          mChoosenFuelType;
+    QDate                     mSelectedDate;
+    QDialog                   mDialog;
 
     QString          getOrdererName();
     uint             getAmount();
@@ -50,7 +41,8 @@ class AddOrder : public QObject
     Common::FuelType getFuelType();
 
 public:
-    AddOrder(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& databaseApi);
+    AddOrder(DataBaseApi::DataBaseApi& databaseApi);
+    void exec();
 
 signals:
 

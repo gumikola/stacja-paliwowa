@@ -1,0 +1,84 @@
+#include "FuelTanks.h"
+#include "DataBase/DataBaseApi.h"
+#include "UpdateTanksFillLevel.h"
+
+namespace BackEnd {
+
+FuelTanks::FuelTanks(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& databaseApi)
+    : mUi(ui)
+    , mDatabaseApi(databaseApi)
+{
+    displayTanksFillLevel();
+    connect(ui->ONButton, SIGNAL(pressed()), this, SLOT(editONPressed()));
+    connect(ui->ON1Button, SIGNAL(pressed()), this, SLOT(editON1Pressed()));
+    connect(ui->ON2Button, SIGNAL(pressed()), this, SLOT(editON2Pressed()));
+    connect(ui->ON3Button, SIGNAL(pressed()), this, SLOT(editON3Pressed()));
+    connect(ui->OOButton, SIGNAL(pressed()), this, SLOT(editOOPressed()));
+    connect(ui->PB95Button, SIGNAL(pressed()), this, SLOT(editPB95Pressed()));
+    connect(ui->PB98Button, SIGNAL(pressed()), this, SLOT(editPB98Pressed()));
+}
+
+void FuelTanks::displayEditWindow(Common::FuelTankType tank)
+{
+    UpdateTanksFillLevel window(mDatabaseApi, tank);
+
+    QObject::connect(&window, SIGNAL(tanksFillLevelChanged()), this, SLOT(displayTanksFillLevel()));
+
+    window.exec();
+}
+
+void FuelTanks::displayTanksFillLevel()
+{
+    QMap<Common::FuelTankType, uint32_t> fuelTanksFillLevel = mDatabaseApi.getTanksFillLevel();
+
+    mUi->FuelTankStation95->display(
+        static_cast<int>(fuelTanksFillLevel[Common::FuelTankType::PB95]));
+    mUi->FuelTankStation98->display(
+        static_cast<int>(fuelTanksFillLevel[Common::FuelTankType::PB98]));
+    mUi->FuelTankStationON->display(static_cast<int>(fuelTanksFillLevel[Common::FuelTankType::ON]));
+    mUi->FuelTankStorageON1->display(
+        static_cast<int>(fuelTanksFillLevel[Common::FuelTankType::ON1]));
+    mUi->FuelTankStorageON2->display(
+        static_cast<int>(fuelTanksFillLevel[Common::FuelTankType::ON2]));
+    mUi->FuelTankStorageON3->display(
+        static_cast<int>(fuelTanksFillLevel[Common::FuelTankType::ON3]));
+    mUi->FuelTankStorageOO4->display(
+        static_cast<int>(fuelTanksFillLevel[Common::FuelTankType::OO]));
+}
+
+void FuelTanks::editONPressed()
+{
+    displayEditWindow(Common::FuelTankType::ON);
+}
+
+void FuelTanks::editON1Pressed()
+{
+    displayEditWindow(Common::FuelTankType::ON1);
+}
+
+void FuelTanks::editON2Pressed()
+{
+    displayEditWindow(Common::FuelTankType::ON2);
+}
+
+void FuelTanks::editON3Pressed()
+{
+    displayEditWindow(Common::FuelTankType::ON3);
+}
+
+void FuelTanks::editOOPressed()
+{
+    displayEditWindow(Common::FuelTankType::OO);
+}
+
+void FuelTanks::editPB95Pressed()
+{
+    displayEditWindow(Common::FuelTankType::PB95);
+}
+
+void FuelTanks::editPB98Pressed()
+{
+    displayEditWindow(Common::FuelTankType::PB98);
+}
+
+} // namespace BackEnd

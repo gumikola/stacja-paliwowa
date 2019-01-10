@@ -2,9 +2,9 @@
 #include "Algorithms/SugestedPriceForClient.h"
 #include "Common.h"
 #include "DataBase/DataBaseApi.h"
-#include "ui_mainwindow.h"
 #include <QComboBox>
 #include <QDate>
+#include <QDialog>
 #include <QLineEdit>
 #include <QMainWindow>
 #include <QMessageBox>
@@ -17,41 +17,37 @@
 
 namespace BackEnd {
 
-AddOrder::AddOrder(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& databaseApi)
-    : mAddOrderButton(*ui->addOrderTabAddOrderButton)
-    , mCalculateButton(*ui->addOrderTabCalculateButton)
-    , mAmount(*ui->addOrderTabAmount)
-    , mCity(*ui->addOrderTabCity)
-    , mIncome(*ui->addOrderTabIncome)
-    , mPricePerLiter(*ui->addOrderTabPricePerLiter)
-    , mNumber(*ui->addOrderTabNumber)
-    , mOrdererName(*ui->addOrderTabOrdererName)
-    , mStreet(*ui->addOrderTabStreet)
-    , mTotalPrice(*ui->addOrderTabTotalPrice)
-    , mDistance(*ui->addOrderTabDistance)
-    , mTravelTime(*ui->addOrderTabTravelTime)
-    , mFuelTypeBox(*ui->addOrderTabFuelTypeBox)
-    , mDate(*ui->addOrderTabDate)
+AddOrder::AddOrder(DataBaseApi::DataBaseApi& databaseApi)
+    : mUi(new Ui::AddOrder)
     , mDatabaseApi(databaseApi)
     , mChoosenFuelType(Common::FuelType::ERR)
 {
-    //
-    mPricePerLiter.setText(QString("---"));
-    mDistance.setText(QString("---"));
-    mTravelTime.setText(QString("---"));
-    mTotalPrice.setText(QString("---"));
 
-    connect(ui->addOrderTabAddOrderButton, SIGNAL(pressed()), this, SLOT(addOrderPressed()));
-    connect(ui->addOrderTabCalculateButton, SIGNAL(pressed()), this, SLOT(calculatePressed()));
-    connect(ui->addOrderTabFuelTypeBox, SIGNAL(currentIndexChanged(int)), this, SLOT(fuelTypeChanged(int)));
-    connect(ui->addOrderTabDate, SIGNAL(selectionChanged()), this, SLOT(chosenDateChanged()));
+    mUi->setupUi(&mDialog);
+
+    connect(mUi->addOrderButton, SIGNAL(pressed()), this, SLOT(addOrderPressed()));
+    connect(mUi->calculateButton, SIGNAL(pressed()), this, SLOT(calculatePressed()));
+    connect(mUi->fuelTypeBox, SIGNAL(currentIndexChanged(int)), this, SLOT(fuelTypeChanged(int)));
+    connect(mUi->date, SIGNAL(selectionChanged()), this, SLOT(chosenDateChanged()));
+
+    mDialog.open();
+    mUi->pricePerLiter->setText(QString("---"));
+    mUi->tabDistance->setText(QString("---"));
+    mUi->travelTime->setText(QString("---"));
+    mUi->totalPrice->setText(QString("---"));
+}
+
+void AddOrder::exec()
+{
+    mDialog.exec();
 }
 
 void AddOrder::chosenDateChanged()
 {
-    mSelectedDate = mDate.selectedDate();
+    mSelectedDate = mUi->date->selectedDate();
 
-    qDebug("chosenDateChanged pressed %d:%d:%d", mSelectedDate.day(), mSelectedDate.month(), mSelectedDate.year());
+    qDebug("chosenDateChanged pressed %d:%d:%d", mSelectedDate.day(), mSelectedDate.month(),
+           mSelectedDate.year());
 }
 
 QDate AddOrder::getDate()
@@ -63,7 +59,7 @@ QDate AddOrder::getDate()
 
 QString AddOrder::getOrdererName()
 {
-    QString tmp = mOrdererName.text();
+    QString tmp = mUi->ordererName->text();
 
     if (not tmp.size())
         throw QString("Pole nazwa obiorcy nie moze byc puste!");
@@ -73,7 +69,7 @@ QString AddOrder::getOrdererName()
 
 uint AddOrder::getAmount()
 {
-    QString tmp = mAmount.text();
+    QString tmp = mUi->amount->text();
 
     if (not tmp.size())
         throw QString("Pole ilość paliwa nie moze byc puste!");
@@ -89,7 +85,7 @@ uint AddOrder::getAmount()
 
 QString AddOrder::getCity()
 {
-    QString tmp = mCity.text();
+    QString tmp = mUi->city->text();
 
     if (not tmp.size())
         throw QString("Pole miasto nie moze byc puste!");
@@ -99,7 +95,7 @@ QString AddOrder::getCity()
 
 uint AddOrder::getIncome()
 {
-    QString tmp = mIncome.text();
+    QString tmp = mUi->income->text();
 
     if (not tmp.size())
         throw QString("Pole planowany zysk nie moze byc puste!");
@@ -115,7 +111,7 @@ uint AddOrder::getIncome()
 
 QString AddOrder::getNumber()
 {
-    QString tmp = mNumber.text();
+    QString tmp = mUi->number->text();
 
     if (not tmp.size())
         throw QString("Pole numer posesji nie moze byc puste!");
@@ -125,7 +121,7 @@ QString AddOrder::getNumber()
 
 QString AddOrder::getStreet()
 {
-    QString tmp = mStreet.text();
+    QString tmp = mUi->street->text();
 
     if (not tmp.size())
         throw QString("Pole ulica nie moze byc puste!");
@@ -142,17 +138,17 @@ Common::FuelType AddOrder::getFuelType()
 }
 void AddOrder::clearWindow()
 {
-    mOrdererName.clear();
-    mStreet.clear();
-    mNumber.clear();
-    mCity.clear();
-    mFuelTypeBox.setCurrentIndex(0);
-    mAmount.clear();
-    mIncome.clear();
-    mPricePerLiter.setText(QString("---"));
-    mDistance.setText(QString("---"));
-    mTravelTime.setText(QString("---"));
-    mTotalPrice.setText(QString("---"));
+    mUi->ordererName->clear();
+    mUi->street->clear();
+    mUi->number->clear();
+    mUi->city->clear();
+    mUi->fuelTypeBox->setCurrentIndex(0);
+    mUi->amount->clear();
+    mUi->income->clear();
+    mUi->pricePerLiter->setText(QString("---"));
+    mUi->tabDistance->setText(QString("---"));
+    mUi->travelTime->setText(QString("---"));
+    mUi->totalPrice->setText(QString("---"));
 }
 
 void AddOrder::calculatePressed()
@@ -169,20 +165,21 @@ void AddOrder::calculatePressed()
 
         Common::OrdersStruct tmp;
 
-        tmp.amount            = getAmount();
-        tmp.customer          = Common::CustomerStruct(getOrdererName(), getCity(), getStreet(), getNumber());
+        tmp.amount = getAmount();
+        tmp.customer =
+            Common::CustomerStruct(getOrdererName(), getCity(), getStreet(), getNumber());
         tmp.date              = getDate();
         tmp.fuelType          = getFuelType();
         tmp.establishedProfit = getIncome();
 
         Algorithms::SugestedPriceForClient price(tmp);
         price.CalculateParameters();
-        mPricePerLiter.setText(QString::number(price.GetOrderStruct().mPricePerLiter, 'f', 2));
-        mDistance.setText(QString::number(price.GetOrderStruct().mDistance, 'f', 1));
-        mTravelTime.setText(price.GetOrderStruct().mTravelTime.toString());
-        mTotalPrice.setText(QString::number(price.GetOrderStruct().mTotalPrice));
+        mUi->pricePerLiter->setText(QString::number(price.GetOrderStruct().mPricePerLiter, 'f', 2));
+        mUi->tabDistance->setText(QString::number(price.GetOrderStruct().mDistance, 'f', 1));
+        mUi->travelTime->setText(price.GetOrderStruct().mTravelTime.toString());
+        mUi->totalPrice->setText(QString::number(price.GetOrderStruct().mTotalPrice));
 
-        mAddOrderButton.setEnabled(true);
+        mUi->addOrderButton->setEnabled(true);
     }
     catch (QString& e)
     {
@@ -202,8 +199,9 @@ void AddOrder::addOrderPressed()
     {
         Common::OrdersStruct tmp;
 
-        tmp.amount            = getAmount();
-        tmp.customer          = Common::CustomerStruct(getOrdererName(), getCity(), getStreet(), getNumber());
+        tmp.amount = getAmount();
+        tmp.customer =
+            Common::CustomerStruct(getOrdererName(), getCity(), getStreet(), getNumber());
         tmp.date              = getDate();
         tmp.establishedProfit = getIncome();
         tmp.fuelType          = getFuelType();

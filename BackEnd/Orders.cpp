@@ -1,6 +1,7 @@
 
 #include "Orders.h"
 #include "Algorithms/CalculateOrder.h"
+#include "AddOrder.h"
 #include "DataBase/DataBaseApi.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -18,8 +19,10 @@ Orders::Orders(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& dataBaseApi)
     , mCalendar(*ui->ordersTabCalendar)
     , mAdditionalInformation(*ui->ordersTabAdditionalInfoText)
     , mDataBaseApi(dataBaseApi)
+    , mAddOrderButton(*ui->ordersTabAddOrdetButton)
 {
     connect(ui->ordersTabWyswietlButton, SIGNAL(pressed()), this, SLOT(wyswietlPressed()));
+    connect(ui->ordersTabAddOrdetButton, SIGNAL(pressed()), this, SLOT(addOrderPressed()));
     connect(ui->ordersTabCalendar, SIGNAL(selectionChanged()), this, SLOT(chosenDateChanged()));
 
     printEmptyTable();
@@ -127,5 +130,11 @@ void Orders::printCalculatedOrder()
             rowCnt++;
         }
     }
+}
+
+void Orders::addOrderPressed()
+{
+    AddOrder window(mDataBaseApi);
+    window.exec();
 }
 } // namespace BackEnd

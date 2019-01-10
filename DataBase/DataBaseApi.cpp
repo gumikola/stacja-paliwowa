@@ -32,7 +32,8 @@ QMap<Common::FuelTankType, uint32_t> DataBaseApi::getTanksFillLevel(void)
     {
         while (q.next())
         {
-            data.insert(Common::getFuelTankEnum(q.value("Zbiornik").toString()), q.value("Zawartosc").toUInt());
+            data.insert(Common::getFuelTankEnum(q.value("Zbiornik").toString()),
+                        q.value("Zawartosc").toUInt());
         }
     }
     else
@@ -61,7 +62,8 @@ QVector<Common::OrdersStruct> DataBaseApi::getOrdersByDate(QDate date)
                 q.value("Ilosc").toUInt(), q.value("Data").toDate(), q.value("Cena").toDouble(),
                 Common::CustomerStruct(q.value("Odbiorca").toString(), q.value("Miasto").toString(),
                                        q.value("Ulica").toString(), q.value("Numer").toString()),
-                Common::getFuelTypeEnum(q.value("Typ_Paliwa_Nazwa").toString()), q.value("Przychod").toDouble()));
+                Common::getFuelTypeEnum(q.value("Typ_Paliwa_Nazwa").toString()),
+                q.value("Przychod").toDouble()));
         }
     }
     else
@@ -70,6 +72,13 @@ QVector<Common::OrdersStruct> DataBaseApi::getOrdersByDate(QDate date)
     }
 
     return data;
+}
+
+QVector<Common::CustomerStruct> DataBaseApi::getClients()
+{
+    QVector<Common::CustomerStruct> clients;
+
+    return clients;
 }
 
 int DataBaseApi::addCustomer(const Common::CustomerStruct& customer)
@@ -137,21 +146,23 @@ void DataBaseApi::addPriceOfPetrol(Common::PetrolInfoStruct info)
         qDebug() << q.lastError();
 }
 
-QVector<Common::PetrolInfoStruct> DataBaseApi::getPriceOfPetrol(uint nbrOfElements, Common::FuelType fuelType)
+QVector<Common::PetrolInfoStruct> DataBaseApi::getPriceOfPetrol(uint             nbrOfElements,
+                                                                Common::FuelType fuelType)
 {
     QVector<Common::PetrolInfoStruct> data;
     QSqlQuery                         q;
 
     q.prepare(QString("select * from Cena_paliwa where Typ_paliwa=(?) order by Data LIMIT (?)"));
-    q.bindValue(0,Common::getFuelTypeName(fuelType));
+    q.bindValue(0, Common::getFuelTypeName(fuelType));
     q.bindValue(1, nbrOfElements);
 
     if (q.exec())
     {
         while (q.next())
         {
-            data.push_back(Common::PetrolInfoStruct(q.value("Cena").toDouble(), q.value("Data").toDate(),
-                                                    Common::getFuelTypeEnum(q.value("Typ_paliwa").toString())));
+            data.push_back(Common::PetrolInfoStruct(
+                q.value("Cena").toDouble(), q.value("Data").toDate(),
+                Common::getFuelTypeEnum(q.value("Typ_paliwa").toString())));
         }
     }
     else

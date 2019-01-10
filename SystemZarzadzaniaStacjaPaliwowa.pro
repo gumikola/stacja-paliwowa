@@ -39,7 +39,9 @@ SOURCES += \
     Algorithms/CalculateRoute.cpp \
     BackEnd/UpdateTanksFillLevel.cpp \
     Algorithms/CalculateOrder.cpp \
-    BackEnd/FuelPriceChart.cpp
+    BackEnd/FuelPriceChart.cpp \
+    BackEnd/FuelTanks.cpp \
+    BackEnd/ClientsTab.cpp
 
 HEADERS += \
     BackEnd/mainwindow.h \
@@ -54,8 +56,12 @@ HEADERS += \
     Algorithms/CalculateRoute.h \
     BackEnd/UpdateTanksFillLevel.h \
     BackEnd/FuelPriceChart.h \
-    Algorithms/CalculateOrder.h
+    Algorithms/CalculateOrder.h \
+    BackEnd/FuelTanks.h \
+    BackEnd/ClientsTab.h
 
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    add_order.ui \
+    edit_tank_fill_lvl.ui
