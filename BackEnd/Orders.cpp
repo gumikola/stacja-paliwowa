@@ -1,11 +1,11 @@
-
 #include "Orders.h"
-#include "Algorithms/CalculateOrder.h"
 #include "AddOrder.h"
+#include "Algorithms/CalculateOrder.h"
 #include "DataBase/DataBaseApi.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QCalendarWidget>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QTableWidget>
 #include <QTableWidgetItem>
@@ -82,8 +82,9 @@ void Orders::printOrders()
 
 void Orders::wyswietlPressed()
 {
-    printCalculatedOrder();
     qDebug("wystiwetl preseses");
+
+    printCalculatedOrder();
 }
 
 void Orders::chosenDateChanged()

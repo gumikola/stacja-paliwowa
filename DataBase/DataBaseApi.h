@@ -30,6 +30,7 @@ public:
     void                              addPriceOfPetrol(Common::PetrolInfoStruct info);
     QVector<Common::PetrolInfoStruct> getPriceOfPetrol(uint             nbrOfElements,
                                                        Common::FuelType fuelType);
+    void                              removeClient(Common::CustomerStruct& customer);
 };
 
 } // namespace DataBaseApi

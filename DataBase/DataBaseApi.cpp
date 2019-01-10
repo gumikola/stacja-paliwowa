@@ -78,6 +78,28 @@ QVector<Common::CustomerStruct> DataBaseApi::getClients()
 {
     QVector<Common::CustomerStruct> clients;
 
+    QSqlQuery q;
+
+    q.prepare("SELECT * FROM Klienci_hurtowi order by Odbiorca");
+
+    if (q.exec())
+    {
+        while (q.next())
+        {
+            Common::CustomerStruct tmp;
+            tmp.name           = q.value("Odbiorca").toString();
+            tmp.city           = q.value("Miasto").toString();
+            tmp.street         = q.value("Ulica").toString();
+            tmp.propertyNumber = q.value("Numer").toString();
+
+            clients.push_back(tmp);
+        }
+    }
+    else
+    {
+        qDebug() << q.lastError();
+    }
+
     return clients;
 }
 
@@ -171,6 +193,23 @@ QVector<Common::PetrolInfoStruct> DataBaseApi::getPriceOfPetrol(uint            
     }
 
     return data;
+}
+
+void DataBaseApi::removeClient(Common::CustomerStruct& customer)
+{
+    QSqlQuery q;
+
+    q.prepare(QString(
+        "DELETE FROM Klienci_hurtowi WHERE Odbiorca=? AND Miasto=? AND Ulica=? AND Numer=?;"));
+
+    q.bindValue(0, customer.name);
+    q.bindValue(1, customer.city);
+    q.bindValue(2, customer.street);
+    q.bindValue(3, customer.propertyNumber);
+
+    q.exec();
+    if (q.lastError().isValid())
+        qDebug() << q.lastError();
 }
 
 } // namespace DataBaseApi

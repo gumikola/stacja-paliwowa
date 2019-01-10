@@ -41,7 +41,8 @@ SOURCES += \
     Algorithms/CalculateOrder.cpp \
     BackEnd/FuelPriceChart.cpp \
     BackEnd/FuelTanks.cpp \
-    BackEnd/ClientsTab.cpp
+    BackEnd/ClientsTab.cpp \
+    AddClient.cpp
 
 HEADERS += \
     BackEnd/mainwindow.h \
@@ -58,10 +59,12 @@ HEADERS += \
     BackEnd/FuelPriceChart.h \
     Algorithms/CalculateOrder.h \
     BackEnd/FuelTanks.h \
-    BackEnd/ClientsTab.h
+    BackEnd/ClientsTab.h \
+    AddClient.h
 
 
 FORMS += \
     mainwindow.ui \
     add_order.ui \
-    edit_tank_fill_lvl.ui
+    edit_tank_fill_lvl.ui \
+    add_client.ui

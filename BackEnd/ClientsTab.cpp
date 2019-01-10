@@ -1,4 +1,5 @@
 #include "ClientsTab.h"
+#include "AddClient.h"
 #include "DataBase/DataBaseApi.h"
 #include <ui_mainwindow.h>
 
@@ -97,7 +98,11 @@ void ClientsTab::printClients()
     }
 }
 
-void ClientsTab::addPressed() {}
+void ClientsTab::addPressed()
+{
+    AddClient window(mDatabaseApi);
+    window.exec();
+}
 
 void ClientsTab::displayMenu(QPoint pos)
 {
@@ -121,7 +126,7 @@ void ClientsTab::displayMenu(QPoint pos)
             tmp.street         = mTable.item(row, 2)->text();
             tmp.propertyNumber = mTable.item(row, 3)->text();
 
-            //        mDatabase.removeClient(tmp); #TODO
+            mDatabaseApi.removeClient(tmp);
             printClients();
         }
     }
