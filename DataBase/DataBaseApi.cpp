@@ -39,6 +39,7 @@ QMap<Common::FuelTankType, uint32_t> DataBaseApi::getTanksFillLevel(void)
     else
     {
         qDebug() << q.lastError();
+        throw q.lastError().text();
     }
 
     return data;
@@ -69,6 +70,7 @@ QVector<Common::OrdersStruct> DataBaseApi::getOrdersByDate(QDate date)
     else
     {
         qDebug() << q.lastError();
+        throw q.lastError().text();
     }
 
     return data;
@@ -98,6 +100,7 @@ QVector<Common::CustomerStruct> DataBaseApi::getClients()
     else
     {
         qDebug() << q.lastError();
+        throw q.lastError().text();
     }
 
     return clients;
@@ -122,7 +125,10 @@ void DataBaseApi::editCustomer(const Common::CustomerStruct& prev,
 
     q.exec();
     if (q.lastError().isValid())
+    {
         qDebug() << q.lastError();
+        throw q.lastError().text();
+    }
 }
 
 int DataBaseApi::addCustomer(const Common::CustomerStruct& customer)
@@ -139,7 +145,11 @@ int DataBaseApi::addCustomer(const Common::CustomerStruct& customer)
 
     q.exec();
     if (q.lastError().isValid())
+    {
         qDebug() << q.lastError();
+        throw q.lastError().text();
+    }
+
     return q.lastInsertId().toInt();
 }
 
@@ -159,7 +169,10 @@ void DataBaseApi::addOrder(const Common::OrdersStruct& order)
 
     q.exec();
     if (q.lastError().isValid())
+    {
         qDebug() << q.lastError();
+        throw q.lastError().text();
+    }
 }
 
 void DataBaseApi::updateTankFillLevel(Common::FuelTankType tank, double number)
@@ -172,7 +185,10 @@ void DataBaseApi::updateTankFillLevel(Common::FuelTankType tank, double number)
 
     q.exec();
     if (q.lastError().isValid())
+    {
         qDebug() << q.lastError();
+        throw q.lastError().text();
+    }
 }
 
 void DataBaseApi::addPriceOfPetrol(Common::PetrolInfoStruct info)
@@ -187,7 +203,10 @@ void DataBaseApi::addPriceOfPetrol(Common::PetrolInfoStruct info)
 
     q.exec();
     if (q.lastError().isValid())
+    {
         qDebug() << q.lastError();
+        throw q.lastError().text();
+    }
 }
 
 QVector<Common::PetrolInfoStruct> DataBaseApi::getPriceOfPetrol(uint             nbrOfElements,
@@ -202,6 +221,9 @@ QVector<Common::PetrolInfoStruct> DataBaseApi::getPriceOfPetrol(uint            
 
     if (q.exec())
     {
+        data.push_back(
+            Common::PetrolInfoStruct(q.value("Cena").toDouble(), q.value("Data").toDate(),
+                                     Common::getFuelTypeEnum(q.value("Typ_paliwa").toString())));
         while (q.next())
         {
             data.push_back(Common::PetrolInfoStruct(
@@ -212,6 +234,7 @@ QVector<Common::PetrolInfoStruct> DataBaseApi::getPriceOfPetrol(uint            
     else
     {
         qDebug() << q.lastError();
+        throw q.lastError().text();
     }
 
     return data;
@@ -231,11 +254,60 @@ void DataBaseApi::removeClient(Common::CustomerStruct& customer)
 
     q.exec();
     if (q.lastError().isValid())
+    {
         qDebug() << q.lastError();
+        throw q.lastError().text();
+    }
 }
 
-uint DataBaseApi::GetCustomerId(Common::CustomerStruct customer) {}
+uint DataBaseApi::GetCustomerId(Common::CustomerStruct customer)
+{
+    QSqlQuery q;
 
-QVector<Common::Distances> DataBaseApi::GetAllDistances() {}
+    q.prepare("SELECT ID FROM Klienci_hurtowi WHERE Odbiorca = ? and Miasto = ? and Ulica = ? and "
+              "Numer = ?");
+    q.bindValue(0, customer.name);
+    q.bindValue(1, customer.city);
+    q.bindValue(2, customer.street);
+    q.bindValue(4, customer.propertyNumber);
+
+    if (q.exec())
+    {
+        if (q.next())
+            return q.value(0).toUInt();
+        else
+            throw QString("Database: Client not found!");
+    }
+    else
+    {
+        qDebug() << q.lastError();
+        throw q.lastError().text();
+    }
+    return 0;
+}
+
+QVector<Common::DistancesStruct> DataBaseApi::GetAllDistances()
+{
+    QVector<Common::DistancesStruct> data;
+    QSqlQuery                        q;
+
+    q.prepare("SELECT a,b,czas from Trasy");
+
+    if (q.exec())
+    {
+        while (q.next())
+        {
+            data.push_back(Common::DistancesStruct(q.value("a").toUInt(), q.value("b").toUInt(),
+                                                   q.value("czas").toUInt()));
+        }
+    }
+    else
+    {
+        qDebug() << q.lastError();
+        throw q.lastError().text();
+    }
+
+    return data;
+}
 
 } // namespace DataBaseApi

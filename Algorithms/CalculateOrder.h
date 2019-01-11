@@ -16,7 +16,7 @@ class CalculateOrder
 {
     const QVector<Common::OrdersStruct> mCustomers;
     QVector<uint>                       mIds;
-    QVector<Common::Distances>          mDistances;
+    QVector<Common::DistancesStruct>    mDistances;
     void                                GetCustomersID(void);
     void                                checkIfDistanceIsInDatabase(void);
 

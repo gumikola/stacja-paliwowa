@@ -15,7 +15,7 @@ void CalculateOrder::GetCustomersID()
 
 void CalculateOrder::checkIfDistanceIsInDatabase()
 {
-    QVector<Common::Distances> allDistancesFromDatabase;
+    QVector<Common::DistancesStruct> allDistancesFromDatabase;
     //   = DataBaseApi::DataBaseApi::GetAllDistances();
     for (int i = 0; i < allDistancesFromDatabase.size(); i++)
     {

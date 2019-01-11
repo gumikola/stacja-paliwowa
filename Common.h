@@ -42,8 +42,7 @@ struct OrderParametersOutput
     uint   mIncome;
 
     OrderParametersOutput() {}
-    OrderParametersOutput(QTime travelTime, uint totalPrice, double margin, double distance,
-                          uint income)
+    OrderParametersOutput(QTime travelTime, uint totalPrice, double margin, double distance, uint income)
         : mTravelTime(travelTime)
         , mTotalPrice(totalPrice)
         , mPricePerLiter(margin)
@@ -92,11 +91,18 @@ struct OrdersStruct
     }
 };
 
-struct Distances
+struct DistancesStruct
 {
     uint a;
     uint b;
     uint time;
+
+    DistancesStruct(uint a = 0, uint b = 0, uint time = 0)
+        : a(a)
+        , b(b)
+        , time(time)
+    {
+    }
 };
 
 struct PetrolInfoStruct
@@ -105,8 +111,7 @@ struct PetrolInfoStruct
     QDate    date;
     FuelType fuelType;
 
-    PetrolInfoStruct(double price = 0, QDate date = QDate().currentDate(),
-                     FuelType fuelType = FuelType::ERR)
+    PetrolInfoStruct(double price = 0, QDate date = QDate().currentDate(), FuelType fuelType = FuelType::ERR)
         : price(price)
         , date(date)
         , fuelType(fuelType)
