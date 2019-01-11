@@ -43,7 +43,9 @@ SOURCES += \
     BackEnd/FuelTanks.cpp \
     BackEnd/ClientsTab.cpp \
     AddClient.cpp \
-    BackEnd/EditClient.cpp
+    BackEnd/EditClient.cpp \
+    BackEnd/ChooseCustomer.cpp \
+    BackEnd/SuggestedProducts.cpp
 
 HEADERS += \
     BackEnd/mainwindow.h \
@@ -62,7 +64,9 @@ HEADERS += \
     BackEnd/FuelTanks.h \
     BackEnd/ClientsTab.h \
     AddClient.h \
-    BackEnd/EditClient.h
+    BackEnd/EditClient.h \
+    BackEnd/ChooseCustomer.h \
+    BackEnd/SuggestedProducts.h
 
 
 FORMS += \
@@ -70,4 +74,5 @@ FORMS += \
     add_order.ui \
     edit_tank_fill_lvl.ui \
     add_client.ui \
-    edit_client.ui
+    edit_client.ui \
+    choose_customer.ui

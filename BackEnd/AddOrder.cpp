@@ -1,19 +1,16 @@
 #include "AddOrder.h"
+#include "AddClient.h"
 #include "Algorithms/SugestedPriceForClient.h"
+#include "ChooseCustomer.h"
 #include "Common.h"
 #include "DataBase/DataBaseApi.h"
-#include <QComboBox>
 #include <QDate>
 #include <QDialog>
-#include <QLineEdit>
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QObject>
 #include <QPair>
-#include <QPushButton>
 #include <QString>
-#include <QTableWidget>
-#include <QTextEdit>
 
 namespace BackEnd {
 
@@ -27,14 +24,17 @@ AddOrder::AddOrder(DataBaseApi::DataBaseApi& databaseApi)
 
     connect(mUi->addOrderButton, SIGNAL(pressed()), this, SLOT(addOrderPressed()));
     connect(mUi->calculateButton, SIGNAL(pressed()), this, SLOT(calculatePressed()));
+    connect(mUi->chooseClientFromDatabase, SIGNAL(pressed()), this, SLOT(chooseCustomerPressed()));
     connect(mUi->fuelTypeBox, SIGNAL(currentIndexChanged(int)), this, SLOT(fuelTypeChanged(int)));
     connect(mUi->date, SIGNAL(selectionChanged()), this, SLOT(chosenDateChanged()));
+    connect(mUi->addNewClient, SIGNAL(pressed()), this, SLOT(addNewCustomerPressed()));
 
     mDialog.open();
     mUi->pricePerLiter->setText(QString("---"));
     mUi->tabDistance->setText(QString("---"));
     mUi->travelTime->setText(QString("---"));
     mUi->totalPrice->setText(QString("---"));
+    printDefaultClientsTable();
 }
 
 void AddOrder::exec()
@@ -50,21 +50,41 @@ void AddOrder::chosenDateChanged()
            mSelectedDate.year());
 }
 
+void AddOrder::chooseCustomerPressed()
+{
+    ChooseCustomer window(mDatabaseApi);
+    connect(&window, SIGNAL(clientChosed(const Common::CustomerStruct&)), this,
+            SLOT(clientChoosed(const Common::CustomerStruct&)));
+    window.exec();
+}
+
+void AddOrder::clientChoosed(const Common::CustomerStruct& client)
+{
+    int rowCnt = 0;
+    mUi->choosenClientTable->setRowCount(rowCnt);
+    int columnCnt = 0;
+    mUi->choosenClientTable->insertRow(rowCnt);
+    mUi->choosenClientTable->setVerticalHeaderItem(rowCnt, new QTableWidgetItem());
+    mUi->choosenClientTable->setItem(rowCnt, columnCnt++, new QTableWidgetItem(client.name));
+    mUi->choosenClientTable->setItem(rowCnt, columnCnt++, new QTableWidgetItem(client.city));
+    mUi->choosenClientTable->setItem(rowCnt, columnCnt++, new QTableWidgetItem(client.street));
+    mUi->choosenClientTable->setItem(rowCnt, columnCnt++,
+                                     new QTableWidgetItem(client.propertyNumber));
+}
+
+void AddOrder::addNewCustomerPressed()
+{
+    AddClient window(mDatabaseApi);
+    connect(&window, SIGNAL(clientAdded(const Common::CustomerStruct&)), this,
+            SLOT(clientChoosed(const Common::CustomerStruct&)));
+    window.exec();
+}
+
 QDate AddOrder::getDate()
 {
     if (mSelectedDate.isNull())
         throw QString("Data realizacji zamowienia nie zostala dodana!");
     return mSelectedDate;
-}
-
-QString AddOrder::getOrdererName()
-{
-    QString tmp = mUi->ordererName->text();
-
-    if (not tmp.size())
-        throw QString("Pole nazwa obiorcy nie moze byc puste!");
-
-    return tmp;
 }
 
 uint AddOrder::getAmount()
@@ -83,16 +103,6 @@ uint AddOrder::getAmount()
     return amount;
 }
 
-QString AddOrder::getCity()
-{
-    QString tmp = mUi->city->text();
-
-    if (not tmp.size())
-        throw QString("Pole miasto nie moze byc puste!");
-
-    return tmp;
-}
-
 uint AddOrder::getIncome()
 {
     QString tmp = mUi->income->text();
@@ -109,26 +119,6 @@ uint AddOrder::getIncome()
     return income;
 }
 
-QString AddOrder::getNumber()
-{
-    QString tmp = mUi->number->text();
-
-    if (not tmp.size())
-        throw QString("Pole numer posesji nie moze byc puste!");
-
-    return tmp;
-}
-
-QString AddOrder::getStreet()
-{
-    QString tmp = mUi->street->text();
-
-    if (not tmp.size())
-        throw QString("Pole ulica nie moze byc puste!");
-
-    return tmp;
-}
-
 Common::FuelType AddOrder::getFuelType()
 {
     if (mChoosenFuelType == Common::FuelType::ERR)
@@ -136,12 +126,45 @@ Common::FuelType AddOrder::getFuelType()
 
     return mChoosenFuelType;
 }
+
+void AddOrder::printDefaultClientsTable()
+{
+    mUi->choosenClientTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mUi->choosenClientTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    mUi->choosenClientTable->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    int columnCnt = 0;
+    mUi->choosenClientTable->setFont(QFont(QString("Arial"), 14));
+
+    mUi->choosenClientTable->setColumnCount(columnCnt);
+    mUi->choosenClientTable->setRowCount(0);
+
+    mUi->choosenClientTable->insertColumn(columnCnt);
+    mUi->choosenClientTable->setHorizontalHeaderItem(columnCnt++,
+                                                     new QTableWidgetItem("Imie i nazwisko"));
+
+    mUi->choosenClientTable->insertColumn(columnCnt);
+    mUi->choosenClientTable->setHorizontalHeaderItem(columnCnt++, new QTableWidgetItem("Miasto"));
+
+    mUi->choosenClientTable->insertColumn(columnCnt);
+    mUi->choosenClientTable->setHorizontalHeaderItem(columnCnt++, new QTableWidgetItem("Ulica"));
+
+    mUi->choosenClientTable->insertColumn(columnCnt);
+    mUi->choosenClientTable->setHorizontalHeaderItem(columnCnt++, new QTableWidgetItem("Numer"));
+
+    for (int i = 0; i < columnCnt; i++)
+    {
+        if (i == 0)
+            mUi->choosenClientTable->setColumnWidth(i, mUi->choosenClientTable->width() / 3 - 16);
+        else if (i == 3)
+            mUi->choosenClientTable->setColumnWidth(i, 70);
+        else
+            mUi->choosenClientTable->setColumnWidth(
+                i, (2 * mUi->choosenClientTable->width() / 3 - 70) / (columnCnt - 2));
+    }
+}
 void AddOrder::clearWindow()
 {
-    mUi->ordererName->clear();
-    mUi->street->clear();
-    mUi->number->clear();
-    mUi->city->clear();
     mUi->fuelTypeBox->setCurrentIndex(0);
     mUi->amount->clear();
     mUi->income->clear();
@@ -155,19 +178,14 @@ void AddOrder::calculatePressed()
 {
     try
     {
-        getOrdererName();
-        getStreet();
-        getNumber();
-        getCity();
         getFuelType();
         getAmount();
         getIncome();
 
         Common::OrdersStruct tmp;
 
-        tmp.amount = getAmount();
-        tmp.customer =
-            Common::CustomerStruct(getOrdererName(), getCity(), getStreet(), getNumber());
+        tmp.amount            = getAmount();
+        tmp.customer          = {};
         tmp.date              = getDate();
         tmp.fuelType          = getFuelType();
         tmp.establishedProfit = getIncome();
@@ -199,9 +217,8 @@ void AddOrder::addOrderPressed()
     {
         Common::OrdersStruct tmp;
 
-        tmp.amount = getAmount();
-        tmp.customer =
-            Common::CustomerStruct(getOrdererName(), getCity(), getStreet(), getNumber());
+        tmp.amount            = getAmount();
+        tmp.customer          = {};
         tmp.date              = getDate();
         tmp.establishedProfit = getIncome();
         tmp.fuelType          = getFuelType();

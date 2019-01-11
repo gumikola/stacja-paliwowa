@@ -49,9 +49,11 @@ void ClientsTab::printDefaultTable()
     for (int i = 0; i < columnCnt; i++)
     {
         if (i == 0)
-            mTable.setColumnWidth(i, mTable.width() / 2 - 16);
+            mTable.setColumnWidth(i, mTable.width() / 3 - 24);
+        else if (i == 3)
+            mTable.setColumnWidth(i, 80);
         else
-            mTable.setColumnWidth(i, (mTable.width() / 2) / (columnCnt - 1));
+            mTable.setColumnWidth(i, (2 * mTable.width() / 3 - 80) / (columnCnt - 2));
     }
 }
 

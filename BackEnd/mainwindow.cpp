@@ -3,6 +3,7 @@
 #include "FuelPriceChart.h"
 #include "FuelTanks.h"
 #include "Orders.h"
+#include "SuggestedProducts.h"
 #include "ui_mainwindow.h"
 #include <QMap>
 #include <QScopedPointer>
@@ -21,14 +22,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::makeObjects()
 {
-    // first set fill level of fuel tanks
-
-    // #TO_DO
-
     // making objects
     mOrders.reset(new BackEnd::Orders(ui, mDataBaseApi));
     mFuelPriceChart.reset(new BackEnd::FuelPriceChart(ui, mDataBaseApi));
     mFuelTanks.reset(new BackEnd::FuelTanks(ui, mDataBaseApi));
     mClientsTab.reset(new BackEnd::ClientsTab(ui, mDataBaseApi));
+    mSuggestedProducts.reset(new BackEnd::SuggestedProducts(ui, mDataBaseApi));
+
     mFuelTanks.get()->displayTanksFillLevel();
 }

@@ -14,6 +14,7 @@ class Orders;
 class FuelPriceChart;
 class FuelTanks;
 class ClientsTab;
+class SuggestedProducts;
 } // namespace BackEnd
 
 class MainWindow : public QMainWindow
@@ -26,12 +27,13 @@ public:
     void makeObjects();
 
 private:
-    Ui::MainWindow*                         ui;
-    DataBaseApi::DataBaseApi                mDataBaseApi;
-    QScopedPointer<BackEnd::Orders>         mOrders;
-    QScopedPointer<BackEnd::FuelPriceChart> mFuelPriceChart;
-    QScopedPointer<BackEnd::FuelTanks>      mFuelTanks;
-    QScopedPointer<BackEnd::ClientsTab>     mClientsTab;
+    Ui::MainWindow*                            ui;
+    DataBaseApi::DataBaseApi                   mDataBaseApi;
+    QScopedPointer<BackEnd::Orders>            mOrders;
+    QScopedPointer<BackEnd::FuelPriceChart>    mFuelPriceChart;
+    QScopedPointer<BackEnd::FuelTanks>         mFuelTanks;
+    QScopedPointer<BackEnd::ClientsTab>        mClientsTab;
+    QScopedPointer<BackEnd::SuggestedProducts> mSuggestedProducts;
 };
 
 #endif // MAINWINDOW_H

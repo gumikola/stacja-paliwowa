@@ -32,6 +32,6 @@ public slots:
     void cancelPressed();
 
 signals:
-    void clientAdded(Common::CustomerStruct& client);
+    void clientAdded(const Common::CustomerStruct& client);
 };
 } // namespace BackEnd

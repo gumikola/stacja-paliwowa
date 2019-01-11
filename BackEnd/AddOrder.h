@@ -30,15 +30,12 @@ class AddOrder : public QObject
     QDate                     mSelectedDate;
     QDialog                   mDialog;
 
-    QString          getOrdererName();
     uint             getAmount();
-    QString          getCity();
     uint             getIncome();
-    QString          getNumber();
-    QString          getStreet();
     void             clearWindow();
     QDate            getDate();
     Common::FuelType getFuelType();
+    void             printDefaultClientsTable();
 
 public:
     AddOrder(DataBaseApi::DataBaseApi& databaseApi);
@@ -52,6 +49,9 @@ public slots:
     void addOrderPressed();
     void fuelTypeChanged(int);
     void chosenDateChanged();
+    void chooseCustomerPressed();
+    void clientChoosed(const Common::CustomerStruct& client);
+    void addNewCustomerPressed();
 };
 
 } // namespace BackEnd
