@@ -29,10 +29,12 @@ public:
     void addOrder(const Common::OrdersStruct& order);
     void updateTankFillLevel(Common::FuelTankType tank, double number);
     void addPriceOfPetrol(Common::PetrolInfoStruct info);
-    QVector<Common::PetrolInfoStruct> getPriceOfPetrol(uint nbrOfElements, Common::FuelType fuelType);
+    QVector<Common::PetrolInfoStruct> getPriceOfPetrol(uint             nbrOfElements,
+                                                       Common::FuelType fuelType);
     void                              removeClient(Common::CustomerStruct& customer);
     uint                              GetCustomerId(Common::CustomerStruct customer); // for igi
     QVector<Common::DistancesStruct>  GetAllDistances();                              // for igi
+    QVector<Common::PurchaseStruct>   getPurchasesByIdClient(Common::CustomerStruct customer);
 };
 
 } // namespace DataBaseApi

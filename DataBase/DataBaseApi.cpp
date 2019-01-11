@@ -310,4 +310,36 @@ QVector<Common::DistancesStruct> DataBaseApi::GetAllDistances()
     return data;
 }
 
+QVector<Common::PurchaseStruct> getPurchasesByIdClient(Common::CustomerStruct customer)
+{
+    QVector<Common::PurchaseStruct> data;
+    QSqlQuery                       q;
+
+    q.prepare("SELECT * FROM Zakupy_klientow inner join Klienci_hurtowi"
+              "ON Zakupy_klientow.Klienci_hurtowi_ID = Klienci_hurtowi.ID"
+              "and  Klienci_hurtowi.Odbiorca = ?  and Klienci_hurtowi.Miasto = ? and "
+              "Klienci_hurtowi.Ulica = ? and Klienci_hurtowi.Numer = ?");
+
+    q.addBindValue(customer.name);
+    q.addBindValue(customer.city);
+    q.addBindValue(customer.street);
+    q.addBindValue(customer.propertyNumber);
+
+    if (q.exec())
+    {
+        while (q.next())
+        {
+            data.push_back(Common::PurchaseStruct(q.value("Data").toDate(),
+                                                  q.value("Produkty_na_stacji_Nazwa").toString()));
+        }
+    }
+    else
+    {
+        qDebug() << q.lastError();
+        throw q.lastError().text();
+    }
+
+    return data;
+}
+
 } // namespace DataBaseApi
