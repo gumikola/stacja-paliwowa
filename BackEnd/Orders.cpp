@@ -99,38 +99,40 @@ void Orders::chosenDateChanged()
 
 void Orders::printCalculatedOrder()
 {
-    QVector<Common::OrdersStruct> databaseOrders = mDataBaseApi.getOrdersByDate(mSelectedDate);
+    //    QVector<Common::OrdersStruct> databaseOrders =
+    //    mDataBaseApi.getOrdersByDate(mSelectedDate);
 
-    Algorithms::CalculateOrder             test(databaseOrders);
-    QVector<QVector<Common::OrdersStruct>> calculated = test.GetOrder();
+    //    Algorithms::CalculateOrder             test(databaseOrders);
+    //    QVector<QVector<Common::OrdersStruct>> calculated = test.GetOrder();
 
-    int rowCnt = 0;
+    //    int rowCnt = 0;
 
-    mOrders.setRowCount(0);
-    for (int i = 0; i < calculated.size(); i++)
-    {
-        for (Common::OrdersStruct order : calculated[i])
-        {
-            int columnCnt = 0;
-            mOrders.insertRow(rowCnt);
-            mOrders.setItem(rowCnt, columnCnt++, new QTableWidgetItem(order.customer.name));
-            mOrders.setItem(rowCnt, columnCnt++, new QTableWidgetItem(order.customer.city));
-            mOrders.setItem(rowCnt, columnCnt++, new QTableWidgetItem(order.customer.street));
-            mOrders.setItem(rowCnt, columnCnt++,
-                            new QTableWidgetItem(order.customer.propertyNumber));
-            mOrders.setItem(rowCnt, columnCnt++,
-                            new QTableWidgetItem(QString::number(order.amount)));
-            mOrders.setItem(rowCnt, columnCnt++,
-                            new QTableWidgetItem(QString::number(order.totalPrice)));
-            mOrders.setItem(rowCnt, columnCnt++,
-                            new QTableWidgetItem(QString::number(order.establishedProfit)));
+    //    mOrders.setRowCount(0);
+    //    for (int i = 0; i < calculated.size(); i++)
+    //    {
+    //        for (Common::OrdersStruct order : calculated[i])
+    //        {
+    //            int columnCnt = 0;
+    //            mOrders.insertRow(rowCnt);
+    //            mOrders.setItem(rowCnt, columnCnt++, new QTableWidgetItem(order.customer.name));
+    //            mOrders.setItem(rowCnt, columnCnt++, new QTableWidgetItem(order.customer.city));
+    //            mOrders.setItem(rowCnt, columnCnt++, new QTableWidgetItem(order.customer.street));
+    //            mOrders.setItem(rowCnt, columnCnt++,
+    //                            new QTableWidgetItem(order.customer.propertyNumber));
+    //            mOrders.setItem(rowCnt, columnCnt++,
+    //                            new QTableWidgetItem(QString::number(order.amount)));
+    //            mOrders.setItem(rowCnt, columnCnt++,
+    //                            new QTableWidgetItem(QString::number(order.totalPrice)));
+    //            mOrders.setItem(rowCnt, columnCnt++,
+    //                            new QTableWidgetItem(QString::number(order.establishedProfit)));
 
-            mOrders.setItem(rowCnt, columnCnt++,
-                            new QTableWidgetItem(QString::number(i + 1))); // numer cysterny od 1
+    //            mOrders.setItem(rowCnt, columnCnt++,
+    //                            new QTableWidgetItem(QString::number(i + 1))); // numer cysterny
+    //                            od 1
 
-            rowCnt++;
-        }
-    }
+    //            rowCnt++;
+    //        }
+    //    }
 }
 
 void Orders::addOrderPressed()

@@ -177,11 +177,11 @@ QString FuelPriceChart::getChartDataFileName(Common::FuelType fuelType)
     // miki
     const QString pathFuelPrices = "../stacja-paliwowa/FuelPricesChartData/";
 #elif _WIN32
-    const QString pathFuelPrices =
-        "E:\\Studia\\9_sem\\Projekty\\System_zarzadzania_stacja_paliw\\stacja-"
-        "paliwowa\\FuelPricesChartData\\";
-//    const QString pathFuelPrices = "C:\\Users\\Igor\\Documents\\stacja\\stacja_master\\stacja-"
-//                                   "paliwowa\\FuelPricesChartData\\";
+    //    const QString pathFuelPrices =
+    //        "E:\\Studia\\9_sem\\Projekty\\System_zarzadzania_stacja_paliw\\stacja-"
+    //        "paliwowa\\FuelPricesChartData\\";
+    const QString pathFuelPrices = "C:\\Users\\Igor\\Documents\\stacja\\stacja_master\\stacja-"
+                                   "paliwowa\\FuelPricesChartData\\";
 #else
 #error Not supported
 #endif

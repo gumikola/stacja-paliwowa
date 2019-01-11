@@ -32,6 +32,8 @@ public:
     QVector<Common::PetrolInfoStruct> getPriceOfPetrol(uint             nbrOfElements,
                                                        Common::FuelType fuelType);
     void                              removeClient(Common::CustomerStruct& customer);
+    uint                              GetCustomerId(Common::CustomerStruct customer); // for igi
+    QVector<Common::Distances>        GetAllDistances();                              // for igi
 };
 
 } // namespace DataBaseApi

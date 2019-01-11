@@ -42,7 +42,8 @@ struct OrderParametersOutput
     uint   mIncome;
 
     OrderParametersOutput() {}
-    OrderParametersOutput(QTime travelTime, uint totalPrice, double margin, double distance, uint income)
+    OrderParametersOutput(QTime travelTime, uint totalPrice, double margin, double distance,
+                          uint income)
         : mTravelTime(travelTime)
         , mTotalPrice(totalPrice)
         , mPricePerLiter(margin)
@@ -75,11 +76,12 @@ struct OrdersStruct
     QDate          date;
     double         totalPrice;
     CustomerStruct customer;
-    FuelType        fuelType;
+    FuelType       fuelType;
     uint           establishedProfit;
 
     OrdersStruct(uint amout = 0, QDate date = QDate().currentDate(), double totalPrice = 0,
-                 CustomerStruct customer = CustomerStruct(),  FuelType fuelType = FuelType::ERR, uint establishedProfit = 0)
+                 CustomerStruct customer = CustomerStruct(), FuelType fuelType = FuelType::ERR,
+                 uint establishedProfit = 0)
         : amount(amout)
         , date(date)
         , totalPrice(totalPrice)
@@ -90,13 +92,21 @@ struct OrdersStruct
     }
 };
 
+struct Distances
+{
+    uint a;
+    uint b;
+    uint time;
+};
+
 struct PetrolInfoStruct
 {
     double   price;
     QDate    date;
     FuelType fuelType;
 
-    PetrolInfoStruct(double price = 0, QDate date = QDate().currentDate(), FuelType fuelType = FuelType::ERR)
+    PetrolInfoStruct(double price = 0, QDate date = QDate().currentDate(),
+                     FuelType fuelType = FuelType::ERR)
         : price(price)
         , date(date)
         , fuelType(fuelType)
