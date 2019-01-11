@@ -30,6 +30,8 @@ class FuelPriceChart : public QObject
     QDateTime                            mDateTimeEnd;
     QDateTime                            mDateTimeStart;
     uint                                 mSize;
+    double                               mMax;
+    double                               mMin;
 
     void    fillSeries(Common::FuelType fuelType);
     QString getChartDataFileName(Common::FuelType);

@@ -88,6 +88,7 @@ void FuelPriceChart::setUpYAxis()
     mAxisY->setLabelFormat("%.2f");
     mAxisY->setTickCount(15);
     mAxisY->setTitleText("Cena paliwa");
+    mAxisY->setRange(mMin - 50, mMax + 50);
     mChart->addAxis(mAxisY, Qt::AlignLeft);
 
     mSeries->first.attachAxis(mAxisY);
@@ -126,6 +127,8 @@ void FuelPriceChart::fillSeries(Common::FuelType fuelType)
 
     QDateTime dateTime;
     mSize = 0;
+    mMin  = 20000;
+    mMax  = 0;
 
     while (!fileStream.atEnd())
     {
@@ -144,15 +147,23 @@ void FuelPriceChart::fillSeries(Common::FuelType fuelType)
             mDateTimeEnd = dateTime;
             once         = false;
         }
+
+        double val = list.last().toDouble();
+
+        if (val > mMax)
+            mMax = val;
+        if (val < mMin)
+            mMin = val;
+
         if (dateTime.date() < dateTime.currentDateTime().date())
-            mSeries->first.append(dateTime.toMSecsSinceEpoch(), list.last().toDouble());
+            mSeries->first.append(dateTime.toMSecsSinceEpoch(), val);
         else if (dateTime.date() == dateTime.currentDateTime().date())
         {
-            mSeries->first.append(dateTime.toMSecsSinceEpoch(), list.last().toDouble());
-            mSeries->second.append(dateTime.toMSecsSinceEpoch(), list.last().toDouble());
+            mSeries->first.append(dateTime.toMSecsSinceEpoch(), val);
+            mSeries->second.append(dateTime.toMSecsSinceEpoch(), val);
         }
         else
-            mSeries->second.append(dateTime.toMSecsSinceEpoch(), list.last().toDouble());
+            mSeries->second.append(dateTime.toMSecsSinceEpoch(), val);
     }
 
     file.close();

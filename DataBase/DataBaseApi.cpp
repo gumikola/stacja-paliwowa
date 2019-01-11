@@ -103,6 +103,28 @@ QVector<Common::CustomerStruct> DataBaseApi::getClients()
     return clients;
 }
 
+void DataBaseApi::editCustomer(const Common::CustomerStruct& prev,
+                               const Common::CustomerStruct& actual)
+{
+    QSqlQuery q;
+
+    q.prepare("UPDATE Klienci_hurtowi SET Odbiorca=?, Miasto=?, Ulica=?, Numer=? WHERE Odbiorca=? "
+              "AND Miasto=? AND Ulica=? AND Numer=?;");
+    q.bindValue(0, actual.name);
+    q.bindValue(1, actual.city);
+    q.bindValue(2, actual.street);
+    q.bindValue(3, actual.propertyNumber);
+
+    q.bindValue(4, prev.name);
+    q.bindValue(5, prev.city);
+    q.bindValue(6, prev.street);
+    q.bindValue(7, prev.propertyNumber);
+
+    q.exec();
+    if (q.lastError().isValid())
+        qDebug() << q.lastError();
+}
+
 int DataBaseApi::addCustomer(const Common::CustomerStruct& customer)
 {
     QSqlQuery q;

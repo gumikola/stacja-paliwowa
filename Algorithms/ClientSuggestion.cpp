@@ -9,13 +9,11 @@ ClientSuggestion::ClientSuggestion(const QVector<QString>& previousOrderedProduc
 uint ClientSuggestion::GetNumberOfElemnts(QString key)
 {
     uint Counter = 0;
-    for (int i = 0; i < mPreviousOrderedProductsList.size(); i++)
-    {
-        if (mPreviousOrderedProductsList.at(i) == key)
-        {
+
+    for (QString order : mPreviousOrderedProductsList)
+        if (order == key)
             Counter++;
-        }
-    }
+
     return Counter;
 }
 QVector<QString> ClientSuggestion::GetSuggestedProducts(void)

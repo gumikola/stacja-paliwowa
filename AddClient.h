@@ -27,8 +27,6 @@ public:
     explicit AddClient(DataBaseApi::DataBaseApi& databaseApi);
     void exec();
 
-signals:
-
 public slots:
     void addPressed();
     void cancelPressed();

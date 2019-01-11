@@ -24,10 +24,11 @@ public:
     QMap<Common::FuelTankType, uint32_t> getTanksFillLevel(void);
     QVector<Common::OrdersStruct>        getOrdersByDate(QDate date);
     QVector<Common::CustomerStruct>      getClients();
-    int                                  addCustomer(const Common::CustomerStruct& customer);
-    void                                 addOrder(const Common::OrdersStruct& order);
-    void                              updateTankFillLevel(Common::FuelTankType tank, double number);
-    void                              addPriceOfPetrol(Common::PetrolInfoStruct info);
+    void editCustomer(const Common::CustomerStruct& prev, const Common::CustomerStruct& actual);
+    int  addCustomer(const Common::CustomerStruct& customer);
+    void addOrder(const Common::OrdersStruct& order);
+    void updateTankFillLevel(Common::FuelTankType tank, double number);
+    void addPriceOfPetrol(Common::PetrolInfoStruct info);
     QVector<Common::PetrolInfoStruct> getPriceOfPetrol(uint             nbrOfElements,
                                                        Common::FuelType fuelType);
     void                              removeClient(Common::CustomerStruct& customer);

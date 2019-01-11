@@ -1,6 +1,7 @@
 #include "ClientsTab.h"
 #include "AddClient.h"
 #include "DataBase/DataBaseApi.h"
+#include "EditClient.h"
 #include <ui_mainwindow.h>
 
 namespace BackEnd {
@@ -142,10 +143,10 @@ void ClientsTab::displayMenu(QPoint pos)
             tmp.street         = mTable.item(row, 2)->text();
             tmp.propertyNumber = mTable.item(row, 3)->text();
 
-            //        EditClientDetails window(tmp, mDatabase); #TODO
-            //        window.exec();    #TODO
+            EditClient window(mDatabaseApi, tmp);
+            window.exec();
 
-            //        printClients(mDatabase.getClients()); #TODO
+            printClients();
         }
     }
 } // namespace BackEnd
