@@ -16,9 +16,11 @@ class SuggestedProducts : public QObject
     DataBaseApi::DataBaseApi& mDatabaseApi;
     QTableWidget&             mClientTable;
     QTableWidget&             mProductsTable;
+    Common::CustomerStruct    mChosenCustomer;
 
     void printDefaultClientTable();
     void printDefaultProductsTable();
+    void printSuggestedProducts();
 
 public:
     explicit SuggestedProducts(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& databaseApi);
@@ -30,6 +32,7 @@ public slots:
     void clientChoosed(const Common::CustomerStruct& client);
     void addNewCustomerPressed();
     void tabChanged(int id);
+    void addNewPurchasePressed();
 };
 
 } // namespace BackEnd

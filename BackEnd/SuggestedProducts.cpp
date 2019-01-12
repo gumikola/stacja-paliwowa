@@ -1,8 +1,12 @@
 #include "SuggestedProducts.h"
 #include "AddClient.h"
+#include "AddClientPurchase.h"
+#include "Algorithms/ClientSuggestion.h"
 #include "ChooseCustomer.h"
 #include "Common.h"
 #include "DataBase/DataBaseApi.h"
+
+#include <QMessageBox>
 
 namespace BackEnd {
 
@@ -17,6 +21,8 @@ SuggestedProducts::SuggestedProducts(Ui::MainWindow* ui, DataBaseApi::DataBaseAp
     connect(ui->SuggestedProductsTabAddNewClient, SIGNAL(pressed()), this,
             SLOT(addNewCustomerPressed()));
     connect(ui->OptionsTab, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
+    connect(ui->SuggestedProductsTabAddNewPurchase, SIGNAL(pressed()), this,
+            SLOT(addNewPurchasePressed()));
 
     printDefaultClientTable();
     printDefaultProductsTable();
@@ -32,6 +38,9 @@ void SuggestedProducts::chooseCustomerPressed()
 
 void SuggestedProducts::clientChoosed(const Common::CustomerStruct& client)
 {
+    qDebug("clientChoosed");
+    mChosenCustomer = client;
+    printSuggestedProducts();
     int rowCnt = 0;
     mClientTable.setRowCount(rowCnt);
     int columnCnt = 0;
@@ -57,6 +66,23 @@ void SuggestedProducts::tabChanged(int id)
     {
         printDefaultClientTable();
         printDefaultProductsTable();
+    }
+}
+
+void SuggestedProducts::addNewPurchasePressed()
+{
+    if (mClientTable.rowCount() > 0)
+    {
+        AddClientPurchase window(mDatabaseApi, mChosenCustomer);
+        window.exec();
+        printSuggestedProducts();
+    }
+    else
+    {
+        QMessageBox msgBox;
+        msgBox.setFont(QFont(QString("Arial"), 14));
+        msgBox.setText("Najpierw musisz wybrać klienta.");
+        msgBox.exec();
     }
 }
 
@@ -117,6 +143,26 @@ void SuggestedProducts::printDefaultProductsTable()
             mProductsTable.setColumnWidth(i, 3 * mProductsTable.width() / 4 - 16);
         else
             mProductsTable.setColumnWidth(i, (mProductsTable.width() / 4) / (columnCnt - 1));
+    }
+}
+
+void SuggestedProducts::printSuggestedProducts()
+{
+    Algorithms::ClientSuggestion    alg(mDatabaseApi.getClientPurchases(mChosenCustomer));
+    QVector<Common::PurchaseStruct> suggestedProducts = alg.getSuggestedProducts(5);
+
+    int rowCnt = 0;
+    mProductsTable.setRowCount(rowCnt);
+
+    for (Common::PurchaseStruct purchase : suggestedProducts)
+    {
+        int columnCnt = 0;
+        mProductsTable.insertRow(rowCnt);
+        mProductsTable.setVerticalHeaderItem(rowCnt, new QTableWidgetItem());
+        mProductsTable.setItem(rowCnt, columnCnt++,
+                               new QTableWidgetItem(QString::number(rowCnt + 1)));
+        mProductsTable.setItem(rowCnt, columnCnt++, new QTableWidgetItem(purchase.nameOfProduct));
+        rowCnt++;
     }
 }
 

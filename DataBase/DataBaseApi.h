@@ -32,14 +32,15 @@ public:
     QVector<Common::PetrolInfoStruct> getPriceOfPetrol(uint             nbrOfElements,
                                                        Common::FuelType fuelType);
     void                              removeClient(Common::CustomerStruct& customer);
-    uint                              getCustomerId(Common::CustomerStruct customer); // for igi
-    QVector<Common::DistancesStruct>  getAllDistances();                              // for igi
-    QVector<Common::PurchaseStruct>   getClientPurchases(Common::CustomerStruct customer);
-    void        addPurchase(Common::PurchaseStruct purchase, Common::CustomerStruct customer);
-    QStringList getProuducts();
-    void        addProduct(QString product);
-    void        removeProduct(QString product);
-    void        editProduct(QString oldName, QString newName);
+    uint getCustomerId(const Common::CustomerStruct& customer); // for igi
+    QVector<Common::DistancesStruct> getAllDistances();         // for igi
+    QVector<Common::PurchaseStruct>  getClientPurchases(const Common::CustomerStruct& customer);
+    void                             addPurchase(const Common::PurchaseStruct& purchase,
+                                                 const Common::CustomerStruct& customer);
+    QStringList                      getProuducts();
+    void                             addProduct(QString product);
+    void                             removeProduct(QString product);
+    void                             editProduct(QString oldName, QString newName);
 };
 
 } // namespace DataBaseApi

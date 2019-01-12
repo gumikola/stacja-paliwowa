@@ -52,7 +52,7 @@ QVector<Common::OrdersStruct> DataBaseApi::getOrdersByDate(QDate date)
 
     q.prepare(QString("SELECT * FROM Zamowienia left join Klienci_hurtowi on "
                       "Zamowienia.Klienci_hurtowi_ID=Klienci_hurtowi.ID WHERE "
-                      "`Data` LIKE '%1'")
+                      "`Data` LIKE '%1';")
                   .arg(date.toString("'%'yyyy-MM-dd'%'")));
 
     if (q.exec())
@@ -64,7 +64,7 @@ QVector<Common::OrdersStruct> DataBaseApi::getOrdersByDate(QDate date)
                 Common::CustomerStruct(q.value("Odbiorca").toString(), q.value("Miasto").toString(),
                                        q.value("Ulica").toString(), q.value("Numer").toString()),
                 Common::getFuelTypeEnum(q.value("Typ_Paliwa_Nazwa").toString()),
-                q.value("Przychod").toDouble()));
+                q.value("Przychod").toUInt()));
         }
     }
     else
@@ -82,7 +82,7 @@ QVector<Common::CustomerStruct> DataBaseApi::getClients()
 
     QSqlQuery q;
 
-    q.prepare("SELECT * FROM Klienci_hurtowi order by Odbiorca");
+    q.prepare("SELECT * FROM Klienci_hurtowi order by Odbiorca;");
 
     if (q.exec())
     {
@@ -137,7 +137,7 @@ int DataBaseApi::addCustomer(const Common::CustomerStruct& customer)
 
     q.prepare("INSERT OR REPLACE INTO "
               "`Klienci_hurtowi`(`Odbiorca`,`Miasto`,`Ulica`,`Numer`) VALUES "
-              "(?,?,?,?)");
+              "(?,?,?,?);");
     q.bindValue(0, customer.name);
     q.bindValue(1, customer.city);
     q.bindValue(2, customer.street);
@@ -159,7 +159,7 @@ void DataBaseApi::addOrder(const Common::OrdersStruct& order)
 
     q.prepare("INSERT INTO "
               "`Zamowienia`(`Ilosc`,`Data`,`Cena`,`Klienci_hurtowi_ID`,`Typ_paliwa_"
-              "Nazwa`,`Marza`) VALUES (?,?,?,?,?,?)");
+              "Nazwa`,`Marza`) VALUES (?,?,?,?,?,?);");
     q.bindValue(0, order.amount);
     q.bindValue(1, order.date);
     q.bindValue(2, order.totalPrice);
@@ -196,7 +196,7 @@ void DataBaseApi::addPriceOfPetrol(Common::PetrolInfoStruct info)
     QSqlQuery q;
 
     q.prepare("INSERT INTO "
-              "`Cena_paliwa`(`Data`,`Cena`,`Typ_paliwa`) VALUES (?,?,?)");
+              "`Cena_paliwa`(`Data`,`Cena`,`Typ_paliwa`) VALUES (?,?,?);");
     q.bindValue(0, info.date);
     q.bindValue(1, info.price);
     q.bindValue(2, Common::getFuelTypeName(info.fuelType));
@@ -215,7 +215,7 @@ QVector<Common::PetrolInfoStruct> DataBaseApi::getPriceOfPetrol(uint            
     QVector<Common::PetrolInfoStruct> data;
     QSqlQuery                         q;
 
-    q.prepare(QString("select * from Cena_paliwa where Typ_paliwa=(?) order by Data LIMIT (?)"));
+    q.prepare(QString("select * from Cena_paliwa where Typ_paliwa=(?) order by Data LIMIT (?);"));
     q.bindValue(0, Common::getFuelTypeName(fuelType));
     q.bindValue(1, nbrOfElements);
 
@@ -260,21 +260,21 @@ void DataBaseApi::removeClient(Common::CustomerStruct& customer)
     }
 }
 
-uint DataBaseApi::getCustomerId(Common::CustomerStruct customer)
+uint DataBaseApi::getCustomerId(const Common::CustomerStruct& customer)
 {
     QSqlQuery q;
 
     q.prepare("SELECT ID FROM Klienci_hurtowi WHERE Odbiorca = ? and Miasto = ? and Ulica = ? and "
-              "Numer = ?");
+              "Numer = ?;");
     q.bindValue(0, customer.name);
     q.bindValue(1, customer.city);
     q.bindValue(2, customer.street);
-    q.bindValue(4, customer.propertyNumber);
+    q.bindValue(3, customer.propertyNumber);
 
     if (q.exec())
     {
         if (q.next())
-            return q.value(0).toUInt();
+            return q.value("ID").toUInt();
         else
             throw QString("Database: Client not found!");
     }
@@ -283,7 +283,6 @@ uint DataBaseApi::getCustomerId(Common::CustomerStruct customer)
         qDebug() << q.lastError();
         throw q.lastError().text();
     }
-    return 0;
 }
 
 QVector<Common::DistancesStruct> DataBaseApi::getAllDistances()
@@ -291,7 +290,7 @@ QVector<Common::DistancesStruct> DataBaseApi::getAllDistances()
     QVector<Common::DistancesStruct> data;
     QSqlQuery                        q;
 
-    q.prepare("SELECT a,b,czas from Trasy");
+    q.prepare("SELECT a,b,czas from Trasy;");
 
     if (q.exec())
     {
@@ -310,20 +309,21 @@ QVector<Common::DistancesStruct> DataBaseApi::getAllDistances()
     return data;
 }
 
-QVector<Common::PurchaseStruct> DataBaseApi::getClientPurchases(Common::CustomerStruct customer)
+QVector<Common::PurchaseStruct>
+DataBaseApi::getClientPurchases(const Common::CustomerStruct& customer)
 {
     QVector<Common::PurchaseStruct> data;
     QSqlQuery                       q;
 
-    q.prepare("SELECT * FROM Zakupy_klientow inner join Klienci_hurtowi"
-              "ON Zakupy_klientow.Klienci_hurtowi_ID = Klienci_hurtowi.ID"
-              "and  Klienci_hurtowi.Odbiorca = ?  and Klienci_hurtowi.Miasto = ? and "
-              "Klienci_hurtowi.Ulica = ? and Klienci_hurtowi.Numer = ?");
+    q.prepare("SELECT * FROM Zakupy_klientow inner join Klienci_hurtowi "
+              "ON Zakupy_klientow.Klienci_hurtowi_ID = Klienci_hurtowi.ID "
+              "WHERE  Klienci_hurtowi.Odbiorca = ?  and Klienci_hurtowi.Miasto = ? and "
+              "Klienci_hurtowi.Ulica = ? and Klienci_hurtowi.Numer = ?;");
 
-    q.addBindValue(customer.name);
-    q.addBindValue(customer.city);
-    q.addBindValue(customer.street);
-    q.addBindValue(customer.propertyNumber);
+    q.bindValue(0, customer.name);
+    q.bindValue(1, customer.city);
+    q.bindValue(2, customer.street);
+    q.bindValue(3, customer.propertyNumber);
 
     if (q.exec())
     {
@@ -342,15 +342,16 @@ QVector<Common::PurchaseStruct> DataBaseApi::getClientPurchases(Common::Customer
     return data;
 }
 
-void DataBaseApi::addPurchase(Common::PurchaseStruct purchase, Common::CustomerStruct customer)
+void DataBaseApi::addPurchase(const Common::PurchaseStruct& purchase,
+                              const Common::CustomerStruct& customer)
 {
     QSqlQuery q;
 
     q.prepare("INSERT OR REPLACE INTO Zakupy_klientow(Data, Klienci_hurtowi_ID, "
-              "Produkty_na_stacji_Nazwa) VALUES (?, ?, ?)");
+              "Produkty_na_stacji_Nazwa) VALUES (?, ?, ?);");
     q.bindValue(0, purchase.date);
     q.bindValue(1, getCustomerId(customer));
-    q.bindValue(3, purchase.nameOfProduct);
+    q.bindValue(2, purchase.nameOfProduct);
 
     q.exec();
     if (q.lastError().isValid())
@@ -365,7 +366,7 @@ QStringList DataBaseApi::getProuducts()
     QStringList data;
     QSqlQuery   q;
 
-    q.prepare("SELECT * FROM Produkty_na_stacji");
+    q.prepare("SELECT * FROM Produkty_na_stacji;");
 
     if (q.exec())
     {
@@ -387,7 +388,7 @@ void DataBaseApi::addProduct(QString product)
 {
     QSqlQuery q;
 
-    q.prepare("INSERT or REPLACE INTO Produkty_na_stacji(Nazwa) values (?))");
+    q.prepare("INSERT or REPLACE INTO Produkty_na_stacji(Nazwa) values (?));");
     q.bindValue(0, product);
 
     q.exec();
@@ -402,7 +403,7 @@ void DataBaseApi::removeProduct(QString product)
 {
     QSqlQuery q;
 
-    q.prepare("DELETE FROM Produkty_na_stacji WHERE Nazwa=?");
+    q.prepare("DELETE FROM Produkty_na_stacji WHERE Nazwa=?;");
     q.bindValue(0, product);
 
     q.exec();
@@ -417,7 +418,7 @@ void DataBaseApi::editProduct(QString oldName, QString newName)
 {
     QSqlQuery q;
 
-    q.prepare("UPDATE Produkty_na_stacji SET Nazwa=? where Nazwa=?");
+    q.prepare("UPDATE Produkty_na_stacji SET Nazwa=? where Nazwa=?;");
     q.bindValue(0, newName);
     q.bindValue(1, oldName);
 
