@@ -13,8 +13,6 @@ AddClientPurchase::AddClientPurchase(DataBaseApi::DataBaseApi&     databaseApi,
     , mDatabaseApi(databaseApi)
     , mCustomer(customer)
 {
-    qDebug() << __PRETTY_FUNCTION__;
-
     mUi->setupUi(&mDialog);
     connect(mUi->addPurchaseButton, SIGNAL(pressed()), this, SLOT(addPurchasePressed()));
     connect(mUi->cancelButton, SIGNAL(pressed()), this, SLOT(cancelPressed()));

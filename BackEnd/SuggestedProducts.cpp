@@ -15,7 +15,6 @@ SuggestedProducts::SuggestedProducts(Ui::MainWindow* ui, DataBaseApi::DataBaseAp
     , mClientTable(*ui->SuggestedProductsTabChoosenClientTable)
     , mProductsTable(*ui->SuggestedProductsTabProductsTable)
 {
-
     connect(ui->SuggestedProductsTabChooseClientFromDatabase, SIGNAL(pressed()), this,
             SLOT(chooseCustomerPressed()));
     connect(ui->SuggestedProductsTabAddNewClient, SIGNAL(pressed()), this,
@@ -30,6 +29,8 @@ SuggestedProducts::SuggestedProducts(Ui::MainWindow* ui, DataBaseApi::DataBaseAp
 
 void SuggestedProducts::chooseCustomerPressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     ChooseCustomer window(mDatabaseApi);
     connect(&window, SIGNAL(clientChosed(const Common::CustomerStruct&)), this,
             SLOT(clientChoosed(const Common::CustomerStruct&)));
@@ -38,7 +39,8 @@ void SuggestedProducts::chooseCustomerPressed()
 
 void SuggestedProducts::clientChoosed(const Common::CustomerStruct& client)
 {
-    qDebug("clientChoosed");
+    qDebug() << __PRETTY_FUNCTION__;
+
     mChosenCustomer = client;
     printSuggestedProducts();
     int rowCnt = 0;
@@ -46,14 +48,24 @@ void SuggestedProducts::clientChoosed(const Common::CustomerStruct& client)
     int columnCnt = 0;
     mClientTable.insertRow(rowCnt);
     mClientTable.setVerticalHeaderItem(rowCnt, new QTableWidgetItem());
-    mClientTable.setItem(rowCnt, columnCnt++, new QTableWidgetItem(client.name));
-    mClientTable.setItem(rowCnt, columnCnt++, new QTableWidgetItem(client.city));
-    mClientTable.setItem(rowCnt, columnCnt++, new QTableWidgetItem(client.street));
-    mClientTable.setItem(rowCnt, columnCnt++, new QTableWidgetItem(client.propertyNumber));
+
+    mClientTable.setItem(rowCnt, columnCnt, new QTableWidgetItem(client.name));
+    mClientTable.item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignCenter);
+
+    mClientTable.setItem(rowCnt, columnCnt, new QTableWidgetItem(client.city));
+    mClientTable.item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignCenter);
+
+    mClientTable.setItem(rowCnt, columnCnt, new QTableWidgetItem(client.street));
+    mClientTable.item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignCenter);
+
+    mClientTable.setItem(rowCnt, columnCnt, new QTableWidgetItem(client.propertyNumber));
+    mClientTable.item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignCenter);
 }
 
 void SuggestedProducts::addNewCustomerPressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     AddClient window(mDatabaseApi);
     connect(&window, SIGNAL(clientAdded(const Common::CustomerStruct&)), this,
             SLOT(clientChoosed(const Common::CustomerStruct&)));
@@ -64,6 +76,7 @@ void SuggestedProducts::tabChanged(int id)
 {
     if (id == 4)
     {
+        qDebug() << __PRETTY_FUNCTION__;
         printDefaultClientTable();
         printDefaultProductsTable();
     }
@@ -71,6 +84,8 @@ void SuggestedProducts::tabChanged(int id)
 
 void SuggestedProducts::addNewPurchasePressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     if (mClientTable.rowCount() > 0)
     {
         AddClientPurchase window(mDatabaseApi, mChosenCustomer);
@@ -88,7 +103,9 @@ void SuggestedProducts::addNewPurchasePressed()
 
 void SuggestedProducts::printDefaultClientTable()
 {
-    mProductsTable.setSelectionMode(QAbstractItemView::NoSelection);
+    qDebug() << __PRETTY_FUNCTION__;
+
+    mClientTable.setSelectionMode(QAbstractItemView::NoSelection);
     mClientTable.setContextMenuPolicy(Qt::CustomContextMenu);
 
     int columnCnt = 0;
@@ -122,6 +139,8 @@ void SuggestedProducts::printDefaultClientTable()
 
 void SuggestedProducts::printDefaultProductsTable()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     mProductsTable.setSelectionMode(QAbstractItemView::NoSelection);
     mProductsTable.setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -148,6 +167,8 @@ void SuggestedProducts::printDefaultProductsTable()
 
 void SuggestedProducts::printSuggestedProducts()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     Algorithms::ClientSuggestion    alg(mDatabaseApi.getClientPurchases(mChosenCustomer));
     QVector<Common::PurchaseStruct> suggestedProducts = alg.getSuggestedProducts(5);
 
@@ -159,9 +180,13 @@ void SuggestedProducts::printSuggestedProducts()
         int columnCnt = 0;
         mProductsTable.insertRow(rowCnt);
         mProductsTable.setVerticalHeaderItem(rowCnt, new QTableWidgetItem());
-        mProductsTable.setItem(rowCnt, columnCnt++,
+
+        mProductsTable.setItem(rowCnt, columnCnt,
                                new QTableWidgetItem(QString::number(rowCnt + 1)));
-        mProductsTable.setItem(rowCnt, columnCnt++, new QTableWidgetItem(purchase.nameOfProduct));
+        mProductsTable.item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignCenter);
+
+        mProductsTable.setItem(rowCnt, columnCnt, new QTableWidgetItem(purchase.nameOfProduct));
+        mProductsTable.item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignCenter);
         rowCnt++;
     }
 }

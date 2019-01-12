@@ -3,11 +3,8 @@
 
 #include "DataBase/DataBaseApi.h"
 #include <QCalendarWidget>
-#include <QMainWindow>
 #include <QObject>
-#include <QPushButton>
-#include <QTableWidget>
-#include <QTextEdit>
+#include <ui_mainwindow.h>
 
 #include "ui_mainwindow.h"
 
@@ -19,7 +16,6 @@ class Orders : QObject
     QTableWidget&            mOrders;
     QPushButton&             mWyswietlButton;
     QCalendarWidget&         mCalendar;
-    QTextEdit&               mAdditionalInformation;
     DataBaseApi::DataBaseApi mDataBaseApi;
     QPushButton&             mAddOrderButton;
 
@@ -31,12 +27,17 @@ class Orders : QObject
 public:
     Orders(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& dataBaseApi);
 
-    void printEmptyTable(void);
+    int  printEmptyOrdersTable(void);
+    int  addCarColumnIntoOrdersTable(int columnCnt);
+    void setWidthOfOrdersTableColumns(int columnCnt);
 
 private slots:
     void wyswietlPressed();
     void chosenDateChanged();
     void addOrderPressed();
+    void displayMenu(QPoint pos);
+    void removeOrderPressed();
+    void newOrderAdded(const Common::OrdersStruct& order);
 };
 
 } // namespace BackEnd

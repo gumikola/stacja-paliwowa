@@ -21,6 +21,8 @@ FuelTanks::FuelTanks(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& databaseApi)
 
 void FuelTanks::displayEditWindow(Common::FuelTankType tank)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     UpdateTanksFillLevel window(mDatabaseApi, tank);
 
     QObject::connect(&window, SIGNAL(tanksFillLevelChanged()), this, SLOT(displayTanksFillLevel()));
@@ -30,6 +32,8 @@ void FuelTanks::displayEditWindow(Common::FuelTankType tank)
 
 void FuelTanks::displayTanksFillLevel()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QMap<Common::FuelTankType, uint32_t> fuelTanksFillLevel = mDatabaseApi.getTanksFillLevel();
 
     mUi->FuelTankStation95->display(
@@ -49,6 +53,8 @@ void FuelTanks::displayTanksFillLevel()
 
 void FuelTanks::tabChanged(int id)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     if (id == 1)
     {
         displayTanksFillLevel();
@@ -57,36 +63,50 @@ void FuelTanks::tabChanged(int id)
 
 void FuelTanks::editONPressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     displayEditWindow(Common::FuelTankType::ON);
 }
 
 void FuelTanks::editON1Pressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     displayEditWindow(Common::FuelTankType::ON1);
 }
 
 void FuelTanks::editON2Pressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     displayEditWindow(Common::FuelTankType::ON2);
 }
 
 void FuelTanks::editON3Pressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     displayEditWindow(Common::FuelTankType::ON3);
 }
 
 void FuelTanks::editOOPressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     displayEditWindow(Common::FuelTankType::OO);
 }
 
 void FuelTanks::editPB95Pressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     displayEditWindow(Common::FuelTankType::PB95);
 }
 
 void FuelTanks::editPB98Pressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     displayEditWindow(Common::FuelTankType::PB98);
 }
 

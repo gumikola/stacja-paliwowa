@@ -19,7 +19,6 @@ AddOrder::AddOrder(DataBaseApi::DataBaseApi& databaseApi)
     , mDatabaseApi(databaseApi)
     , mChoosenFuelType(Common::FuelType::ERR)
 {
-
     mUi->setupUi(&mDialog);
 
     connect(mUi->addOrderButton, SIGNAL(pressed()), this, SLOT(addOrderPressed()));
@@ -39,49 +38,67 @@ AddOrder::AddOrder(DataBaseApi::DataBaseApi& databaseApi)
 
 void AddOrder::exec()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     mDialog.exec();
 }
 
 void AddOrder::chosenDateChanged()
 {
     mSelectedDate = mUi->date->selectedDate();
-
-    qDebug("chosenDateChanged pressed %d:%d:%d", mSelectedDate.day(), mSelectedDate.month(),
-           mSelectedDate.year());
+    qDebug() << __PRETTY_FUNCTION__ << "Chosen date: " << mSelectedDate;
 }
 
 void AddOrder::chooseCustomerPressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     ChooseCustomer window(mDatabaseApi);
     connect(&window, SIGNAL(clientChosed(const Common::CustomerStruct&)), this,
-            SLOT(clientChoosed(const Common::CustomerStruct&)));
+            SLOT(clientChosen(const Common::CustomerStruct&)));
     window.exec();
 }
 
-void AddOrder::clientChoosed(const Common::CustomerStruct& client)
+void AddOrder::clientChosen(const Common::CustomerStruct& client)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    mChosenCustomer = client;
+
     int rowCnt = 0;
     mUi->choosenClientTable->setRowCount(rowCnt);
     int columnCnt = 0;
     mUi->choosenClientTable->insertRow(rowCnt);
     mUi->choosenClientTable->setVerticalHeaderItem(rowCnt, new QTableWidgetItem());
-    mUi->choosenClientTable->setItem(rowCnt, columnCnt++, new QTableWidgetItem(client.name));
-    mUi->choosenClientTable->setItem(rowCnt, columnCnt++, new QTableWidgetItem(client.city));
-    mUi->choosenClientTable->setItem(rowCnt, columnCnt++, new QTableWidgetItem(client.street));
-    mUi->choosenClientTable->setItem(rowCnt, columnCnt++,
+
+    mUi->choosenClientTable->setItem(rowCnt, columnCnt, new QTableWidgetItem(client.name));
+    mUi->choosenClientTable->item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignHCenter);
+
+    mUi->choosenClientTable->setItem(rowCnt, columnCnt, new QTableWidgetItem(client.city));
+    mUi->choosenClientTable->item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignHCenter);
+
+    mUi->choosenClientTable->setItem(rowCnt, columnCnt, new QTableWidgetItem(client.street));
+    mUi->choosenClientTable->item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignHCenter);
+
+    mUi->choosenClientTable->setItem(rowCnt, columnCnt,
                                      new QTableWidgetItem(client.propertyNumber));
+    mUi->choosenClientTable->item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignHCenter);
 }
 
 void AddOrder::addNewCustomerPressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     AddClient window(mDatabaseApi);
     connect(&window, SIGNAL(clientAdded(const Common::CustomerStruct&)), this,
-            SLOT(clientChoosed(const Common::CustomerStruct&)));
+            SLOT(clientChosen(const Common::CustomerStruct&)));
     window.exec();
 }
 
 QDate AddOrder::getDate()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     if (mSelectedDate.isNull())
         throw QString("Data realizacji zamowienia nie zostala dodana!");
     return mSelectedDate;
@@ -89,6 +106,8 @@ QDate AddOrder::getDate()
 
 uint AddOrder::getAmount()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QString tmp = mUi->amount->text();
 
     if (not tmp.size())
@@ -105,6 +124,8 @@ uint AddOrder::getAmount()
 
 uint AddOrder::getIncome()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QString tmp = mUi->income->text();
 
     if (not tmp.size())
@@ -121,6 +142,8 @@ uint AddOrder::getIncome()
 
 Common::FuelType AddOrder::getFuelType()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     if (mChoosenFuelType == Common::FuelType::ERR)
         throw QString("Nie wybrano typu paliwa!");
 
@@ -129,6 +152,8 @@ Common::FuelType AddOrder::getFuelType()
 
 void AddOrder::printDefaultClientsTable()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     mUi->choosenClientTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mUi->choosenClientTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mUi->choosenClientTable->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -165,6 +190,8 @@ void AddOrder::printDefaultClientsTable()
 }
 void AddOrder::clearWindow()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     mUi->fuelTypeBox->setCurrentIndex(0);
     mUi->amount->clear();
     mUi->income->clear();
@@ -176,6 +203,8 @@ void AddOrder::clearWindow()
 
 void AddOrder::calculatePressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     try
     {
         getFuelType();
@@ -185,7 +214,7 @@ void AddOrder::calculatePressed()
         Common::OrdersStruct tmp;
 
         tmp.amount            = getAmount();
-        tmp.customer          = {};
+        tmp.customer          = mChosenCustomer;
         tmp.date              = getDate();
         tmp.fuelType          = getFuelType();
         tmp.establishedProfit = getIncome();
@@ -206,12 +235,12 @@ void AddOrder::calculatePressed()
         msgBox.setText(e);
         msgBox.exec();
     }
-
-    qDebug("calculatePressed");
 }
 
 void AddOrder::addOrderPressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QMessageBox msgBox;
     try
     {
@@ -229,11 +258,12 @@ void AddOrder::addOrderPressed()
         tmp.totalPrice = price.GetOrderStruct().mTotalPrice;
         mDatabaseApi.addOrder(tmp);
 
+        emit newOrderAdded(tmp);
         msgBox.setFont(QFont(QString("Arial"), 14));
         msgBox.setText(QString("Zamówienie dodane."));
         msgBox.exec();
 
-        clearWindow();
+        mDialog.close();
     }
     catch (QString& e)
     {
@@ -242,13 +272,12 @@ void AddOrder::addOrderPressed()
         msgBox.setText(e);
         msgBox.exec();
     }
-
-    qDebug("addOrderPressed");
 }
 
 void AddOrder::fuelTypeChanged(int typeID)
 {
-    qDebug("FuelType changed to %d", typeID);
+    qDebug() << __PRETTY_FUNCTION__ << " Fuel type changed to:"
+             << Common::getFuelTypeName(static_cast<Common::FuelType>(typeID));
     switch (typeID)
     {
     case 0:

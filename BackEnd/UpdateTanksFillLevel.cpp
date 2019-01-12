@@ -27,11 +27,15 @@ UpdateTanksFillLevel::UpdateTanksFillLevel(DataBaseApi::DataBaseApi&   dataBaseA
 
 void UpdateTanksFillLevel::exec()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     mDialog.exec();
 }
 
 uint UpdateTanksFillLevel::getAmount(void)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QString tmp = mUi->amount->text();
 
     if (not tmp.size())
@@ -48,7 +52,8 @@ uint UpdateTanksFillLevel::getAmount(void)
 
 void UpdateTanksFillLevel::operationTypeChanged(int index)
 {
-    qDebug("operationTypeChanged to: %d", index);
+    qDebug() << __PRETTY_FUNCTION__ << " Operation type changed to: " << index;
+
     if (index)
     {
         mUi->amount->setEnabled(true);
@@ -63,11 +68,15 @@ void UpdateTanksFillLevel::operationTypeChanged(int index)
 
 void UpdateTanksFillLevel::amountChanged()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     mUi->updateButton->setEnabled(true);
 }
 
 uint32_t UpdateTanksFillLevel::calculateTankFillLevel()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     if (mUi->operatonType->currentIndex() == 1)
         return getAmount();
 
@@ -79,13 +88,15 @@ uint32_t UpdateTanksFillLevel::calculateTankFillLevel()
         return actualFillLvl - getAmount();
     else
     {
-        qDebug("UpdateTanksFillLevel::calculateTankFillLevel() wrong operation type!");
+        qDebug() << __PRETTY_FUNCTION__ << " Wrong operation type!";
+
         throw QString("UpdateTanksFillLevel::calculateTankFillLevel() wrong operation type!");
     }
 }
 
 void UpdateTanksFillLevel::updateButtonPressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
     try
     {
         qDebug("updateButtonPressed");

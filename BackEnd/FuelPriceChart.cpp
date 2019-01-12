@@ -13,7 +13,7 @@ namespace BackEnd {
 FuelPriceChart::FuelPriceChart(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& databaseApi)
     : mDatabaseApi(databaseApi)
     , mUi(ui)
-    , mFuelPriceChartChoosedFuelType(*ui->FuelPriceTabFuelType)
+    , mChosenFuelType(*ui->FuelPriceTabFuelType)
     , mSeries(new QPair<QSplineSeries, QSplineSeries>)
     , mChart(new QChart)
     , mAxisX(new QDateTimeAxis)
@@ -21,18 +21,18 @@ FuelPriceChart::FuelPriceChart(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& dat
     , mChartView(new QChartView(mChart))
 {
     connect(ui->FuelPriceTabFuelType, SIGNAL(activated(int)), this,
-            SLOT(choosedFuelTypeChanged(int)));
+            SLOT(chosenFuelTypeChanged(int)));
     connect(ui->OptionsTab, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
 
-    QGridLayout layout;
-    layout.addWidget(mChartView);
-    mUi->FuelPriceTabChartLayout->addLayout(&layout);
+    setUpChartView();
+    mUi->FuelPriceTabChartLayout->addWidget(mChartView);
 }
 
-void FuelPriceChart::choosedFuelTypeChanged(int index)
+void FuelPriceChart::chosenFuelTypeChanged(int index)
 {
-    qDebug("choosedFuelTypeChanged to: %d", index);
-    if (mFuelPriceChartChoosedFuelType.currentIndex() <= 0)
+    qDebug() << __PRETTY_FUNCTION__ << " index=" << index;
+
+    if (mChosenFuelType.currentIndex() <= 0)
         return;
     printChart();
 }
@@ -41,16 +41,16 @@ void FuelPriceChart::tabChanged(int id)
 {
     if (id == 2)
     {
-        if (mFuelPriceChartChoosedFuelType.currentIndex() > 0)
+        qDebug() << __PRETTY_FUNCTION__;
+
+        if (mChosenFuelType.currentIndex() > 0)
             printChart();
     }
 }
 
 void FuelPriceChart::setUpXAxis()
 {
-    mSeries->first.detachAxis(mAxisX);
-    mSeries->second.detachAxis(mAxisX);
-    mChart->removeAxis(mAxisX);
+    qDebug() << __PRETTY_FUNCTION__;
 
     delete mAxisX;
     mAxisX = new QDateTimeAxis;
@@ -58,8 +58,6 @@ void FuelPriceChart::setUpXAxis()
     mAxisX->setFormat("dd MMM yyyy");
     mAxisX->setLabelsAngle(90);
     mAxisX->setTitleText("Data (dd mm rrrr)");
-    qDebug() << "Set range   " << mDateTimeStart.date() << mDateTimeEnd.date()
-             << "ticks: " << mSize / 2;
     mAxisX->setTickCount(mSize / 2);
     mAxisX->setRange(mDateTimeStart, mDateTimeEnd);
     mChart->addAxis(mAxisX, Qt::AlignBottom);
@@ -69,9 +67,7 @@ void FuelPriceChart::setUpXAxis()
 
 void FuelPriceChart::setUpYAxis()
 {
-    mSeries->first.detachAxis(mAxisY);
-    mSeries->second.detachAxis(mAxisY);
-    mChart->removeAxis(mAxisY);
+    qDebug() << __PRETTY_FUNCTION__;
 
     delete mAxisY;
     mAxisY = new QValueAxis;
@@ -88,6 +84,15 @@ void FuelPriceChart::setUpYAxis()
 
 void FuelPriceChart::setUpChartView()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    mUi->FuelPriceTabChartLayout->removeWidget(mChartView);
+    delete mChartView;
+
+    mChart     = new QChart;
+    mChartView = new QChartView(mChart);
+
+    mUi->FuelPriceTabChartLayout->addWidget(mChartView);
     mChartView->setRenderHint(QPainter::Antialiasing);
     mChartView->resize(mUi->FuelPriceTabChartLayout->geometry().width(),
                        mUi->FuelPriceTabChartLayout->geometry().height());
@@ -95,41 +100,41 @@ void FuelPriceChart::setUpChartView()
 
 void FuelPriceChart::setUpChart()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     mChart->addSeries(&mSeries->first);
     mChart->addSeries(&mSeries->second);
     mChart->legend()->hide();
-    mChart->setTitle(QString("Wykres cen paliwa typu: ") +
-                     mFuelPriceChartChoosedFuelType.currentText());
+    mChart->setTitle(QString("Wykres cen paliwa typu: ") + mChosenFuelType.currentText());
 }
 
 void FuelPriceChart::printChart()
 {
-    if (mFuelPriceChartChoosedFuelType.currentIndex() <= 0)
+    qDebug() << __PRETTY_FUNCTION__;
+
+    if (mChosenFuelType.currentIndex() <= 0)
         throw QString("FuelPriceChart::printChart Wrong fuel type");
 
-    int index = mFuelPriceChartChoosedFuelType.currentIndex();
-
-    mChart->removeSeries(&mSeries->first);
-    mChart->removeSeries(&mSeries->second);
+    int index = mChosenFuelType.currentIndex();
 
     delete mSeries;
     mSeries = new QPair<QSplineSeries, QSplineSeries>;
 
     fillSeries(static_cast<Common::FuelType>(index - 1));
 
-    qDebug("first size = %d, second size = %d", mSeries->first.count(), mSeries->second.count());
-
     mSeries->first.setPen(QPen(QColor(Qt::GlobalColor::blue)));
     mSeries->second.setPen(QPen(QColor(Qt::GlobalColor::red)));
 
+    setUpChartView();
     setUpChart();
     setUpXAxis();
     setUpYAxis();
-    setUpChartView();
 }
 
 void FuelPriceChart::fillSeries(Common::FuelType fuelType)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     mSeries->first.clear();
     mSeries->second.clear();
 
@@ -157,8 +162,7 @@ void FuelPriceChart::fillSeries(Common::FuelType fuelType)
         QStringList list = line.split(",");
 
         dateTime.setDate(QDate::fromString(list.first(), "dd-MM-yyyy"));
-        qDebug() << list.first() << list.last() << dateTime.date() << "   "
-                 << list.last().toDouble();
+
         if (once)
         {
             mDateTimeEnd = dateTime;
@@ -189,6 +193,7 @@ void FuelPriceChart::fillSeries(Common::FuelType fuelType)
 
 QString FuelPriceChart::getChartDataFileName(Common::FuelType fuelType)
 {
+    qDebug() << __PRETTY_FUNCTION__;
 
 #ifdef __linux__
     // miki
@@ -216,73 +221,6 @@ QString FuelPriceChart::getChartDataFileName(Common::FuelType fuelType)
     default:
         return QString();
     }
-}
-
-void FuelPriceChart::displayDebugChart()
-{
-    QSplineSeries* series  = new QSplineSeries();
-    QSplineSeries* series2 = new QSplineSeries();
-
-    series2->setPen(QPen(QColor(Qt::GlobalColor::red)));
-
-    QRandomGenerator rand;
-    for (int i = 1; i < 31; i++)
-    {
-        QDateTime date;
-        date.setDate(QDate(2018, 11, i));
-        series->append(date.toMSecsSinceEpoch(), qreal(rand.generateDouble() + 4));
-    }
-    for (int i = 1; i < 15; i++)
-    {
-        QDateTime date;
-        date.setDate(QDate(2018, 12, i));
-        series->append(date.toMSecsSinceEpoch(), qreal(rand.generateDouble() + 4));
-    }
-    QDateTime date;
-    date.setDate(QDate(2018, 12, 15));
-    qreal tmpVal(rand.generateDouble() + 4);
-    series->append(date.toMSecsSinceEpoch(), tmpVal);
-    series2->append(date.toMSecsSinceEpoch(), tmpVal);
-    for (int i = 16; i < 32; i++)
-    {
-        QDateTime date;
-        date.setDate(QDate(2018, 12, i));
-        series2->append(date.toMSecsSinceEpoch(), qreal(rand.generateDouble() + 4));
-    }
-
-    QChart* chart = new QChart();
-    chart->addSeries(series);
-    chart->addSeries(series2);
-    chart->legend()->hide();
-    chart->setTitle("testowo");
-
-    QDateTimeAxis* axisX = new QDateTimeAxis;
-    axisX->setTickCount(31);
-    axisX->setFormat("dd MMM yyyy");
-    axisX->setLabelsAngle(90);
-    axisX->setTitleText("Date");
-    axisX->setRange(QDateTime(QDate(2018, 11, 1)), QDateTime(QDate(2018, 12, 31)));
-    chart->addAxis(axisX, Qt::AlignBottom);
-    series->attachAxis(axisX);
-    series2->attachAxis(axisX);
-
-    QValueAxis* axisY = new QValueAxis;
-    axisY->setLabelFormat("%.2f");
-    axisY->setTickCount(15);
-    axisY->setTitleText("Sunspots count");
-    chart->addAxis(axisY, Qt::AlignLeft);
-    series->attachAxis(axisY);
-    series2->attachAxis(axisY);
-
-    QChartView* chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
-    chartView->resize(mUi->FuelPriceTabChartLayout->geometry().width(),
-                      mUi->FuelPriceTabChartLayout->geometry().height());
-
-    // create layout
-    QGridLayout layout;
-    layout.addWidget(chartView);
-    mUi->FuelPriceTabChartLayout->addLayout(&layout);
 }
 
 } // namespace BackEnd

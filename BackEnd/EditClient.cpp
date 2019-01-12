@@ -22,6 +22,8 @@ EditClient::EditClient(DataBaseApi::DataBaseApi& databaseApi, const Common::Cust
 
 QString EditClient::getName()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QString tmp = mUi->name->text();
 
     if (not tmp.size())
@@ -32,6 +34,8 @@ QString EditClient::getName()
 
 QString EditClient::getCity()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QString tmp = mUi->city->text();
 
     if (not tmp.size())
@@ -42,6 +46,8 @@ QString EditClient::getCity()
 
 QString EditClient::getStreet()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QString tmp = mUi->street->text();
 
     if (not tmp.size())
@@ -52,6 +58,8 @@ QString EditClient::getStreet()
 
 QString EditClient::getPropertyNumber()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QString tmp = mUi->number->text();
 
     if (not tmp.size())
@@ -62,12 +70,15 @@ QString EditClient::getPropertyNumber()
 
 void EditClient::exec()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     mDialog.exec();
 }
 
 void EditClient::savePressed()
 {
-    qDebug("addPressed()");
+    qDebug() << __PRETTY_FUNCTION__;
+
     try
     {
         Common::CustomerStruct tmp;
@@ -92,6 +103,8 @@ void EditClient::savePressed()
 
 void EditClient::cancelPressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     mDialog.close();
 }
 
