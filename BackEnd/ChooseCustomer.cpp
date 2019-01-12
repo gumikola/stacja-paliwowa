@@ -56,7 +56,7 @@ void ChooseCustomer::printDefaultTable()
 
 void ChooseCustomer::printFiltredClients(const QString& filter)
 {
-    QVector<Common::CustomerStruct> mClients = mDatabaseApi.getClients();
+    QVector<Common::CustomerStruct> mClients = mDatabaseApi.getCustomers();
 
     int rowCnt = 0;
 

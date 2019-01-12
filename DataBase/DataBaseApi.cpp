@@ -3,6 +3,8 @@
 namespace DataBaseApi {
 DataBaseApi::DataBaseApi()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     driverDatabase = QSqlDatabase::addDatabase(driverName);
 
     QString absolutePathDatabase = QDir::currentPath().split("build")[0] + pathDatabase;
@@ -23,6 +25,8 @@ DataBaseApi::~DataBaseApi()
 
 QMap<Common::FuelTankType, uint32_t> DataBaseApi::getTanksFillLevel(void)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QMap<Common::FuelTankType, uint32_t> data;
     QSqlQuery                            q;
 
@@ -47,6 +51,8 @@ QMap<Common::FuelTankType, uint32_t> DataBaseApi::getTanksFillLevel(void)
 
 QVector<Common::OrdersStruct> DataBaseApi::getOrdersByDate(const QDate& date)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QVector<Common::OrdersStruct> data;
     QSqlQuery                     q;
 
@@ -76,8 +82,10 @@ QVector<Common::OrdersStruct> DataBaseApi::getOrdersByDate(const QDate& date)
     return data;
 }
 
-QVector<Common::CustomerStruct> DataBaseApi::getClients()
+QVector<Common::CustomerStruct> DataBaseApi::getCustomers()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QVector<Common::CustomerStruct> clients;
 
     QSqlQuery q;
@@ -109,6 +117,8 @@ QVector<Common::CustomerStruct> DataBaseApi::getClients()
 void DataBaseApi::editCustomer(const Common::CustomerStruct& prev,
                                const Common::CustomerStruct& actual)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QSqlQuery q;
 
     q.prepare("UPDATE Klienci_hurtowi SET Odbiorca=?, Miasto=?, Ulica=?, Numer=? WHERE Odbiorca=? "
@@ -133,6 +143,8 @@ void DataBaseApi::editCustomer(const Common::CustomerStruct& prev,
 
 int DataBaseApi::addCustomer(const Common::CustomerStruct& customer)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QSqlQuery q;
 
     q.prepare("INSERT OR REPLACE INTO "
@@ -155,6 +167,8 @@ int DataBaseApi::addCustomer(const Common::CustomerStruct& customer)
 
 void DataBaseApi::addOrder(const Common::OrdersStruct& order)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QSqlQuery q;
 
     q.prepare("INSERT INTO "
@@ -177,6 +191,8 @@ void DataBaseApi::addOrder(const Common::OrdersStruct& order)
 
 void DataBaseApi::updateTankFillLevel(const Common::FuelTankType& tank, double number)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QSqlQuery q;
 
     q.prepare("UPDATE Magazyny SET `Zawartosc` = ? WHERE `Zbiornik` = ?;");
@@ -193,6 +209,8 @@ void DataBaseApi::updateTankFillLevel(const Common::FuelTankType& tank, double n
 
 void DataBaseApi::addPriceOfPetrol(const Common::PetrolInfoStruct& info)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QSqlQuery q;
 
     q.prepare("INSERT INTO "
@@ -212,6 +230,8 @@ void DataBaseApi::addPriceOfPetrol(const Common::PetrolInfoStruct& info)
 QVector<Common::PetrolInfoStruct> DataBaseApi::getPriceOfPetrol(const uint nbrOfElements,
                                                                 const Common::FuelType fuelType)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QVector<Common::PetrolInfoStruct> data;
     QSqlQuery                         q;
 
@@ -240,8 +260,10 @@ QVector<Common::PetrolInfoStruct> DataBaseApi::getPriceOfPetrol(const uint nbrOf
     return data;
 }
 
-void DataBaseApi::removeClient(const Common::CustomerStruct& customer)
+void DataBaseApi::removeCustomer(const Common::CustomerStruct& customer)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QSqlQuery q;
 
     q.prepare(QString(
@@ -262,6 +284,8 @@ void DataBaseApi::removeClient(const Common::CustomerStruct& customer)
 
 uint DataBaseApi::getCustomerId(const Common::CustomerStruct& customer)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QSqlQuery q;
 
     q.prepare("SELECT ID FROM Klienci_hurtowi WHERE Odbiorca = ? and Miasto = ? and Ulica = ? and "
@@ -287,6 +311,8 @@ uint DataBaseApi::getCustomerId(const Common::CustomerStruct& customer)
 
 QVector<Common::DistancesStruct> DataBaseApi::getAllDistances()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QVector<Common::DistancesStruct> data;
     QSqlQuery                        q;
 
@@ -309,9 +335,48 @@ QVector<Common::DistancesStruct> DataBaseApi::getAllDistances()
     return data;
 }
 
+void DataBaseApi::addTravelTime(const Common::DistancesStruct& data)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QSqlQuery q;
+
+    q.prepare("INSERT OR REPLACE INTO Trasy(czas, a, b) VALUES (?,?,?);");
+    q.bindValue(0, data.time);
+    q.bindValue(1, data.a);
+    q.bindValue(2, data.b);
+
+    q.exec();
+    if (q.lastError().isValid())
+    {
+        qDebug() << q.lastError();
+        throw q.lastError().text();
+    }
+}
+void DataBaseApi::addTravelTimeFromCompany(const Common::CustomerStruct& customer, uint travelTime)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QSqlQuery q;
+
+    q.prepare("INSERT OR REPLACE INTO Trasy(czas, a, b) VALUES (?,?,?);");
+    q.bindValue(0, travelTime);
+    q.bindValue(1, 1);
+    q.bindValue(2, DataBaseApi::getCustomerId(customer));
+
+    q.exec();
+    if (q.lastError().isValid())
+    {
+        qDebug() << q.lastError();
+        throw q.lastError().text();
+    }
+}
+
 QVector<Common::PurchaseStruct>
 DataBaseApi::getClientPurchases(const Common::CustomerStruct& customer)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QVector<Common::PurchaseStruct> data;
     QSqlQuery                       q;
 
@@ -345,6 +410,8 @@ DataBaseApi::getClientPurchases(const Common::CustomerStruct& customer)
 void DataBaseApi::addPurchase(const Common::PurchaseStruct& purchase,
                               const Common::CustomerStruct& customer)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QSqlQuery q;
 
     q.prepare("INSERT OR REPLACE INTO Zakupy_klientow(Data, Klienci_hurtowi_ID, "
@@ -363,6 +430,8 @@ void DataBaseApi::addPurchase(const Common::PurchaseStruct& purchase,
 
 QStringList DataBaseApi::getProuducts()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QStringList data;
     QSqlQuery   q;
 
@@ -386,6 +455,8 @@ QStringList DataBaseApi::getProuducts()
 
 void DataBaseApi::addProduct(const QString& product)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QSqlQuery q;
 
     q.prepare("INSERT or REPLACE INTO Produkty_na_stacji (Nazwa) values (?);");
@@ -401,6 +472,8 @@ void DataBaseApi::addProduct(const QString& product)
 
 void DataBaseApi::removeProduct(const QString& product)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QSqlQuery q;
 
     q.prepare("DELETE FROM Produkty_na_stacji WHERE Nazwa=?;");
@@ -416,6 +489,8 @@ void DataBaseApi::removeProduct(const QString& product)
 
 void DataBaseApi::editProduct(const QString& oldName, const QString& newName)
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QSqlQuery q;
 
     q.prepare("UPDATE Produkty_na_stacji SET Nazwa=? where Nazwa=?;");
