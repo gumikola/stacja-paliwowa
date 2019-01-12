@@ -14,15 +14,22 @@
 namespace Algorithms {
 class CalculateOrder
 {
-    const QVector<Common::OrdersStruct> mCustomers;
-    QVector<uint>                       mIds;
-    QVector<Common::DistancesStruct>    mDistances;
-    void                                GetCustomersID(void);
-    void                                checkIfDistanceIsInDatabase(void);
+    DataBaseApi::DataBaseApi&            mDatabaseApi;
+    const QVector<Common::OrdersStruct>& mCustomers;
+    bool checkIfDistanceIsInDatabase(const Common::DistancesStruct& DistanceFromDatabase,
+                                     const uint& a, const uint& b);
+    QVector<Common::DistancesStruct> GetDistances(void);
+    QVector<Common::DistancesStruct>
+                                  CalculateAdditionalDistances(const QVector<Common::DistancesStruct>& DistancesToCalculate);
+    void                          SortOrders(QVector<Common::DistancesStruct> distances);
+    QVector<Common::OrdersStruct> GetOrders();
+    Common::CustomerStruct        getCustomerById(uint id);
+    QVector<int> getDistancesFromGoogle(const QString origin, const QString destination,
+                                        const uint size);
 
 public:
-    CalculateOrder(const QVector<Common::OrdersStruct> Customers);
-    void CheckDistancesInDatabase(void);
+    CalculateOrder(DataBaseApi::DataBaseApi&            databaseApiconst,
+                   const QVector<Common::OrdersStruct>& customers);
 };
 } // namespace Algorithms
 #endif // CALCULATEORDER_H
