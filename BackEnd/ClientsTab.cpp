@@ -60,7 +60,7 @@ void ClientsTab::printDefaultTable()
 void ClientsTab::printFiltredClients(const QString& filter)
 {
 
-    QVector<Common::CustomerStruct> clients = mDatabaseApi.getClients();
+    QVector<Common::CustomerStruct> clients = mDatabaseApi.getCustomers();
     int                             rowCnt  = 0;
     mTable.setRowCount(0);
     for (Common::CustomerStruct client : clients)
@@ -83,7 +83,7 @@ void ClientsTab::printFiltredClients(const QString& filter)
 
 void ClientsTab::printClients()
 {
-    QVector<Common::CustomerStruct> clients = mDatabaseApi.getClients();
+    QVector<Common::CustomerStruct> clients = mDatabaseApi.getCustomers();
     int                             rowCnt  = 0;
     mTable.setRowCount(0);
     for (Common::CustomerStruct client : clients)
@@ -129,7 +129,7 @@ void ClientsTab::displayMenu(QPoint pos)
             tmp.street         = mTable.item(row, 2)->text();
             tmp.propertyNumber = mTable.item(row, 3)->text();
 
-            mDatabaseApi.removeClient(tmp);
+            mDatabaseApi.removeCustomer(tmp);
             printClients();
         }
     }
