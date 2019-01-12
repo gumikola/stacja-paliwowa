@@ -34,7 +34,9 @@ public:
     void                              removeClient(Common::CustomerStruct& customer);
     uint                              GetCustomerId(Common::CustomerStruct customer); // for igi
     QVector<Common::DistancesStruct>  GetAllDistances();                              // for igi
-    QVector<Common::PurchaseStruct>   getPurchasesByIdClient(Common::CustomerStruct customer);
+    QVector<Common::PurchaseStruct>   getClientPurchases(Common::CustomerStruct customer);
+    QStringList                       getProuducts();
+    void                              addProduct(QString product);
 };
 
 } // namespace DataBaseApi
