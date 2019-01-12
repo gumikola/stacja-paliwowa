@@ -1,4 +1,4 @@
-#include "choosecustomer.h"
+#include "ChooseCustomer.h"
 #include "DataBase/DataBaseApi.h"
 #include <QMessageBox>
 
