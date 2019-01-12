@@ -102,7 +102,7 @@ void UpdateTanksFillLevel::updateButtonPressed()
     }
     catch (QString& e)
     {
-        qDebug(QString(QString("Exeption cought: ") + e).toStdString().c_str());
+        qDebug() << (QString("Exeption cought: ") + e);
     }
 }
 
