@@ -398,4 +398,35 @@ void DataBaseApi::addProduct(QString product)
     }
 }
 
+void DataBaseApi::removeProduct(QString product)
+{
+    QSqlQuery q;
+
+    q.prepare("DELETE FROM Produkty_na_stacji WHERE Nazwa=?");
+    q.bindValue(0, product);
+
+    q.exec();
+    if (q.lastError().isValid())
+    {
+        qDebug() << q.lastError();
+        throw q.lastError().text();
+    }
+}
+
+void DataBaseApi::editProduct(QString oldName, QString newName)
+{
+    QSqlQuery q;
+
+    q.prepare("UPDATE Produkty_na_stacji SET Nazwa=? where Nazwa=?");
+    q.bindValue(0, newName);
+    q.bindValue(1, oldName);
+
+    q.exec();
+    if (q.lastError().isValid())
+    {
+        qDebug() << q.lastError();
+        throw q.lastError().text();
+    }
+}
+
 } // namespace DataBaseApi

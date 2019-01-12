@@ -38,6 +38,8 @@ public:
     void        addPurchase(Common::PurchaseStruct purchase, Common::CustomerStruct customer);
     QStringList getProuducts();
     void        addProduct(QString product);
+    void        removeProduct(QString product);
+    void        editProduct(QString oldName, QString newName);
 };
 
 } // namespace DataBaseApi
