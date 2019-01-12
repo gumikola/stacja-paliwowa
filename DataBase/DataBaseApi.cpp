@@ -342,6 +342,24 @@ QVector<Common::PurchaseStruct> DataBaseApi::getClientPurchases(Common::Customer
     return data;
 }
 
+void DataBaseApi::addPurchase(Common::PurchaseStruct purchase, Common::CustomerStruct customer)
+{
+    QSqlQuery q;
+
+    q.prepare("INSERT OR REPLACE INTO Zakupy_klientow(Data, Klienci_hurtowi_ID, "
+              "Produkty_na_stacji_Nazwa) VALUES (?, ?, ?)");
+    q.bindValue(0, purchase.date);
+    q.bindValue(1, GetCustomerId(customer));
+    q.bindValue(3, purchase.nameOfProduct);
+
+    q.exec();
+    if (q.lastError().isValid())
+    {
+        qDebug() << q.lastError();
+        throw q.lastError().text();
+    }
+}
+
 QStringList DataBaseApi::getProuducts()
 {
     QStringList data;

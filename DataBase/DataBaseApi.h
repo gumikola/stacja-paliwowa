@@ -35,8 +35,9 @@ public:
     uint                              GetCustomerId(Common::CustomerStruct customer); // for igi
     QVector<Common::DistancesStruct>  GetAllDistances();                              // for igi
     QVector<Common::PurchaseStruct>   getClientPurchases(Common::CustomerStruct customer);
-    QStringList                       getProuducts();
-    void                              addProduct(QString product);
+    void        addPurchase(Common::PurchaseStruct purchase, Common::CustomerStruct customer);
+    QStringList getProuducts();
+    void        addProduct(QString product);
 };
 
 } // namespace DataBaseApi
