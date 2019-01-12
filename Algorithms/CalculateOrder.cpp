@@ -1,4 +1,6 @@
 #include "CalculateOrder.h"
+#include <algorithm>
+
 namespace Algorithms {
 
 CalculateOrder::CalculateOrder(DataBaseApi::DataBaseApi&            databaseApi,
@@ -24,52 +26,48 @@ bool CalculateOrder::checkIfDistanceIsInDatabase(
 
 QVector<Common::DistancesStruct> CalculateOrder::GetDistances()
 {
-    bool                                   foundDistanceBeetwenCLients         = false;
-    bool                                   foundDistanceBeetwenBenzolAndClient = false;
-    QVector<Common::DistancesStruct>       Distances;
+    QVector<Common::DistancesStruct>       distances;
     const QVector<Common::DistancesStruct> allDistancesFromDatabase =
         mDatabaseApi.getAllDistances();
     QVector<Common::DistancesStruct> listOfClientsToGetDistanceFromGoogle;
     Common::DistancesStruct          tmp;
-    for (int j = 0; j < mCustomers.size(); j++)
-    {
-        for (int k = j + 1; k < mCustomers.size(); k++)
-        {
-            for (int i = 0; i < allDistancesFromDatabase.size(); i++)
-            {
-                if (checkIfDistanceIsInDatabase(
-                        allDistancesFromDatabase.at(i), mCustomers.at(j).customer.id,
-                        mCustomers.at(k).customer.id)) // jezeli jest  w bazie to wez
-                {
-                    foundDistanceBeetwenCLients = true;
-                    Distances.append(allDistancesFromDatabase.at(i));
-                }
-                if (checkIfDistanceIsInDatabase(allDistancesFromDatabase.at(i),
-                                                mCustomers.at(j).customer.id,
-                                                1)) // dodaj benzol do dystansow
-                {
-                    Distances.append(allDistancesFromDatabase.at(i));
-                    foundDistanceBeetwenBenzolAndClient = true;
-                }
-            }
-            if (foundDistanceBeetwenCLients == false) // jezeli nie ma w bazie to dodaj do szukanych
-            {
-                tmp.a = static_cast<uint>(j);
-                tmp.b = static_cast<uint>(k);
-                listOfClientsToGetDistanceFromGoogle.append(tmp);
 
-                if (foundDistanceBeetwenBenzolAndClient == false)
-                {
-                    throw QString("Nie znaleziono w bazie odleglosci pomiedzy benzolem a klientem "
-                                  "a powinna tam byc");
-                }
+    QVector<Common::CustomerStruct> places;
+
+    for (Common::OrdersStruct order : mCustomers)
+    {
+        places.push_back(order.customer);
+    }
+    //    std::transform(mCustomers.begin(), mCustomers.end(), std::back_inserter(places),
+    //                   [](QVector<Common::OrdersStruct>::iterator it) { return it->customer; });
+
+    places.append(mDatabaseApi.getCustomerById(1));
+
+    for (int j = 0; j < places.size(); j++)
+    {
+        for (int k = j + 1; k < places.size(); k++)
+        {
+            QVector<Common::DistancesStruct>::const_iterator it = std::find_if(
+                allDistancesFromDatabase.cbegin(), allDistancesFromDatabase.cend(),
+                [&places, j, k](const Common::DistancesStruct& distance) {
+                    return ((distance.a == places.at(k).id) and (distance.b == places.at(j).id)) or
+                           ((distance.a == places.at(j).id) and (distance.b == places.at(k).id));
+                });
+            if (it != allDistancesFromDatabase.cend())
+            {
+                distances.push_back(*it);
+            }
+            else
+            {
+                listOfClientsToGetDistanceFromGoogle.push_back(
+                    Common::DistancesStruct(places.at(j).id, places.at(k).id));
             }
         }
     }
 
-    Distances.append(CalculateAdditionalDistances(listOfClientsToGetDistanceFromGoogle));
+    distances.append(CalculateAdditionalDistances(listOfClientsToGetDistanceFromGoogle));
 
-    return Distances;
+    return distances;
 }
 
 QVector<Common::DistancesStruct> CalculateOrder::CalculateAdditionalDistances(

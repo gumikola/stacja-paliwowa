@@ -33,6 +33,7 @@ public:
     int  addCustomer(const Common::CustomerStruct& customer);
     void removeCustomer(const Common::CustomerStruct& customer);
     uint getCustomerId(const Common::CustomerStruct& customer);
+    Common::CustomerStruct getCustomerById(uint id);
 
     void                              addPriceOfPetrol(const Common::PetrolInfoStruct& info);
     QVector<Common::PetrolInfoStruct> getPriceOfPetrol(const uint             nbrOfElements,
