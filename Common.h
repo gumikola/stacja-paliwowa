@@ -126,7 +126,7 @@ struct PurchaseStruct
     QDate   date;
     QString nameOfProduct;
 
-    PurchaseStruct(QDate date = QDate().currentDate(), QString nameOfProduct = nullptr)
+    PurchaseStruct(QDate date = QDate().currentDate(), QString nameOfProduct = QString())
         : date(date)
         , nameOfProduct(nameOfProduct)
     {
