@@ -140,4 +140,5 @@ void Orders::addOrderPressed()
     AddOrder window(mDataBaseApi);
     window.exec();
 }
+
 } // namespace BackEnd

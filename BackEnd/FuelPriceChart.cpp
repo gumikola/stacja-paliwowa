@@ -22,37 +22,28 @@ FuelPriceChart::FuelPriceChart(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& dat
 {
     connect(ui->FuelPriceTabFuelType, SIGNAL(activated(int)), this,
             SLOT(choosedFuelTypeChanged(int)));
+    connect(ui->OptionsTab, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
 
     QGridLayout layout;
     layout.addWidget(mChartView);
     mUi->FuelPriceTabChartLayout->addLayout(&layout);
 }
 
-void FuelPriceChart::removeAndCreateNew() {}
-
 void FuelPriceChart::choosedFuelTypeChanged(int index)
 {
     qDebug("choosedFuelTypeChanged to: %d", index);
     if (mFuelPriceChartChoosedFuelType.currentIndex() <= 0)
         return;
+    printChart();
+}
 
-    mChart->removeSeries(&mSeries->first);
-    mChart->removeSeries(&mSeries->second);
-
-    delete mSeries;
-    mSeries = new QPair<QSplineSeries, QSplineSeries>;
-
-    fillSeries(static_cast<Common::FuelType>(index - 1));
-
-    qDebug("first size = %d, second size = %d", mSeries->first.count(), mSeries->second.count());
-
-    mSeries->first.setPen(QPen(QColor(Qt::GlobalColor::blue)));
-    mSeries->second.setPen(QPen(QColor(Qt::GlobalColor::red)));
-
-    setUpChart();
-    setUpXAxis();
-    setUpYAxis();
-    setUpChartView();
+void FuelPriceChart::tabChanged(int id)
+{
+    if (id == 2)
+    {
+        if (mFuelPriceChartChoosedFuelType.currentIndex() > 0)
+            printChart();
+    }
 }
 
 void FuelPriceChart::setUpXAxis()
@@ -109,6 +100,32 @@ void FuelPriceChart::setUpChart()
     mChart->legend()->hide();
     mChart->setTitle(QString("Wykres cen paliwa typu: ") +
                      mFuelPriceChartChoosedFuelType.currentText());
+}
+
+void FuelPriceChart::printChart()
+{
+    if (mFuelPriceChartChoosedFuelType.currentIndex() <= 0)
+        throw QString("FuelPriceChart::printChart Wrong fuel type");
+
+    int index = mFuelPriceChartChoosedFuelType.currentIndex();
+
+    mChart->removeSeries(&mSeries->first);
+    mChart->removeSeries(&mSeries->second);
+
+    delete mSeries;
+    mSeries = new QPair<QSplineSeries, QSplineSeries>;
+
+    fillSeries(static_cast<Common::FuelType>(index - 1));
+
+    qDebug("first size = %d, second size = %d", mSeries->first.count(), mSeries->second.count());
+
+    mSeries->first.setPen(QPen(QColor(Qt::GlobalColor::blue)));
+    mSeries->second.setPen(QPen(QColor(Qt::GlobalColor::red)));
+
+    setUpChart();
+    setUpXAxis();
+    setUpYAxis();
+    setUpChartView();
 }
 
 void FuelPriceChart::fillSeries(Common::FuelType fuelType)

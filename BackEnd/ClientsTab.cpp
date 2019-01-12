@@ -153,11 +153,14 @@ void ClientsTab::displayMenu(QPoint pos)
     }
 } // namespace BackEnd
 
-void ClientsTab::tabChanged(int)
+void ClientsTab::tabChanged(int id)
 {
-    printDefaultTable();
-    printClients();
-    mUi->ClientsTabSurnameFiltr->clear();
+    if (id == 3)
+    {
+        printDefaultTable();
+        printClients();
+        mUi->ClientsTabSurnameFiltr->clear();
+    }
 }
 
 void ClientsTab::filterChanged(const QString& text)

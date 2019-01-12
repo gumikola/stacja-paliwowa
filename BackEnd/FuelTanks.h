@@ -31,6 +31,7 @@ public slots:
     void editPB95Pressed();
     void editPB98Pressed();
     void displayTanksFillLevel(void);
+    void tabChanged(int id);
 };
 
 } // namespace BackEnd

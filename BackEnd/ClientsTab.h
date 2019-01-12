@@ -29,7 +29,7 @@ signals:
 public slots:
     void addPressed();
     void displayMenu(QPoint pos);
-    void tabChanged(int);
+    void tabChanged(int id);
     void filterChanged(const QString& text);
 };
 

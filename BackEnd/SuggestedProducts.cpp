@@ -16,6 +16,7 @@ SuggestedProducts::SuggestedProducts(Ui::MainWindow* ui, DataBaseApi::DataBaseAp
             SLOT(chooseCustomerPressed()));
     connect(ui->SuggestedProductsTabAddNewClient, SIGNAL(pressed()), this,
             SLOT(addNewCustomerPressed()));
+    connect(ui->OptionsTab, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
 
     printDefaultClientTable();
     printDefaultProductsTable();
@@ -48,6 +49,15 @@ void SuggestedProducts::addNewCustomerPressed()
     connect(&window, SIGNAL(clientAdded(const Common::CustomerStruct&)), this,
             SLOT(clientChoosed(const Common::CustomerStruct&)));
     window.exec();
+}
+
+void SuggestedProducts::tabChanged(int id)
+{
+    if (id == 4)
+    {
+        printDefaultClientTable();
+        printDefaultProductsTable();
+    }
 }
 
 void SuggestedProducts::printDefaultClientTable()

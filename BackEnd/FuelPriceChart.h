@@ -40,7 +40,7 @@ class FuelPriceChart : public QObject
     void    setUpYAxis();
     void    setUpChartView();
     void    setUpChart();
-    void    removeAndCreateNew();
+    void    printChart();
 
 public:
     FuelPriceChart(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& databaseApi);
@@ -49,6 +49,7 @@ signals:
 
 public slots:
     void choosedFuelTypeChanged(int index);
+    void tabChanged(int id);
 };
 
 } // namespace BackEnd

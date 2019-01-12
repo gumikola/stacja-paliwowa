@@ -29,6 +29,7 @@ public slots:
     void chooseCustomerPressed();
     void clientChoosed(const Common::CustomerStruct& client);
     void addNewCustomerPressed();
+    void tabChanged(int id);
 };
 
 } // namespace BackEnd
