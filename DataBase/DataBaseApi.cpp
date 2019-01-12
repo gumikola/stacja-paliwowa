@@ -173,7 +173,7 @@ void DataBaseApi::addOrder(const Common::OrdersStruct& order)
 
     q.prepare("INSERT INTO "
               "`Zamowienia`(`Ilosc`,`Data`,`Cena`,`Klienci_hurtowi_ID`,`Typ_paliwa_"
-              "Nazwa`,`Marza`) VALUES (?,?,?,?,?,?);");
+              "Nazwa`,`Przychod`) VALUES (?,?,?,?,?,?);");
     q.bindValue(0, order.amount);
     q.bindValue(1, order.date);
     q.bindValue(2, order.totalPrice);
