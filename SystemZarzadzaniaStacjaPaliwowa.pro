@@ -42,7 +42,7 @@ SOURCES += \
     BackEnd/FuelPriceChart.cpp \
     BackEnd/FuelTanks.cpp \
     BackEnd/ClientsTab.cpp \
-    AddClient.cpp \
+    BackEnd/AddClient.cpp \
     BackEnd/EditClient.cpp \
     BackEnd/ChooseCustomer.cpp \
     BackEnd/SuggestedProducts.cpp
@@ -63,7 +63,7 @@ HEADERS += \
     Algorithms/CalculateOrder.h \
     BackEnd/FuelTanks.h \
     BackEnd/ClientsTab.h \
-    AddClient.h \
+    BackEnd/AddClient.h \
     BackEnd/EditClient.h \
     BackEnd/ChooseCustomer.h \
     BackEnd/SuggestedProducts.h
