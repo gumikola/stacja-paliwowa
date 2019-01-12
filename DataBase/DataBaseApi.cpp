@@ -45,7 +45,7 @@ QMap<Common::FuelTankType, uint32_t> DataBaseApi::getTanksFillLevel(void)
     return data;
 }
 
-QVector<Common::OrdersStruct> DataBaseApi::getOrdersByDate(QDate date)
+QVector<Common::OrdersStruct> DataBaseApi::getOrdersByDate(const QDate& date)
 {
     QVector<Common::OrdersStruct> data;
     QSqlQuery                     q;
@@ -175,7 +175,7 @@ void DataBaseApi::addOrder(const Common::OrdersStruct& order)
     }
 }
 
-void DataBaseApi::updateTankFillLevel(Common::FuelTankType tank, double number)
+void DataBaseApi::updateTankFillLevel(const Common::FuelTankType& tank, double number)
 {
     QSqlQuery q;
 
@@ -191,7 +191,7 @@ void DataBaseApi::updateTankFillLevel(Common::FuelTankType tank, double number)
     }
 }
 
-void DataBaseApi::addPriceOfPetrol(Common::PetrolInfoStruct info)
+void DataBaseApi::addPriceOfPetrol(const Common::PetrolInfoStruct& info)
 {
     QSqlQuery q;
 
@@ -209,8 +209,8 @@ void DataBaseApi::addPriceOfPetrol(Common::PetrolInfoStruct info)
     }
 }
 
-QVector<Common::PetrolInfoStruct> DataBaseApi::getPriceOfPetrol(uint             nbrOfElements,
-                                                                Common::FuelType fuelType)
+QVector<Common::PetrolInfoStruct> DataBaseApi::getPriceOfPetrol(const uint nbrOfElements,
+                                                                const Common::FuelType fuelType)
 {
     QVector<Common::PetrolInfoStruct> data;
     QSqlQuery                         q;
@@ -240,7 +240,7 @@ QVector<Common::PetrolInfoStruct> DataBaseApi::getPriceOfPetrol(uint            
     return data;
 }
 
-void DataBaseApi::removeClient(Common::CustomerStruct& customer)
+void DataBaseApi::removeClient(const Common::CustomerStruct& customer)
 {
     QSqlQuery q;
 
@@ -384,11 +384,11 @@ QStringList DataBaseApi::getProuducts()
     return data;
 }
 
-void DataBaseApi::addProduct(QString product)
+void DataBaseApi::addProduct(const QString& product)
 {
     QSqlQuery q;
 
-    q.prepare("INSERT or REPLACE INTO Produkty_na_stacji(Nazwa) values (?));");
+    q.prepare("INSERT or REPLACE INTO Produkty_na_stacji (Nazwa) values (?);");
     q.bindValue(0, product);
 
     q.exec();
@@ -399,7 +399,7 @@ void DataBaseApi::addProduct(QString product)
     }
 }
 
-void DataBaseApi::removeProduct(QString product)
+void DataBaseApi::removeProduct(const QString& product)
 {
     QSqlQuery q;
 
@@ -414,7 +414,7 @@ void DataBaseApi::removeProduct(QString product)
     }
 }
 
-void DataBaseApi::editProduct(QString oldName, QString newName)
+void DataBaseApi::editProduct(const QString& oldName, const QString& newName)
 {
     QSqlQuery q;
 

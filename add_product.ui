@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AddClientPurchase</class>
- <widget class="QDialog" name="AddClientPurchase">
+ <class>AddProduct</class>
+ <widget class="QDialog" name="AddProduct">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>549</width>
-    <height>570</height>
+    <width>628</width>
+    <height>190</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,126 +18,13 @@
     <rect>
      <x>20</x>
      <y>10</y>
-     <width>501</width>
-     <height>551</height>
+     <width>581</width>
+     <height>171</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QLabel" name="label_7">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>50</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>24</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Wybierz produkt</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="Line" name="line">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="minimumSize">
-         <size>
-          <width>180</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>180</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Filtracja po nazwie: </string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="nameFilter">
-        <property name="minimumSize">
-         <size>
-          <width>200</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="minimumSize">
-         <size>
-          <width>50</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="QTableWidget" name="table"/>
-    </item>
-    <item>
-     <widget class="QPushButton" name="addNewProductButton">
-      <property name="minimumSize">
-       <size>
-        <width>220</width>
-        <height>40</height>
-       </size>
-      </property>
       <property name="font">
        <font>
         <family>Arial</family>
@@ -147,35 +34,69 @@
        </font>
       </property>
       <property name="text">
-       <string>Dodaj nowy produkt</string>
+       <string>Dodawanie nowego produktu</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <widget class="Line" name="line_5">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QPushButton" name="addPurchaseButton">
+       <widget class="QLabel" name="label_8">
         <property name="minimumSize">
          <size>
-          <width>220</width>
-          <height>40</height>
+          <width>150</width>
+          <height>0</height>
          </size>
         </property>
         <property name="font">
          <font>
-          <family>Arial</family>
-          <pointsize>16</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <pointsize>12</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>Dodaj zakup</string>
+         <string>Nazwa produktu</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_14">
+       <widget class="QLineEdit" name="productName">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="maxLength">
+         <number>32773</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_9">
+        <property name="minimumSize">
+         <size>
+          <width>40</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <pointsize>12</pointsize>
@@ -189,14 +110,34 @@
         </property>
        </widget>
       </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QPushButton" name="addButton">
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>16</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Dodaj</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line_3">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QPushButton" name="cancelButton">
-        <property name="minimumSize">
-         <size>
-          <width>220</width>
-          <height>40</height>
-         </size>
-        </property>
         <property name="font">
          <font>
           <family>Arial</family>
