@@ -1,5 +1,6 @@
 #include "SuggestedProducts.h"
 #include "AddClient.h"
+#include "Algorithms/ClientSuggestion.h"
 #include "ChooseCustomer.h"
 #include "Common.h"
 #include "DataBase/DataBaseApi.h"
@@ -32,6 +33,7 @@ void SuggestedProducts::chooseCustomerPressed()
 
 void SuggestedProducts::clientChoosed(const Common::CustomerStruct& client)
 {
+    printSuggestedProducts(client);
     int rowCnt = 0;
     mClientTable.setRowCount(rowCnt);
     int columnCnt = 0;
@@ -117,6 +119,22 @@ void SuggestedProducts::printDefaultProductsTable()
             mProductsTable.setColumnWidth(i, 3 * mProductsTable.width() / 4 - 16);
         else
             mProductsTable.setColumnWidth(i, (mProductsTable.width() / 4) / (columnCnt - 1));
+    }
+}
+
+void SuggestedProducts::printSuggestedProducts(const Common::CustomerStruct choosedClient)
+{
+    Algorithms::ClientSuggestion    alg(mDatabaseApi.getClientPurchases(choosedClient));
+    QVector<Common::PurchaseStruct> suggestedProducts = alg.GetSuggestedProducts(5);
+
+    int rowCnt = 0;
+    mClientTable.setRowCount(rowCnt);
+    int columnCnt = 0;
+    for (Common::PurchaseStruct purcharse : suggestedProducts)
+    {
+        mClientTable.insertRow(rowCnt);
+        mClientTable.setVerticalHeaderItem(rowCnt, new QTableWidgetItem());
+        mClientTable.setItem(rowCnt, columnCnt++, new QTableWidgetItem(purcharse.nameOfProduct));
     }
 }
 

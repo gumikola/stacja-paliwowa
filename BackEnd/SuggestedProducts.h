@@ -19,6 +19,7 @@ class SuggestedProducts : public QObject
 
     void printDefaultClientTable();
     void printDefaultProductsTable();
+    void printSuggestedProducts(const Common::CustomerStruct choosedClient);
 
 public:
     explicit SuggestedProducts(Ui::MainWindow* ui, DataBaseApi::DataBaseApi& databaseApi);

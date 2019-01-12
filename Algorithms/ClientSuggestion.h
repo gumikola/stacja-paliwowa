@@ -1,19 +1,24 @@
-#ifndef CLIENT_SUGGESTION_H
-#define CLIENT_SUGGESTION_H
+#pragma once
+
+#include "Common.h"
 #include <QMap>
 #include <QString>
 #include <QVector>
 
 namespace Algorithms {
 
+struct Purcharse
+{
+    Common::PurchaseStruct purcharse;
+    uint                   count;
+};
+
 class ClientSuggestion
 {
-    const QVector<QString>& mPreviousOrderedProductsList;
+    QList<Purcharse> mPurcharses;
 
 public:
-    ClientSuggestion(const QVector<QString>& PreviousOrderedProductsList);
-    QVector<QString> GetSuggestedProducts(void);
-    uint             GetNumberOfElemnts(QString);
+    ClientSuggestion(const QVector<Common::PurchaseStruct>& mClientPurchases);
+    QVector<Common::PurchaseStruct> GetSuggestedProducts(uint maxNumberOfProducts);
 };
 } // namespace Algorithms
-#endif // CLIENT_SUGGESTION_H

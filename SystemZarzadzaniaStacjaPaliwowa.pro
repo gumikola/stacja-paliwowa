@@ -10,7 +10,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 # trzeba dodać do instalacji qt w Tools/mingw530_32/opt/bin dllki ssleay32.dll i libleay32.dll
 TARGET = SystemZarzadzaniaStacjaPaliwowa
 TEMPLATE = app
-CONFIG += openssl-linked
+CONFIG += openssl-linked c++17
 unix: PKGCONFIG += openssl
 
 # The following define makes your compiler emit warnings if you use

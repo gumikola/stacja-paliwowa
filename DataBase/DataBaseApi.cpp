@@ -64,7 +64,7 @@ QVector<Common::OrdersStruct> DataBaseApi::getOrdersByDate(QDate date)
                 Common::CustomerStruct(q.value("Odbiorca").toString(), q.value("Miasto").toString(),
                                        q.value("Ulica").toString(), q.value("Numer").toString()),
                 Common::getFuelTypeEnum(q.value("Typ_Paliwa_Nazwa").toString()),
-                q.value("Przychod").toDouble()));
+                q.value("Przychod").toUInt()));
         }
     }
     else
@@ -283,7 +283,6 @@ uint DataBaseApi::GetCustomerId(Common::CustomerStruct customer)
         qDebug() << q.lastError();
         throw q.lastError().text();
     }
-    return 0;
 }
 
 QVector<Common::DistancesStruct> DataBaseApi::GetAllDistances()
@@ -310,7 +309,8 @@ QVector<Common::DistancesStruct> DataBaseApi::GetAllDistances()
     return data;
 }
 
-QVector<Common::PurchaseStruct> getPurchasesByIdClient(Common::CustomerStruct customer)
+QVector<Common::PurchaseStruct>
+DataBaseApi::getClientPurchases(const Common::CustomerStruct customer)
 {
     QVector<Common::PurchaseStruct> data;
     QSqlQuery                       q;
