@@ -32,8 +32,8 @@ public:
     QVector<Common::PetrolInfoStruct> getPriceOfPetrol(uint             nbrOfElements,
                                                        Common::FuelType fuelType);
     void                              removeClient(Common::CustomerStruct& customer);
-    uint                              GetCustomerId(Common::CustomerStruct customer); // for igi
-    QVector<Common::DistancesStruct>  GetAllDistances();                              // for igi
+    uint                              getCustomerId(Common::CustomerStruct customer); // for igi
+    QVector<Common::DistancesStruct>  getAllDistances();                              // for igi
     QVector<Common::PurchaseStruct>   getClientPurchases(Common::CustomerStruct customer);
     void        addPurchase(Common::PurchaseStruct purchase, Common::CustomerStruct customer);
     QStringList getProuducts();

@@ -260,7 +260,7 @@ void DataBaseApi::removeClient(Common::CustomerStruct& customer)
     }
 }
 
-uint DataBaseApi::GetCustomerId(Common::CustomerStruct customer)
+uint DataBaseApi::getCustomerId(Common::CustomerStruct customer)
 {
     QSqlQuery q;
 
@@ -286,7 +286,7 @@ uint DataBaseApi::GetCustomerId(Common::CustomerStruct customer)
     return 0;
 }
 
-QVector<Common::DistancesStruct> DataBaseApi::GetAllDistances()
+QVector<Common::DistancesStruct> DataBaseApi::getAllDistances()
 {
     QVector<Common::DistancesStruct> data;
     QSqlQuery                        q;
@@ -349,7 +349,7 @@ void DataBaseApi::addPurchase(Common::PurchaseStruct purchase, Common::CustomerS
     q.prepare("INSERT OR REPLACE INTO Zakupy_klientow(Data, Klienci_hurtowi_ID, "
               "Produkty_na_stacji_Nazwa) VALUES (?, ?, ?)");
     q.bindValue(0, purchase.date);
-    q.bindValue(1, GetCustomerId(customer));
+    q.bindValue(1, getCustomerId(customer));
     q.bindValue(3, purchase.nameOfProduct);
 
     q.exec();
