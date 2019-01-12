@@ -6,14 +6,11 @@ CalculateOrder::CalculateOrder(DataBaseApi::DataBaseApi&            databaseApi,
     : mDatabaseApi(databaseApi)
     , mCustomers(customers)
 {
+    for (int i = 0; i < customers.size(); i++)
+    {
+        mIds.append(customers.at(i).customer.id);
+    }
 }
-// void CalculateOrder::GetCustomersID()
-//{
-//    for (int i = 0; i < mCustomers.size(); i++)
-//    {
-//        mIds.append(mDatabaseApi.getCustomerId(mCustomers.at(i).customer));
-//    }
-//}
 
 bool CalculateOrder::checkIfDistanceIsInDatabase(
     const Common::DistancesStruct& distanceFromDatabase, const uint& a, const uint& b)
@@ -27,6 +24,8 @@ bool CalculateOrder::checkIfDistanceIsInDatabase(
 
 QVector<Common::DistancesStruct> CalculateOrder::GetDistances()
 {
+    bool                                   foundDistanceBeetwenCLients         = false;
+    bool                                   foundDistanceBeetwenBenzolAndClient = false;
     QVector<Common::DistancesStruct>       Distances;
     const QVector<Common::DistancesStruct> allDistancesFromDatabase =
         mDatabaseApi.getAllDistances();
@@ -34,24 +33,40 @@ QVector<Common::DistancesStruct> CalculateOrder::GetDistances()
     Common::DistancesStruct          tmp;
     for (int j = 0; j < mCustomers.size(); j++)
     {
-        for (int k = j + 1; k < mCustomers.size(); k++) // zamiast mCustomer byly IDIKI
+        for (int k = j + 1; k < mCustomers.size(); k++)
         {
             for (int i = 0; i < allDistancesFromDatabase.size(); i++)
             {
-                if (checkIfDistanceIsInDatabase(allDistancesFromDatabase.at(i),
-                                                static_cast<uint>(j), static_cast<uint>(k)))
+                if (checkIfDistanceIsInDatabase(
+                        allDistancesFromDatabase.at(i), mCustomers.at(j).customer.id,
+                        mCustomers.at(k).customer.id)) // jezeli jest  w bazie to wez
                 {
+                    foundDistanceBeetwenCLients = true;
                     Distances.append(allDistancesFromDatabase.at(i));
                 }
-                else
+                if (checkIfDistanceIsInDatabase(allDistancesFromDatabase.at(i),
+                                                mCustomers.at(j).customer.id,
+                                                1)) // dodaj benzol do dystansow
                 {
-                    tmp.a = static_cast<uint>(j);
-                    tmp.b = static_cast<uint>(k);
-                    listOfClientsToGetDistanceFromGoogle.append(tmp);
+                    Distances.append(allDistancesFromDatabase.at(i));
+                    foundDistanceBeetwenBenzolAndClient = true;
+                }
+            }
+            if (foundDistanceBeetwenCLients == false) // jezeli nie ma w bazie to dodaj do szukanych
+            {
+                tmp.a = static_cast<uint>(j);
+                tmp.b = static_cast<uint>(k);
+                listOfClientsToGetDistanceFromGoogle.append(tmp);
+
+                if (foundDistanceBeetwenBenzolAndClient == false)
+                {
+                    throw QString("Nie znaleziono w bazie odleglosci pomiedzy benzolem a klientem "
+                                  "a powinna tam byc");
                 }
             }
         }
     }
+
     Distances.append(CalculateAdditionalDistances(listOfClientsToGetDistanceFromGoogle));
 
     return Distances;
@@ -100,30 +115,80 @@ QVector<Common::DistancesStruct> CalculateOrder::CalculateAdditionalDistances(
     return allDistances;
 }
 
-void CalculateOrder::SortOrders(QVector<Common::DistancesStruct>) {}
+QVector<QVector<Common::OrdersStruct>>
+CalculateOrder::SortOrders(QVector<Common::DistancesStruct> distances)
+{
+    const int              numberOfDraw = 10000;
+    uint                   bestTime     = INT32_MAX;
+    uint                   tmpTime;
+    QVector<uint>          tmpOrder = mIds;
+    QVector<uint>          bestOrder;
+    QVector<QVector<uint>> returnVector;
+    for (int i = 0; i < numberOfDraw; i++)
+    {
+        tmpOrder = drawOrder(tmpOrder);
+        tmpTime  = getFullTime(tmpOrder, distances);
+        if (tmpTime < bestTime)
+        {
+            bestTime  = tmpTime;
+            bestOrder = tmpOrder;
+        }
+    }
+    if (bestTime < 8 * 60 * 60) // 8H  nie przekroczone liczymy
+    {
+        returnVector.append(bestOrder);
+    }
+    else // liczymy 2 cieżarowki
+    {
+        QVector<uint> tmpOrder1;
+        QVector<uint> tmpOrder2;
+        QVector<uint> bestOrder1;
+        QVector<uint> bestOrder2;
+        int           divider;
+        uint          tmpTime1 = 0;
+        uint          tmpTime2 = 0;
+        bestTime               = INT32_MAX;
+        for (int i = 0; i < numberOfDraw; i++)
+        {
 
-QVector<Common::OrdersStruct> CalculateOrder::GetOrders()
+            tmpOrder = drawOrder(tmpOrder);
+            divider  = rand() % mIds.size() - 1 + 0;
+            for (int j = 0; j < divider; j++)
+                tmpOrder1.append(tmpOrder.at(j));
+
+            for (int k = divider; k < tmpOrder.size(); k++)
+                tmpOrder2.append(tmpOrder.at(k));
+            tmpTime1 = getFullTime(tmpOrder1, distances);
+            tmpTime2 = getFullTime(tmpOrder2, distances);
+            if (tmpTime1 < 8 * 60 * 60 || tmpTime2 < 8 * 60 * 60)
+            {
+                tmpTime = tmpTime1 + tmpTime2;
+                if (tmpTime < bestTime)
+                {
+                    bestTime   = tmpTime;
+                    bestOrder1 = tmpOrder1;
+                    bestOrder2 = tmpOrder2;
+                }
+            }
+        }
+        returnVector.append(bestOrder1);
+        returnVector.append(bestOrder2);
+    }
+    return transformIdsToOrders(returnVector);
+}
+
+QVector<QVector<Common::OrdersStruct>> CalculateOrder::GetOrders()
 {
     QVector<Common::DistancesStruct> Distances = GetDistances();
-    //    GetCustomersID();
-    SortOrders(Distances);
-    return mCustomers; // zeby warningiem
+    return SortOrders(Distances);
 }
 
 Common::CustomerStruct CalculateOrder::getCustomerById(uint id)
 {
-    if (id == 1)
+    for (int i = 0; i < mCustomers.size(); i++)
     {
-        /// wtedy jest benzolem
-        /// return beznol;
-    }
-    else
-    {
-        for (int i = 0; i < mCustomers.size(); i++)
-        {
-            if (mCustomers.at(i).customer.id == id)
-                return mCustomers.at(i).customer;
-        }
+        if (mCustomers.at(i).customer.id == id)
+            return mCustomers.at(i).customer;
     }
     throw QString(
         "Nie znaleziono Customera z tym ID w klasie CalculateOrder w metodzie getCustomerById");
@@ -160,5 +225,56 @@ QVector<int> CalculateOrder::getDistancesFromGoogle(const QString origin, const 
                              .toInt());
     }
     return distances;
+}
+
+uint CalculateOrder::getTimeBeetwenTwoPlaces(uint id1, uint id2,
+                                             const QVector<Common::DistancesStruct> distancesVector)
+{
+    for (int i = 0; i < distancesVector.size(); i++)
+    {
+        if ((id1 == distancesVector.at(i).a && id2 == distancesVector.at(i).b) ||
+            (id1 == distancesVector.at(i).b && id2 == distancesVector.at(i).a))
+        {
+            return distancesVector.at(i).time;
+        }
+    }
+    throw QString("Nie znaleziono czasu pomiedzy dwoma miejscami!!!");
+}
+
+QVector<uint> CalculateOrder::drawOrder(QVector<uint> Order)
+{
+    QList<uint> listOrder = Order.toList();
+    std::random_shuffle(listOrder.begin(), listOrder.end());
+    return listOrder.toVector();
+}
+
+uint CalculateOrder::getFullTime(QVector<uint>                          customers,
+                                 const QVector<Common::DistancesStruct> distancesVector)
+{
+    customers.push_back(1); // add benzol
+    customers.push_front(1);
+    uint FullTime = 0;
+    for (int i = 0; i < customers.size() - 1; i++)
+    {
+        FullTime +=
+            (getTimeBeetwenTwoPlaces(customers.at(i), customers.at(i + 1), distancesVector));
+    }
+    return FullTime;
+}
+
+QVector<QVector<Common::OrdersStruct>>
+CalculateOrder::transformIdsToOrders(QVector<QVector<uint>> bestOrder)
+{
+    QVector<QVector<Common::OrdersStruct>> best;
+    QVector<Common::OrdersStruct>          oneTruckOrder;
+    for (int i = 0; i < bestOrder.size(); i++)
+    {
+        for (int j = 0; j < bestOrder.at(i).size(); j++)
+        {
+            oneTruckOrder.append(getCustomerById(bestOrder.at(i).at(j)).id);
+        }
+        best.append(oneTruckOrder);
+    }
+    return best;
 }
 } // namespace Algorithms
