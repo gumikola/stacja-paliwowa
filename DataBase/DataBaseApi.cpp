@@ -234,8 +234,8 @@ void DataBaseApi::removeClient(Common::CustomerStruct& customer)
         qDebug() << q.lastError();
 }
 
-uint DataBaseApi::GetCustomerId(Common::CustomerStruct customer) {}
+uint DataBaseApi::getCustomerId(Common::CustomerStruct customer) {}
 
-QVector<Common::Distances> DataBaseApi::GetAllDistances() {}
+QVector<Common::Distances> DataBaseApi::getAllDistances() {}
 
 } // namespace DataBaseApi

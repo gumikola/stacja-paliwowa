@@ -59,17 +59,18 @@ struct CustomerStruct
     QString city;
     QString street;
     QString propertyNumber;
+    uint    id;
 
     CustomerStruct(QString name = nullptr, QString city = nullptr, QString street = nullptr,
-                   QString propertyNumber = nullptr)
+                   QString propertyNumber = nullptr, uint id = 0)
         : name(name)
         , city(city)
         , street(street)
         , propertyNumber(propertyNumber)
+        , id(id)
     {
     }
 };
-
 struct OrdersStruct
 {
     uint           amount;
