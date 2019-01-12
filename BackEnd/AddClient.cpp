@@ -61,7 +61,7 @@ void AddClient::exec()
 
 void AddClient::addPressed()
 {
-    qDebug("addPressed()");
+    qDebug("%s", __PRETTY_FUNCTION__);
     try
     {
         Common::CustomerStruct tmp;

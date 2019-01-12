@@ -32,6 +32,10 @@ public slots:
     void addPurchasePressed();
     void cancelPressed();
     void filterChanged(const QString& filter);
+    void addProductPressed();
+    void displayMenu(QPoint pos);
+    void productsListChanged();
+    void removePressed();
 };
 
 } // namespace BackEnd

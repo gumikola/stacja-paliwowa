@@ -46,7 +46,8 @@ SOURCES += \
     BackEnd/EditClient.cpp \
     BackEnd/ChooseCustomer.cpp \
     BackEnd/SuggestedProducts.cpp \
-    BackEnd/AddClientPurchase.cpp
+    BackEnd/AddClientPurchase.cpp \
+    BackEnd/AddProduct.cpp
 
 HEADERS += \
     BackEnd/mainwindow.h \
@@ -68,7 +69,8 @@ HEADERS += \
     BackEnd/EditClient.h \
     BackEnd/ChooseCustomer.h \
     BackEnd/SuggestedProducts.h \
-    BackEnd/AddClientPurchase.h
+    BackEnd/AddClientPurchase.h \
+    BackEnd/AddProduct.h
 
 
 FORMS += \
@@ -78,4 +80,5 @@ FORMS += \
     add_client.ui \
     edit_client.ui \
     choose_customer.ui \
-    add_client_purchase.ui
+    add_client_purchase.ui \
+    add_product.ui
