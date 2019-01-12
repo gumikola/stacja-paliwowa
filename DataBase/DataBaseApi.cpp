@@ -310,7 +310,7 @@ QVector<Common::DistancesStruct> DataBaseApi::GetAllDistances()
     return data;
 }
 
-QVector<Common::PurchaseStruct> getPurchasesByIdClient(Common::CustomerStruct customer)
+QVector<Common::PurchaseStruct> DataBaseApi::getClientPurchases(Common::CustomerStruct customer)
 {
     QVector<Common::PurchaseStruct> data;
     QSqlQuery                       q;
@@ -340,6 +340,44 @@ QVector<Common::PurchaseStruct> getPurchasesByIdClient(Common::CustomerStruct cu
     }
 
     return data;
+}
+
+QStringList DataBaseApi::getProuducts()
+{
+    QStringList data;
+    QSqlQuery   q;
+
+    q.prepare("SELECT * FROM Produkty_na_stacji");
+
+    if (q.exec())
+    {
+        while (q.next())
+        {
+            data.push_back(q.value(0).toString());
+        }
+    }
+    else
+    {
+        qDebug() << q.lastError();
+        throw q.lastError().text();
+    }
+
+    return data;
+}
+
+void DataBaseApi::addProduct(QString product)
+{
+    QSqlQuery q;
+
+    q.prepare("INSERT or REPLACE INTO Produkty_na_stacji(Nazwa) values (?))");
+    q.bindValue(0, product);
+
+    q.exec();
+    if (q.lastError().isValid())
+    {
+        qDebug() << q.lastError();
+        throw q.lastError().text();
+    }
 }
 
 } // namespace DataBaseApi
