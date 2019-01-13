@@ -20,7 +20,7 @@ class FuelPriceChart : public QObject
 
     DataBaseApi::DataBaseApi mDatabaseApi;
     Ui::MainWindow*          mUi;
-    QComboBox&               mFuelPriceChartChoosedFuelType;
+    QComboBox&               mChosenFuelType;
 
     QPair<QSplineSeries, QSplineSeries>* mSeries;
     QChart*                              mChart;
@@ -35,7 +35,6 @@ class FuelPriceChart : public QObject
 
     void    fillSeries(Common::FuelType fuelType);
     QString getChartDataFileName(Common::FuelType);
-    void    displayDebugChart(void);
     void    setUpXAxis();
     void    setUpYAxis();
     void    setUpChartView();
@@ -48,7 +47,7 @@ public:
 signals:
 
 public slots:
-    void choosedFuelTypeChanged(int index);
+    void chosenFuelTypeChanged(int index);
     void tabChanged(int id);
 };
 

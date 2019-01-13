@@ -29,6 +29,7 @@ class AddOrder : public QObject
     Common::FuelType          mChoosenFuelType;
     QDate                     mSelectedDate;
     QDialog                   mDialog;
+    Common::CustomerStruct    mChosenCustomer;
 
     uint             getAmount();
     uint             getIncome();
@@ -42,6 +43,7 @@ public:
     void exec();
 
 signals:
+    void newOrderAdded(const Common::OrdersStruct& order);
 
 public slots:
 
@@ -50,7 +52,7 @@ public slots:
     void fuelTypeChanged(int);
     void chosenDateChanged();
     void chooseCustomerPressed();
-    void clientChoosed(const Common::CustomerStruct& client);
+    void clientChosen(const Common::CustomerStruct& client);
     void addNewCustomerPressed();
 };
 

@@ -21,6 +21,8 @@ ChooseCustomer::ChooseCustomer(DataBaseApi::DataBaseApi& databaseApi)
 
 void ChooseCustomer::printDefaultTable()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     mUi->table->setSelectionBehavior(QAbstractItemView::SelectRows);
     mUi->table->setSelectionMode(QAbstractItemView::SingleSelection);
     mUi->table->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -56,12 +58,14 @@ void ChooseCustomer::printDefaultTable()
 
 void ChooseCustomer::printFiltredClients(const QString& filter)
 {
-    QVector<Common::CustomerStruct> mClients = mDatabaseApi.getCustomers();
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QVector<Common::CustomerStruct> clients = mDatabaseApi.getCustomers();
 
     int rowCnt = 0;
 
     mUi->table->setRowCount(0);
-    for (Common::CustomerStruct client : mClients)
+    for (Common::CustomerStruct client : clients)
     {
         if (client.name.contains(
                 QRegularExpression(filter, QRegularExpression::CaseInsensitiveOption)))
@@ -69,10 +73,18 @@ void ChooseCustomer::printFiltredClients(const QString& filter)
             int columnCnt = 0;
             mUi->table->insertRow(rowCnt);
             mUi->table->setVerticalHeaderItem(rowCnt, new QTableWidgetItem());
-            mUi->table->setItem(rowCnt, columnCnt++, new QTableWidgetItem(client.name));
-            mUi->table->setItem(rowCnt, columnCnt++, new QTableWidgetItem(client.city));
-            mUi->table->setItem(rowCnt, columnCnt++, new QTableWidgetItem(client.street));
-            mUi->table->setItem(rowCnt, columnCnt++, new QTableWidgetItem(client.propertyNumber));
+
+            mUi->table->setItem(rowCnt, columnCnt, new QTableWidgetItem(client.name));
+            mUi->table->item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignCenter);
+
+            mUi->table->setItem(rowCnt, columnCnt, new QTableWidgetItem(client.city));
+            mUi->table->item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignCenter);
+
+            mUi->table->setItem(rowCnt, columnCnt, new QTableWidgetItem(client.street));
+            mUi->table->item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignCenter);
+
+            mUi->table->setItem(rowCnt, columnCnt, new QTableWidgetItem(client.propertyNumber));
+            mUi->table->item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignCenter);
 
             rowCnt++;
         }
@@ -81,12 +93,14 @@ void ChooseCustomer::printFiltredClients(const QString& filter)
 
 void ChooseCustomer::exec()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     mDialog.exec();
 }
 
 void ChooseCustomer::addPressed()
 {
-    qDebug("%s", __func__);
+    qDebug() << __PRETTY_FUNCTION__;
 
     try
     {
@@ -115,12 +129,15 @@ void ChooseCustomer::addPressed()
 
 void ChooseCustomer::cancelPressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     mDialog.close();
 }
 
 void ChooseCustomer::filterChanged(const QString& text)
 {
-    qDebug("%s zmieniono na: %s", __func__, text.toStdString().c_str());
+    qDebug() << __PRETTY_FUNCTION__ << " Filtered surname changed to: " << text;
+
     printFiltredClients(text);
 }
 

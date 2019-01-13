@@ -31,6 +31,8 @@ public slots:
     void displayMenu(QPoint pos);
     void tabChanged(int id);
     void filterChanged(const QString& text);
+    void removePressed();
+    void editPressed();
 };
 
 } // namespace BackEnd

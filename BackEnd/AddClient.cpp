@@ -16,6 +16,8 @@ AddClient::AddClient(DataBaseApi::DataBaseApi& databaseApi)
 
 QString AddClient::getName()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QString tmp = mUi->name->text();
 
     if (not tmp.size())
@@ -26,6 +28,8 @@ QString AddClient::getName()
 
 QString AddClient::getCity()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QString tmp = mUi->city->text();
 
     if (not tmp.size())
@@ -36,6 +40,8 @@ QString AddClient::getCity()
 
 QString AddClient::getStreet()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QString tmp = mUi->street->text();
 
     if (not tmp.size())
@@ -46,6 +52,8 @@ QString AddClient::getStreet()
 
 QString AddClient::getPropertyNumber()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QString tmp = mUi->number->text();
 
     if (not tmp.size())
@@ -56,11 +64,15 @@ QString AddClient::getPropertyNumber()
 
 void AddClient::exec()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     mDialog.exec();
 }
 
 void AddClient::addPressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     qDebug("%s", __PRETTY_FUNCTION__);
     try
     {
@@ -86,6 +98,8 @@ void AddClient::addPressed()
 
 void AddClient::cancelPressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     mDialog.close();
 }
 

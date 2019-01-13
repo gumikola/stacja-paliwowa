@@ -7,7 +7,7 @@ GoogleApi::GoogleApi(const Common::CustomerStruct& customer)
                   "json?origin=Benzol_Krolewiecka_1_Mysliborz"
                   "&destination=" +
                   customer.street + "_" + customer.propertyNumber + "_" + customer.city +
-                  "&key=AIzaSyAzEDsdnI3vIet51Z1LOeLACxPlV542X2g";
+                  "&key=AIzaSyA6B9rzXYJzjFXloNN8bmmpHYA3Rl9UAdw";
     QNetworkRequest request;
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
     QNetworkAccessManager manager;

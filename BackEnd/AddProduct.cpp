@@ -16,12 +16,15 @@ AddProduct::AddProduct(DataBaseApi::DataBaseApi& databaseApi)
 
 void AddProduct::exec()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     mDialog.exec();
 }
 
 void AddProduct::addPressed()
 {
-    qDebug("%s", __PRETTY_FUNCTION__);
+    qDebug() << __PRETTY_FUNCTION__;
+
     try
     {
         QString tmp = getProductName();
@@ -42,11 +45,15 @@ void AddProduct::addPressed()
 
 void AddProduct::cancelPressed()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     mDialog.close();
 }
 
 QString AddProduct::getProductName()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     QString tmp = mUi->productName->text();
 
     if (not tmp.size())

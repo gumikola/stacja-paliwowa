@@ -50,6 +50,7 @@ public:
     void        addProduct(const QString& product);
     void        removeProduct(const QString& product);
     void        editProduct(const QString& oldName, const QString& newName);
+    void        removeOrder(const Common::OrdersStruct& order);
 };
 
 } // namespace DataBaseApi

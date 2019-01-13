@@ -505,4 +505,9 @@ void DataBaseApi::editProduct(const QString& oldName, const QString& newName)
     }
 }
 
+void DataBaseApi::removeOrder(const Common::OrdersStruct& order)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+}
+
 } // namespace DataBaseApi

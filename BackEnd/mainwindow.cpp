@@ -22,6 +22,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::makeObjects()
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     // making objects
     mOrders.reset(new BackEnd::Orders(ui, mDataBaseApi));
     mFuelPriceChart.reset(new BackEnd::FuelPriceChart(ui, mDataBaseApi));
