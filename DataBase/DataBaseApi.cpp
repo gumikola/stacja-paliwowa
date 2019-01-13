@@ -534,5 +534,18 @@ Common::CustomerStruct DataBaseApi::getCustomerById(uint id)
 void DataBaseApi::removeOrder(const Common::OrdersStruct& order)
 {
     qDebug() << __PRETTY_FUNCTION__;
+
+    QSqlQuery q;
+
+    q.prepare("DELETE FROM Produkty_na_stacji WHERE Nazwa=?;");
+    q.bindValue(0, newName);
+    q.bindValue(1, oldName);
+
+    q.exec();
+    if (q.lastError().isValid())
+    {
+        qDebug() << q.lastError();
+        throw q.lastError().text();
+    }
 }
 } // namespace DataBaseApi

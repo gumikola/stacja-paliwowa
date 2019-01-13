@@ -27,6 +27,7 @@ public:
 
     QVector<Common::OrdersStruct> getOrdersByDate(const QDate& date);
     void                          addOrder(const Common::OrdersStruct& order);
+    void                          removeOrder(const Common::OrdersStruct& order);
 
     QVector<Common::CustomerStruct> getCustomers();
     void editCustomer(const Common::CustomerStruct& prev, const Common::CustomerStruct& actual);
@@ -51,7 +52,6 @@ public:
     void        addProduct(const QString& product);
     void        removeProduct(const QString& product);
     void        editProduct(const QString& oldName, const QString& newName);
-    void        removeOrder(const Common::OrdersStruct& order);
 };
 
 } // namespace DataBaseApi
