@@ -70,15 +70,6 @@ struct CustomerStruct
         , id(id)
     {
     }
-    CustomerStruct& operator=(const CustomerStruct& x)
-    {
-        name           = x.name;
-        city           = x.city;
-        street         = x.street;
-        propertyNumber = x.propertyNumber;
-        id             = x.id;
-        return *this;
-    }
 };
 struct OrdersStruct
 {

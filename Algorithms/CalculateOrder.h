@@ -16,16 +16,15 @@
 namespace Algorithms {
 class CalculateOrder
 {
+
     DataBaseApi::DataBaseApi&            mDatabaseApi;
     const QVector<Common::OrdersStruct>& mCustomers;
     QVector<uint>                        mIds;
-    bool checkIfDistanceIsInDatabase(const Common::DistancesStruct& DistanceFromDatabase,
-                                     const uint& a, const uint& b);
-    QVector<Common::DistancesStruct> GetDistances(void);
+    QVector<Common::DistancesStruct>     getDistances(void);
     QVector<Common::DistancesStruct>
-                                           CalculateAdditionalDistances(const QVector<Common::DistancesStruct>& DistancesToCalculate);
-    QVector<QVector<Common::OrdersStruct>> SortOrders(QVector<Common::DistancesStruct> distances);
-    QVector<QVector<Common::OrdersStruct>> GetOrders();
+                                           calculateAdditionalDistances(const QVector<Common::DistancesStruct>& DistancesToCalculate);
+    QVector<QVector<Common::OrdersStruct>> sortOrders(QVector<Common::DistancesStruct> distances);
+    QVector<QVector<Common::OrdersStruct>> getOrders();
     Common::CustomerStruct                 getCustomerById(uint id);
     QVector<int>  getDistancesFromGoogle(const QString origin, const QString destination,
                                          const uint size);
@@ -35,6 +34,15 @@ class CalculateOrder
     uint          getFullTime(QVector<uint>                          customers,
                               const QVector<Common::DistancesStruct> distancesVector);
     QVector<QVector<Common::OrdersStruct>> transformIdsToOrders(QVector<QVector<uint>> bestOrder);
+    QPair<uint, QVector<uint>>             optimalizeOrder(const uint                       numberOfDraw,
+                                                           QVector<Common::DistancesStruct> distances,
+                                                           QPair<uint, QVector<uint>>       startOrder);
+    QPair<uint, QVector<uint>>             checkIfDrawIsBetter(QPair<uint, QVector<uint>> best,
+                                                               QPair<uint, QVector<uint>> tmp);
+    QPair<uint, QPair<QVector<uint>, QVector<uint>>>
+    checkIfDrawIsBetterFor2(QPair<uint, QVector<uint>>                       bestOrderAndTime1,
+                            QPair<uint, QVector<uint>>                       bestOrderAndTime2,
+                            QPair<uint, QPair<QVector<uint>, QVector<uint>>> best);
 
 public:
     CalculateOrder(DataBaseApi::DataBaseApi&            databaseApiconst,
