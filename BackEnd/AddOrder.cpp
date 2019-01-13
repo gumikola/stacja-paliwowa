@@ -246,8 +246,11 @@ void AddOrder::addOrderPressed()
     {
         Common::OrdersStruct tmp;
 
+        if (mUi->choosenClientTable->rowCount() < 0)
+            throw QString("Nie wybrano klienta");
+
+        tmp.customer          = mChosenCustomer;
         tmp.amount            = getAmount();
-        tmp.customer          = {};
         tmp.date              = getDate();
         tmp.establishedProfit = getIncome();
         tmp.fuelType          = getFuelType();
