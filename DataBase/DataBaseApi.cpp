@@ -505,9 +505,34 @@ void DataBaseApi::editProduct(const QString& oldName, const QString& newName)
     }
 }
 
+Common::CustomerStruct DataBaseApi::getCustomerById(uint id)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QSqlQuery              q;
+    Common::CustomerStruct data;
+    q.prepare("SELECT * FROM Klienci_hurtowi WHERE ID=?;");
+    q.bindValue(0, id);
+
+    if (q.exec())
+    {
+        while (q.next())
+        {
+            data = {q.value("Odbiorca").toString(), q.value("Miasto").toString(),
+                    q.value("Ulica").toString(), q.value("Numer").toString(),
+                    q.value("ID").toUInt()};
+        }
+    }
+    else
+    {
+        qDebug() << q.lastError();
+        throw q.lastError().text();
+    }
+    return data;
+}
+
 void DataBaseApi::removeOrder(const Common::OrdersStruct& order)
 {
     qDebug() << __PRETTY_FUNCTION__;
 }
-
 } // namespace DataBaseApi
