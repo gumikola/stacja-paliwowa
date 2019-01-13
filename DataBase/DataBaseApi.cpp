@@ -309,6 +309,8 @@ uint DataBaseApi::getCustomerId(const Common::CustomerStruct& customer)
     }
 }
 
+Common::CustomerStruct DataBaseApi::getCustomerById(uint id) {}
+
 QVector<Common::DistancesStruct> DataBaseApi::getAllDistances()
 {
     qDebug() << __PRETTY_FUNCTION__;

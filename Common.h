@@ -133,6 +133,7 @@ struct PurchaseStruct
     {
     }
 };
+const CustomerStruct Benzol("Benzol", "Myślibórz", "Królewiecka", "1", 1);
 
 } // namespace Common
 
