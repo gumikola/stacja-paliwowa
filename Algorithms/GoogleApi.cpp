@@ -8,10 +8,15 @@ GoogleApi::GoogleApi(const Common::CustomerStruct& customer)
                   "&destination=" +
                   customer.street + "_" + customer.propertyNumber + "_" + customer.city +
                   "&key=AIzaSyAzEDsdnI3vIet51Z1LOeLACxPlV542X2g";
+    /// TO REMOVE BEFORE RELEASE
+    ///
     qDebug() << "GoogleApi::::Zawsze na razie przy URL go wyswietlimy, wtedy wiadomo czy nie jest "
                 "zjebany i czy "
                 "wgl sie Igiego metoda wywołała" +
                     URL + "\n\n\n\n";
+    ///
+    ///
+    ///
     QNetworkRequest request;
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
     QNetworkAccessManager manager;

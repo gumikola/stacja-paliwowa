@@ -1,40 +1,39 @@
 #include "CalculateOrder.h"
 #include <algorithm>
-#include <QVector>
 
 namespace Algorithms {
 
-CalculateOrder::CalculateOrder(DataBaseApi::DataBaseApi&            databaseApi,
-                               const QVector<Common::OrdersStruct>& customers)
+CalculateOrder::CalculateOrder(DataBaseApi::DataBaseApi&          databaseApi,
+                               const QList<Common::OrdersStruct>& customers)
     : mDatabaseApi(databaseApi)
     , mCustomers(customers)
 {
-    for (int i = 0; i < customers.size(); i++)
+    for (Common::OrdersStruct order : mCustomers)
     {
-        mIds.append(customers.at(i).customer.id);
+        mIds.append(order.customer.id);
     }
 }
 
-QVector<Common::DistancesStruct> CalculateOrder::getDistances()
+QList<Common::DistancesStruct> CalculateOrder::getDistances()
 {
-    QVector<Common::DistancesStruct>       distances;
-    const QVector<Common::DistancesStruct> allDistancesFromDatabase =
-        mDatabaseApi.getAllDistances();
-    QVector<Common::DistancesStruct> listOfClientsToGetDistanceFromGoogle;
-    Common::DistancesStruct          tmp;
+    QList<Common::DistancesStruct>       distances;
+    const QList<Common::DistancesStruct> allDistancesFromDatabase =
+        mDatabaseApi.getAllDistances().toList();
+    QList<Common::DistancesStruct> listOfClientsToGetDistanceFromGoogle;
+    Common::DistancesStruct        tmp;
 
-    QVector<Common::CustomerStruct> places;
+    QList<Common::CustomerStruct> places;
 
     std::transform(mCustomers.begin(), mCustomers.end(), std::back_inserter(places),
                    [](const Common::OrdersStruct& it) { return it.customer; });
 
-    places.append(mDatabaseApi.getCustomerById(1));
+    places.append(mDatabaseApi.getCustomerById(Common::Benzol.id));
 
     for (int j = 0; j < places.size(); j++)
     {
         for (int k = j + 1; k < places.size(); k++)
         {
-            QVector<Common::DistancesStruct>::const_iterator it = std::find_if(
+            QList<Common::DistancesStruct>::const_iterator it = std::find_if(
                 allDistancesFromDatabase.cbegin(), allDistancesFromDatabase.cend(),
                 [&places, j, k](const Common::DistancesStruct& distance) {
                     return ((distance.a == places.at(k).id) and (distance.b == places.at(j).id)) or
@@ -57,33 +56,39 @@ QVector<Common::DistancesStruct> CalculateOrder::getDistances()
     return distances;
 }
 
-QVector<Common::DistancesStruct> CalculateOrder::calculateAdditionalDistances(
-    const QVector<Common::DistancesStruct>& DistancesToCalculate)
+QList<Common::DistancesStruct> CalculateOrder::calculateAdditionalDistances(
+    const QList<Common::DistancesStruct>& DistancesToCalculate)
 {
-    QVector<Common::DistancesStruct> allDistances;
-    Common::CustomerStruct           tmpCustomer;
-    Common::DistancesStruct          tmpDistancesToCalculate;
-    QString                          originString;
-    QString                          destinationString;
-    uint                             howManyRequests = 0;
-    QVector<int>                     tmpDistances;
+    QList<Common::DistancesStruct> allDistances;
+    Common::CustomerStruct         tmpCustomer;
+    Common::DistancesStruct        tmpDistancesToCalculate;
+    QString                        originString;
+    QString                        destinationString;
+    uint                           howManyRequests = 0;
+    QList<int>                     tmpDistances;
 
     for (int i = 0; i < DistancesToCalculate.size(); i++)
     {
         if (howManyRequests < 8)
         {
             tmpCustomer = getCustomerById(DistancesToCalculate.at(i).a);
-            originString.append(tmpCustomer.city + "_" + tmpCustomer.street + "_" +
-                                tmpCustomer.propertyNumber + "|");
+            originString.append(QString("%1_%2_%3|")
+                                    .arg(tmpCustomer.city)
+                                    .arg(tmpCustomer.street)
+                                    .arg(tmpCustomer.propertyNumber));
+
             tmpCustomer = getCustomerById(DistancesToCalculate.at(i).b);
-            destinationString.append(tmpCustomer.city + "_" + tmpCustomer.street + "_" +
-                                     tmpCustomer.propertyNumber + "|");
+
+            destinationString.append(QString("%1_%2_%3|")
+                                         .arg(tmpCustomer.city)
+                                         .arg(tmpCustomer.street)
+                                         .arg(tmpCustomer.propertyNumber));
             howManyRequests++;
         }
         else
         {
-            originString.replace(originString.size() - 1, 1, "&");
-            destinationString.replace(destinationString.size() - 1, 1, "&");
+            originString.replace(originString.lastIndexOf("|"), 1, "&");
+            destinationString.replace(originString.lastIndexOf("|"), 1, "&");
             tmpDistances.append(
                 getDistancesFromGoogle(originString, destinationString, howManyRequests));
             howManyRequests = 0;
@@ -103,51 +108,47 @@ QVector<Common::DistancesStruct> CalculateOrder::calculateAdditionalDistances(
         tmpDistancesToCalculate.a    = DistancesToCalculate.at(i).a;
         tmpDistancesToCalculate.b    = DistancesToCalculate.at(i).b;
         tmpDistancesToCalculate.time = static_cast<uint>(tmpDistances.at(i));
-        mDatabaseApi.addTravelTime(tmpDistancesToCalculate); // add distances to database
+        mDatabaseApi.addTravelTime(tmpDistancesToCalculate);
         allDistances.append(tmpDistancesToCalculate);
     }
     return allDistances;
 }
 
-QVector<QVector<Common::OrdersStruct>>
-CalculateOrder::sortOrders(QVector<Common::DistancesStruct> distances)
+QList<QList<Common::OrdersStruct>>
+CalculateOrder::sortOrders(QList<Common::DistancesStruct> distances)
 {
-    uint                       numberOfDraw = 10000;
-    QVector<QVector<uint>>     returnVector;
-    QPair<uint, QVector<uint>> startOrderAndTime(INT32_MAX, mIds);
-    QPair<uint, QVector<uint>> bestOrderAndTime =
-        optimalizeOrder(numberOfDraw, distances, startOrderAndTime);
+    QList<QList<uint>>           returnVector;
+    QPair<uint32_t, QList<uint>> startOrderAndTime(UINT32_MAX, mIds);
+    QPair<uint32_t, QList<uint>> bestOrderAndTime = optimalizeOrder(distances);
     if (bestOrderAndTime.first < 8 * 60 * 60) // 8H  nie przekroczone, damy rade 1
     {
         returnVector.append(bestOrderAndTime.second);
     }
     else // liczymy 2 cieżarowki
     {
-        const uint                                       numberOfDrawForTwoTrucks = 200;
-        QPair<uint, QVector<uint>>                       bestOrderAndTime1;
-        QPair<uint, QVector<uint>>                       bestOrderAndTime2;
-        QPair<QVector<uint>, QVector<uint>>              dividedOrder;
-        int                                              divider;
-        QVector<uint>                                    tmpOrder = mIds;
-        QPair<uint, QPair<QVector<uint>, QVector<uint>>> best;
+        const uint                                   numberOfDrawForTwoTrucks = 200;
+        QPair<uint, QList<uint>>                     bestOrderAndTime1;
+        QPair<uint, QList<uint>>                     bestOrderAndTime2;
+        QPair<QList<uint>, QList<uint>>              dividedOrder;
+        int                                          divider;
+        QList<uint>                                  tmpOrder = mIds;
+        QPair<uint, QPair<QList<uint>, QList<uint>>> best;
         best.first = 1000000;
         for (uint i = 0; i < numberOfDrawForTwoTrucks; i++)
         {
             tmpOrder = drawOrder(tmpOrder);
-            divider  = rand() % mIds.size() - 1 + 0;
+            qsrand(static_cast<uint>(QDateTime::currentMSecsSinceEpoch()));
+            divider = qrand() % (mIds.size() - 1);
             for (int j = 0; j < divider; j++)
-                dividedOrder.first.append(tmpOrder);
+                dividedOrder.first.append(tmpOrder.at(j));
             for (int k = divider; k < mIds.size(); k++)
-                dividedOrder.second.append(tmpOrder);
-            bestOrderAndTime1 = optimalizeOrder(
-                numberOfDraw, distances, QPair<uint, QVector<uint>>(INT32_MAX, dividedOrder.first));
+                dividedOrder.second.append(tmpOrder.at(k));
+            bestOrderAndTime1 = optimalizeOrder(distances);
             if (bestOrderAndTime1.first > 8 * 60 * 60)
             {
                 continue;
             }
-            bestOrderAndTime2 =
-                optimalizeOrder(numberOfDraw, distances,
-                                QPair<uint, QVector<uint>>(INT32_MAX, dividedOrder.second));
+            bestOrderAndTime2 = optimalizeOrder(distances);
 
             best = checkIfDrawIsBetterFor2(bestOrderAndTime1, bestOrderAndTime2, best);
         }
@@ -157,9 +158,9 @@ CalculateOrder::sortOrders(QVector<Common::DistancesStruct> distances)
     return transformIdsToOrders(returnVector);
 }
 
-QVector<QVector<Common::OrdersStruct>> CalculateOrder::getOrders()
+QList<QList<Common::OrdersStruct>> CalculateOrder::getOrders()
 {
-    QVector<Common::DistancesStruct> Distances = getDistances();
+    QList<Common::DistancesStruct> Distances = getDistances();
     return sortOrders(Distances);
 }
 
@@ -169,28 +170,35 @@ Common::CustomerStruct CalculateOrder::getCustomerById(uint id)
     {
         return mDatabaseApi.getCustomerById(1); // Send base
     }
-    QVector<Common::OrdersStruct>::const_iterator it = std::find_if(
+    QList<Common::OrdersStruct>::const_iterator it = std::find_if(
         mCustomers.begin(), mCustomers.end(),
         [&id](const Common::OrdersStruct& customer) { return (customer.customer.id == id); });
     if (it != mCustomers.end())
         return it->customer;
     else
         throw QString(
-            "Nie znaleziono Customera z tym ID w klasie CalculateOrder w metodzie getCustomerById");
+            "Can't find Customer with ID: %1 in class CalculateOrder in method getCustonerById")
+            .arg(id);
 }
 
-QVector<int> CalculateOrder::getDistancesFromGoogle(const QString origin, const QString destination,
-                                                    const uint size)
+QList<int> CalculateOrder::getDistancesFromGoogle(const QString origin, const QString destination,
+                                                  const uint size)
 {
-    QVector<int> distances;
-    QString      URL = "https://maps.googleapis.com/maps/api/distancematrix/"
-                  "json?origins=" +
-                  origin + "destinations=" + destination +
-                  "key=AIzaSyA6B9rzXYJzjFXloNN8bmmpHYA3Rl9UAdw";
+    QList<int> distances;
+    QString    URL =
+        QString("https://maps.googleapis.com/maps/api/distancematrix/"
+                "json?origins=%1destinations=%2key=AIzaSyA6B9rzXYJzjFXloNN8bmmpHYA3Rl9UAdw")
+            .arg(origin)
+            .arg(destination);
+
+    /// TO REMOVE BEFORE RELEASE
+    ///
     qDebug() << "CalculateOrder::::Zawsze na razie przy URL go wyswietlimy, wtedy wiadomo czy nie "
                 "jest zjebany i czy "
                 "wgl sie Igiego metoda wywołała" +
                     URL + "\n\n\n\n";
+    ///
+    ///
     QNetworkRequest request;
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
     QNetworkAccessManager manager;
@@ -217,31 +225,30 @@ QVector<int> CalculateOrder::getDistancesFromGoogle(const QString origin, const 
 }
 
 uint CalculateOrder::getTimeBeetwenTwoPlaces(uint id1, uint id2,
-                                             const QVector<Common::DistancesStruct> distancesVector)
+                                             const QList<Common::DistancesStruct> distancesVector)
 {
-    for (int i = 0; i < distancesVector.size(); i++)
+    for (Common::DistancesStruct distance : distancesVector)
     {
-        if ((id1 == distancesVector.at(i).a && id2 == distancesVector.at(i).b) ||
-            (id1 == distancesVector.at(i).b && id2 == distancesVector.at(i).a))
+        if ((id1 == distance.a && id2 == distance.b) || (id1 == distance.b && id2 == distance.a))
         {
-            return distancesVector.at(i).time;
+            return distance.time;
         }
     }
-    throw QString("Nie znaleziono czasu pomiedzy dwoma miejscami!!!");
+    throw QString("Can't find time beetwen two places!!!");
 }
 
-QVector<uint> CalculateOrder::drawOrder(QVector<uint> Order)
+QList<uint> CalculateOrder::drawOrder(QList<uint>& order)
 {
-    QList<uint> listOrder = Order.toList();
-    std::random_shuffle(listOrder.begin(), listOrder.end());
-    return listOrder.toVector();
+
+    std::random_shuffle(order.begin(), order.end());
+    return order;
 }
 
-uint CalculateOrder::getFullTime(QVector<uint>                          customers,
-                                 const QVector<Common::DistancesStruct> distancesVector)
+uint CalculateOrder::getFullTime(QList<uint>                          customers,
+                                 const QList<Common::DistancesStruct> distancesVector)
 {
-    customers.push_back(1); // add benzol
-    customers.push_front(1);
+    customers.push_back(Common::Benzol.id);
+    customers.push_front(Common::Benzol.id);
     uint FullTime = 0;
     for (int i = 0; i < customers.size() - 1; i++)
     {
@@ -251,28 +258,27 @@ uint CalculateOrder::getFullTime(QVector<uint>                          customer
     return FullTime;
 }
 
-QVector<QVector<Common::OrdersStruct>>
-CalculateOrder::transformIdsToOrders(QVector<QVector<uint>> bestOrder)
+QList<QList<Common::OrdersStruct>> CalculateOrder::transformIdsToOrders(QList<QList<uint>> order)
 {
-    QVector<QVector<Common::OrdersStruct>> best;
-    QVector<Common::OrdersStruct>          oneTruckOrder;
-    for (int i = 0; i < bestOrder.size(); i++)
+
+    QList<QList<Common::OrdersStruct>> bestOrder;
+    QList<Common::OrdersStruct>        oneTruckOrder;
+    for (QList<uint> truck : order)
     {
-        for (int j = 0; j < bestOrder.at(i).size(); j++)
+        for (uint order : truck)
         {
-            oneTruckOrder.append(getCustomerById(bestOrder.at(i).at(j)).id);
+            oneTruckOrder.append(getCustomerById(truck.at(static_cast<int>(order))).id);
         }
-        best.append(oneTruckOrder);
+        bestOrder.append(oneTruckOrder);
     }
-    return best;
+    return bestOrder;
 }
 
-QPair<uint, QVector<uint>>
-CalculateOrder::optimalizeOrder(const uint numberOfDraw, QVector<Common::DistancesStruct> distances,
-                                QPair<uint, QVector<uint>> startOrder)
+QPair<uint, QList<uint>> CalculateOrder::optimalizeOrder(QList<Common::DistancesStruct> distances)
 {
-    QPair<uint, QVector<uint>> best = startOrder;
-    QPair<uint, QVector<uint>> tmp  = best;
+    QPair<uint, QList<uint>> best(UINT32_MAX, mIds);
+    QPair<uint, QList<uint>> tmp          = best;
+    const uint               numberOfDraw = 10000;
     for (uint i = 0; i < numberOfDraw; i++)
     {
         tmp.second = drawOrder(tmp.second);
@@ -282,8 +288,8 @@ CalculateOrder::optimalizeOrder(const uint numberOfDraw, QVector<Common::Distanc
     return best;
 }
 
-QPair<uint, QVector<uint>> CalculateOrder::checkIfDrawIsBetter(QPair<uint, QVector<uint>> best,
-                                                               QPair<uint, QVector<uint>> tmp)
+QPair<uint, QList<uint>> CalculateOrder::checkIfDrawIsBetter(QPair<uint, QList<uint>> best,
+                                                             QPair<uint, QList<uint>> tmp)
 {
     if (tmp.first < best.first)
     {
@@ -292,12 +298,12 @@ QPair<uint, QVector<uint>> CalculateOrder::checkIfDrawIsBetter(QPair<uint, QVect
     return best;
 }
 
-QPair<uint, QPair<QVector<uint>, QVector<uint>>>
-CalculateOrder::checkIfDrawIsBetterFor2(QPair<uint, QVector<uint>> bestOrderAndTime1,
-                                        QPair<uint, QVector<uint>> bestOrderAndTime2,
-                                        QPair<uint, QPair<QVector<uint>, QVector<uint>>> best)
+QPair<uint, QPair<QList<uint>, QList<uint>>>
+CalculateOrder::checkIfDrawIsBetterFor2(QPair<uint, QList<uint>> bestOrderAndTime1,
+                                        QPair<uint, QList<uint>> bestOrderAndTime2,
+                                        QPair<uint, QPair<QList<uint>, QList<uint>>> best)
 {
-    QPair<uint, QPair<QVector<uint>, QVector<uint>>> tmp;
+    QPair<uint, QPair<QList<uint>, QList<uint>>> tmp;
     tmp.first         = bestOrderAndTime1.first + bestOrderAndTime2.first;
     tmp.second.first  = bestOrderAndTime1.second;
     tmp.second.second = bestOrderAndTime2.second;
