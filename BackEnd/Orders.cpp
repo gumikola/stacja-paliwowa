@@ -190,7 +190,7 @@ void Orders::printCalculatedOrder()
     //                            new QTableWidgetItem(QString::number(i + 1))); // numer cysterny
     //            od 1
 
-    //                rowCnt++;
+    //            rowCnt++;
     //        }
     //    }
 }

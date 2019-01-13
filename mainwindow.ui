@@ -905,31 +905,6 @@
              <bold>true</bold>
             </font>
            </property>
-           <item>
-            <property name="text">
-             <string>wybierz typ jakiego paliwa cene chcesz sprawdzic</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>ON</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>OO</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>PB95</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>PB98</string>
-            </property>
-           </item>
           </widget>
          </item>
          <item>
