@@ -68,7 +68,8 @@ QVector<Common::OrdersStruct> DataBaseApi::getOrdersByDate(const QDate& date)
             data.push_back(Common::OrdersStruct(
                 q.value("Ilosc").toUInt(), q.value("Data").toDate(), q.value("Cena").toDouble(),
                 Common::CustomerStruct(q.value("Odbiorca").toString(), q.value("Miasto").toString(),
-                                       q.value("Ulica").toString(), q.value("Numer").toString()),
+                                       q.value("Ulica").toString(), q.value("Numer").toString(),
+                                       q.value("ID").toUInt()),
                 Common::getFuelTypeEnum(q.value("Typ_Paliwa_Nazwa").toString()),
                 q.value("Przychod").toUInt()));
         }
@@ -317,11 +318,13 @@ QVector<Common::DistancesStruct> DataBaseApi::getAllDistances()
     QSqlQuery                        q;
 
     q.prepare("SELECT a,b,czas from Trasy;");
-
+    qDebug() << "Jestem przed execiem";
     if (q.exec())
     {
+        qDebug() << "Jestem w execu";
         while (q.next())
         {
+            qDebug() << "Jestem we whileu";
             data.push_back(Common::DistancesStruct(q.value("a").toUInt(), q.value("b").toUInt(),
                                                    q.value("czas").toUInt()));
         }
@@ -535,17 +538,17 @@ void DataBaseApi::removeOrder(const Common::OrdersStruct& order)
 {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QSqlQuery q;
+    //    QSqlQuery q;
 
-    q.prepare("DELETE FROM Produkty_na_stacji WHERE Nazwa=?;");
-    q.bindValue(0, newName);
-    q.bindValue(1, oldName);
+    //    q.prepare("DELETE FROM Produkty_na_stacji WHERE Nazwa=?;");
+    //    q.bindValue(0, newName);
+    //    q.bindValue(1, oldName);
 
-    q.exec();
-    if (q.lastError().isValid())
-    {
-        qDebug() << q.lastError();
-        throw q.lastError().text();
-    }
+    //    q.exec();
+    //    if (q.lastError().isValid())
+    //    {
+    //        qDebug() << q.lastError();
+    //        throw q.lastError().text();
+    //    }
 }
 } // namespace DataBaseApi
