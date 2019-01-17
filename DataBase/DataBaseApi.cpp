@@ -68,7 +68,8 @@ QVector<Common::OrdersStruct> DataBaseApi::getOrdersByDate(const QDate& date)
             data.push_back(Common::OrdersStruct(
                 q.value("Ilosc").toUInt(), q.value("Data").toDate(), q.value("Cena").toDouble(),
                 Common::CustomerStruct(q.value("Odbiorca").toString(), q.value("Miasto").toString(),
-                                       q.value("Ulica").toString(), q.value("Numer").toString()),
+                                       q.value("Ulica").toString(), q.value("Numer").toString(),
+                                       q.value("ID").toUInt()),
                 Common::getFuelTypeEnum(q.value("Typ_Paliwa_Nazwa").toString()),
                 q.value("Przychod").toUInt()));
         }
@@ -537,9 +538,11 @@ void DataBaseApi::removeOrder(const Common::OrdersStruct& order)
 
     QSqlQuery q;
 
-    q.prepare("DELETE FROM Produkty_na_stacji WHERE Nazwa=?;");
-    q.bindValue(0, newName);
-    q.bindValue(1, oldName);
+    q.prepare(
+        "DELETE FROM Zamowienia WHERE Data=? and Klienci_hurtowi_ID=? and Typ_paliwa_Nazwa=?;");
+    q.bindValue(0, order.date);
+    q.bindValue(1, order.customer.id);
+    q.bindValue(2, Common::getFuelTypeName(order.fuelType));
 
     q.exec();
     if (q.lastError().isValid())
