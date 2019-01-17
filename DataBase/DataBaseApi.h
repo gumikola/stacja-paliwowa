@@ -27,12 +27,14 @@ public:
 
     QVector<Common::OrdersStruct> getOrdersByDate(const QDate& date);
     void                          addOrder(const Common::OrdersStruct& order);
+    void                          removeOrder(const Common::OrdersStruct& order);
 
     QVector<Common::CustomerStruct> getCustomers();
     void editCustomer(const Common::CustomerStruct& prev, const Common::CustomerStruct& actual);
     int  addCustomer(const Common::CustomerStruct& customer);
     void removeCustomer(const Common::CustomerStruct& customer);
     uint getCustomerId(const Common::CustomerStruct& customer);
+    Common::CustomerStruct getCustomerById(uint id);
 
     void                              addPriceOfPetrol(const Common::PetrolInfoStruct& info);
     QVector<Common::PetrolInfoStruct> getPriceOfPetrol(const uint             nbrOfElements,
@@ -50,7 +52,6 @@ public:
     void        addProduct(const QString& product);
     void        removeProduct(const QString& product);
     void        editProduct(const QString& oldName, const QString& newName);
-    void        removeOrder(const Common::OrdersStruct& order);
 };
 
 } // namespace DataBaseApi
