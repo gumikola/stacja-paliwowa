@@ -28,10 +28,12 @@ enum class FuelTankType
 };
 
 static QString URL = "https://www.orlen.pl/PL/DlaBiznesu/HurtoweCenyPaliw/Strony/default.aspx";
-QString        getFuelTypeName(const FuelType& type);
-FuelType       getFuelTypeEnum(QString type);
-QString        getFuelTankTypeName(const FuelTankType& type);
-FuelTankType   getFuelTankEnum(QString type);
+static QString chartsPricesDataPath = "stacja-paliwowa/FuelPricesChartData/";
+
+QString      getFuelTypeName(const FuelType& type);
+FuelType     getFuelTypeEnum(QString type);
+QString      getFuelTankTypeName(const FuelTankType& type);
+FuelTankType getFuelTankEnum(QString type);
 
 struct OrderParametersOutput
 {
