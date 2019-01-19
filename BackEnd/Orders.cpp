@@ -237,6 +237,7 @@ void Orders::removeOrderPressed()
         tmp.amount                  = mOrders.item(row, 5)->text().toUInt();
         tmp.totalPrice              = mOrders.item(row, 6)->text().toDouble();
         tmp.establishedProfit       = mOrders.item(row, 7)->text().toUInt();
+        tmp.date                    = mSelectedDate;
 
         mDataBaseApi.removeOrder(tmp);
     }

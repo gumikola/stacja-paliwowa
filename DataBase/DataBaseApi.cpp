@@ -540,8 +540,9 @@ void DataBaseApi::removeOrder(const Common::OrdersStruct& order)
 
     q.prepare(
         "DELETE FROM Zamowienia WHERE Data=? and Klienci_hurtowi_ID=? and Typ_paliwa_Nazwa=?;");
+
     q.bindValue(0, order.date);
-    q.bindValue(1, order.customer.id);
+    q.bindValue(1, getCustomerId(order.customer));
     q.bindValue(2, Common::getFuelTypeName(order.fuelType));
 
     q.exec();
