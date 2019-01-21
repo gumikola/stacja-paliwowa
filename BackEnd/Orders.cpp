@@ -56,10 +56,10 @@ int Orders::printEmptyOrdersTable()
     mOrders.setHorizontalHeaderItem(columnCnt++, new QTableWidgetItem("Ilość"));
 
     mOrders.insertColumn(columnCnt);
-    mOrders.setHorizontalHeaderItem(columnCnt++, new QTableWidgetItem("Cena\nsumaryczna"));
+    mOrders.setHorizontalHeaderItem(columnCnt++, new QTableWidgetItem("Przychód"));
 
     mOrders.insertColumn(columnCnt);
-    mOrders.setHorizontalHeaderItem(columnCnt++, new QTableWidgetItem("Przychód"));
+    mOrders.setHorizontalHeaderItem(columnCnt++, new QTableWidgetItem("Zysk"));
 
     return columnCnt;
 }
@@ -86,6 +86,45 @@ void Orders::setWidthOfOrdersTableColumns(int columnCnt)
             mOrders.setColumnWidth(i, mOrders.width() / 8);
         else
             mOrders.setColumnWidth(i, (2 * mOrders.width() / 4) / (columnCnt - 3));
+    }
+}
+
+void Orders::fillOrderOfOrders(const QList<Common::OrdersStruct>& orders, int& rowCnt, int carId)
+{
+    for (Common::OrdersStruct order : orders)
+    {
+        int columnCnt = 0;
+        mOrders.insertRow(rowCnt);
+        mOrders.setItem(rowCnt, columnCnt, new QTableWidgetItem(order.customer.name));
+        mOrders.item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignHCenter);
+
+        mOrders.setItem(rowCnt, columnCnt, new QTableWidgetItem(order.customer.city));
+        mOrders.item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignHCenter);
+
+        mOrders.setItem(rowCnt, columnCnt, new QTableWidgetItem(order.customer.street));
+        mOrders.item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignHCenter);
+
+        mOrders.setItem(rowCnt, columnCnt, new QTableWidgetItem(order.customer.propertyNumber));
+        mOrders.item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignHCenter);
+
+        mOrders.setItem(rowCnt, columnCnt,
+                        new QTableWidgetItem(Common::getFuelTypeName(order.fuelType)));
+        mOrders.item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignHCenter);
+
+        mOrders.setItem(rowCnt, columnCnt, new QTableWidgetItem(QString::number(order.amount)));
+        mOrders.item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignHCenter);
+
+        mOrders.setItem(rowCnt, columnCnt, new QTableWidgetItem(QString::number(order.totalPrice)));
+        mOrders.item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignHCenter);
+
+        mOrders.setItem(rowCnt, columnCnt,
+                        new QTableWidgetItem(QString::number(order.establishedProfit)));
+        mOrders.item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignHCenter);
+
+        mOrders.setItem(rowCnt, columnCnt, new QTableWidgetItem(QString::number(carId)));
+        mOrders.item(rowCnt, columnCnt++)->setTextAlignment(Qt::AlignHCenter);
+
+        rowCnt++;
     }
 }
 
@@ -160,36 +199,18 @@ void Orders::printCalculatedOrder()
 {
     qDebug() << __PRETTY_FUNCTION__;
     QVector<Common::OrdersStruct>      databaseOrders = mDataBaseApi.getOrdersByDate(mSelectedDate);
-    Algorithms::CalculateOrder         test(mDataBaseApi, databaseOrders.toList());
-    QList<QList<Common::OrdersStruct>> calculated = test.getOrders();
+    Algorithms::CalculateOrder         calculateOrder(mDataBaseApi, databaseOrders.toList());
+    QList<QList<Common::OrdersStruct>> calculated = calculateOrder.getOrders();
+
+    setWidthOfOrdersTableColumns(addCarColumnIntoOrdersTable(printEmptyOrdersTable()));
 
     int rowCnt = 0;
-    addCarColumnIntoOrdersTable(8);
     mOrders.setRowCount(0);
-    for (int i = 0; i < calculated.size(); i++)
+
+    int carId = 1;
+    for (QList<Common::OrdersStruct> orders : calculated)
     {
-        for (Common::OrdersStruct order : calculated[i])
-        {
-            int columnCnt = 0;
-            mOrders.insertRow(rowCnt);
-            mOrders.setItem(rowCnt, columnCnt++, new QTableWidgetItem(order.customer.name));
-            mOrders.setItem(rowCnt, columnCnt++, new QTableWidgetItem(order.customer.city));
-            mOrders.setItem(rowCnt, columnCnt++, new QTableWidgetItem(order.customer.street));
-            mOrders.setItem(rowCnt, columnCnt++,
-                            new QTableWidgetItem(order.customer.propertyNumber));
-            mOrders.setItem(rowCnt, columnCnt++,
-                            new QTableWidgetItem(QString::number(order.amount)));
-            mOrders.setItem(rowCnt, columnCnt++,
-                            new QTableWidgetItem(QString::number(order.totalPrice)));
-            mOrders.setItem(rowCnt, columnCnt++,
-                            new QTableWidgetItem(QString::number(order.establishedProfit)));
-
-            mOrders.setItem(rowCnt, columnCnt++,
-                            new QTableWidgetItem(QString::number(i + 1))); // numer cysterny
-                                                                           //            od 1
-
-            rowCnt++;
-        }
+        fillOrderOfOrders(orders, rowCnt, carId++);
     }
 }
 
@@ -235,8 +256,10 @@ void Orders::removeOrderPressed()
         tmp.amount                  = mOrders.item(row, 5)->text().toUInt();
         tmp.totalPrice              = mOrders.item(row, 6)->text().toDouble();
         tmp.establishedProfit       = mOrders.item(row, 7)->text().toUInt();
+        tmp.date                    = mSelectedDate;
 
         mDataBaseApi.removeOrder(tmp);
+        printOrders();
     }
 }
 

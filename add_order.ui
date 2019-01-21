@@ -376,7 +376,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="tabDistance">
+           <widget class="QLineEdit" name="travelTime">
             <property name="minimumSize">
              <size>
               <width>100</width>
@@ -422,7 +422,7 @@
              </font>
             </property>
             <property name="text">
-             <string>km </string>
+             <string>h</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -445,7 +445,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="travelTime">
+           <widget class="QLineEdit" name="tabDistance">
             <property name="maximumSize">
              <size>
               <width>100</width>
@@ -485,7 +485,7 @@
              </font>
             </property>
             <property name="text">
-             <string>h</string>
+             <string>km</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

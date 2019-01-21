@@ -178,7 +178,7 @@ void DataBaseApi::addOrder(const Common::OrdersStruct& order)
     q.bindValue(0, order.amount);
     q.bindValue(1, order.date);
     q.bindValue(2, order.totalPrice);
-    q.bindValue(3, addCustomer(order.customer));
+    q.bindValue(3, getCustomerId(order.customer));
     q.bindValue(4, Common::getFuelTypeName(order.fuelType));
     q.bindValue(5, order.establishedProfit);
 

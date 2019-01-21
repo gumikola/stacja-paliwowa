@@ -30,6 +30,7 @@ public:
     int  printEmptyOrdersTable(void);
     int  addCarColumnIntoOrdersTable(int columnCnt);
     void setWidthOfOrdersTableColumns(int columnCnt);
+    void fillOrderOfOrders(const QList<Common::OrdersStruct>& orders, int& rowCnt, int carId);
 
 private slots:
     void wyswietlPressed();
