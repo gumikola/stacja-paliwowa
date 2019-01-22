@@ -1,25 +1,30 @@
 #include "ClientSuggestion.h"
 #include <algorithm>
+#include <QDateTime>
 
 namespace Algorithms {
 
 ClientSuggestion::ClientSuggestion(const QVector<Common::PurchaseStruct>& clientPurchases)
 {
+    QDateTime orderTime;
     for (Common::PurchaseStruct purchase : clientPurchases)
     {
         QList<PurchaseStruct>::iterator it = std::find_if(
             mPurchases.begin(), mPurchases.end(), [&purchase](const PurchaseStruct& item) {
                 return purchase.nameOfProduct == item.purchase.nameOfProduct;
             });
+        orderTime.setDate(purchase.date);
+        double valency = 1 - orderTime.daysTo(orderTime.currentDateTime()) / 100;
 
         if (it != mPurchases.end())
         {
-            it->count++;
+            it->count += valency > 0 ? valency : 0;
         }
         else
         {
             PurchaseStruct tmp;
-            tmp.count     = 1;
+
+            tmp.count    = valency > 0 ? valency : 0;
             tmp.purchase = purchase;
             mPurchases.push_back(tmp);
         }
