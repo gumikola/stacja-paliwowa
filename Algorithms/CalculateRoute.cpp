@@ -17,10 +17,6 @@ CalculateRoute::CalculateRoute(const QVector<Common::OrdersStruct> Customers)
                   "json?origin=Cynamonowa_15_Wrocław"
                   "&destination=Bacciarellego_40D_Wrocław&waypoints=optimize:true|" +
                   CustomersStr + "key=AIzaSyA6B9rzXYJzjFXloNN8bmmpHYA3Rl9UAdw";
-    qDebug() << "CalculateRoute::::Zawsze na razie przy URL go wyswietlimy, wtedy wiadomo czy nie "
-                "jest zjebany i czy "
-                "wgl sie Igiego metoda wywołała" +
-                    URL + "\n\n\n\n";
     QNetworkRequest request;
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
     QNetworkAccessManager manager;
@@ -47,7 +43,6 @@ QVector<Common::OrdersStruct> CalculateRoute::CalculateOrder()
             }
         }
     }
-    qDebug() << Order << endl;
     return ReturnStruct;
 }
 } // namespace Algorithms

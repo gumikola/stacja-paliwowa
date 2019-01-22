@@ -1,5 +1,6 @@
 #include "CalculateOrder.h"
 #include <algorithm>
+#include <QMessageBox>
 
 namespace Algorithms {
 
@@ -110,9 +111,6 @@ QList<Common::DistancesStruct> CalculateOrder::calculateAdditionalDistances(
         tmpDistancesToCalculate.time = static_cast<uint>(tmpDistances.at(i));
         mDatabaseApi.addTravelTime(tmpDistancesToCalculate);
         allDistances.append(tmpDistancesToCalculate);
-        //        qDebug() << "ID1:  " + QString::number(tmpDistancesToCalculate.a) +
-        //                        "  ID2:  " + QString::number(tmpDistancesToCalculate.b) +
-        //                        " dystans:  " + QString::number(tmpDistancesToCalculate.time);
     }
     return allDistances;
 }
@@ -131,47 +129,11 @@ CalculateOrder::sortOrders(QList<Common::DistancesStruct> distances)
     }
     else // liczymy 2 cieżarowki
     {
-        //        qDebug() << "Licze dla dwoch ciezarowek se";
-        const uint                                   numberOfDrawForTwoTrucks = 300;
-        QPair<uint, QList<uint>>                     bestOrderAndTime1;
-        QPair<uint, QList<uint>>                     bestOrderAndTime2;
-        QPair<QList<uint>, QList<uint>>              dividedOrder;
-        int                                          divider;
-        QList<uint>                                  tmpOrder = mIds;
-        QPair<uint, QPair<QList<uint>, QList<uint>>> best;
-        best.first = 1000000;
-        for (uint i = 0; i < numberOfDrawForTwoTrucks; i++)
-        {
-            tmpOrder = drawOrder(tmpOrder);
-            qsrand(static_cast<uint>(QDateTime::currentMSecsSinceEpoch()));
-            divider = qrand() % (mIds.size() - 1) + 1;
-            for (int j = 0; j < divider; j++)
-                dividedOrder.first.append(tmpOrder.at(j));
-            for (int k = divider; k < mIds.size(); k++)
-                dividedOrder.second.append(tmpOrder.at(k));
-            bestOrderAndTime1 = optimalizeOrder(distances, dividedOrder.first);
-            bestOrderAndTime2 = optimalizeOrder(distances, dividedOrder.second);
-            dividedOrder.first.clear();
-            dividedOrder.second.clear();
-            if ((bestOrderAndTime1.first > 8 * 60 * 60) || (bestOrderAndTime2.first > 8 * 60 * 60))
-            {
-                continue;
-            }
-            best = checkIfDrawIsBetterFor2(bestOrderAndTime1, bestOrderAndTime2, best);
-            qDebug() << QString::number(best.first);
-            qDebug() << "Pierwszy:";
-            for (auto cos : best.second.first)
-            {
-                qDebug() << cos;
-            }
-            qDebug() << "Drugi:";
-            for (auto cos : best.second.second)
-            {
-                qDebug() << cos;
-            }
-        }
-        returnList.append(bestOrderAndTime1.second);
-        returnList.append(bestOrderAndTime2.second);
+
+        startOrderAndTime.first = 1000000;
+        startOrderAndTime.second.append(Common::Benzol.id);
+        bestOrderAndTime = optimalizeOrder(distances, startOrderAndTime.second);
+        returnList       = divideOrderFor2Trucks(bestOrderAndTime);
     }
     return transformIdsToOrders(returnList);
 }
@@ -188,7 +150,7 @@ Common::CustomerStruct CalculateOrder::getCustomerById(uint id)
     qDebug() << __PRETTY_FUNCTION__;
     if (id == Common::Benzol.id)
     {
-        return mDatabaseApi.getCustomerById(1); // Send base
+        return Common::Benzol;
     }
     QList<Common::OrdersStruct>::const_iterator it = std::find_if(
         mCustomers.begin(), mCustomers.end(),
@@ -224,15 +186,6 @@ QList<int> CalculateOrder::getDistancesFromGoogle(const QString origin, const QS
                 "json?origins=%1destinations=%2key=AIzaSyA6B9rzXYJzjFXloNN8bmmpHYA3Rl9UAdw")
             .arg(origin)
             .arg(destination);
-
-    /// TO REMOVE BEFORE RELEASE
-    ///
-    qDebug() << "CalculateOrder::::Zawsze na razie przy URL go wyswietlimy, wtedy wiadomo czy nie "
-                "jest zjebany i czy "
-                "wgl sie Igiego metoda wywołała" +
-                    URL + "\n\n\n\n";
-    ///
-    ///
     QNetworkRequest request;
     request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
     QNetworkAccessManager manager;
@@ -241,7 +194,6 @@ QList<int> CalculateOrder::getDistancesFromGoogle(const QString origin, const QS
     QObject::connect(response, SIGNAL(finished()), &event, SLOT(quit()));
     event.exec();
     QJsonDocument jsonResponse = QJsonDocument::fromJson(response->readAll());
-    qDebug() << jsonResponse;
     for (int i = 0; i < static_cast<int>(size); i++)
     {
         distances.append(jsonResponse.object()
@@ -272,26 +224,71 @@ uint CalculateOrder::getTimeBeetwenTwoPlaces(uint id1, uint id2,
     throw QString("Can't find time beetwen two places!!!");
 }
 
+bool CalculateOrder::checkIfBenzolIsInOrder(QList<uint>& order)
+{
+    for (int i = 0; i < order.size(); i++)
+    {
+        if (order.at(i) == Common::Benzol.id)
+        {
+            return true;
+        }
+    }
+    return false;
+}
 QList<uint> CalculateOrder::drawOrder(QList<uint>& order)
 {
-    std::random_shuffle(order.begin(), order.end());
+    if (checkIfBenzolIsInOrder(order))
+    {
+
+        bool isBenzolInside = false;
+
+        while (!isBenzolInside)
+        {
+            std::random_shuffle(order.begin(), order.end());
+            for (int i = 0; i < order.size(); i++)
+            {
+                if (order.at(i) == Common::Benzol.id && i < (order.size() - 1) && i > 0)
+                {
+                    isBenzolInside = true;
+                }
+            }
+        }
+    }
+    else
+    {
+        std::random_shuffle(order.begin(), order.end());
+    }
     return order;
 }
 
 uint CalculateOrder::getFullTime(QList<uint>                          customers,
                                  const QList<Common::DistancesStruct> distancesVector)
 {
-
     customers.push_back(Common::Benzol.id);
     customers.push_front(Common::Benzol.id);
-    uint fullTime = 0;
-    for (int i = 0; i < customers.size() - 1; i++)
+    QPair<uint, uint> fullTime(0, 0);
+    int               i = 0;
+    while (i < customers.size() - 1)
     {
-        fullTime +=
+        if (i != 0 && customers.at(i) == Common::Benzol.id)
+            break;
+        fullTime.first +=
             (getTimeBeetwenTwoPlaces(customers.at(i), customers.at(i + 1), distancesVector));
+        i++;
     }
-    fullTime += static_cast<uint>(((customers.size() - 2) * 30 * 60)); // pol godziny na rozladunek
-    return fullTime;
+    if (i < customers.size() - 2)
+    {
+        while (i < customers.size() - 1)
+        {
+            fullTime.second +=
+                (getTimeBeetwenTwoPlaces(customers.at(i), customers.at(i + 1), distancesVector));
+            i++;
+        }
+        if (fullTime.first > 8 * 60 * 60 || fullTime.second > 8 * 60 * 60)
+            return 1000000; // if we have 2 trucks and some of them need to drive more than 8 h
+                            // return big value to make algorithm think that's bad idea.
+    }
+    return fullTime.first + fullTime.second;
 }
 
 QList<QList<Common::OrdersStruct>> CalculateOrder::transformIdsToOrders(QList<QList<uint>> order)
@@ -299,24 +296,12 @@ QList<QList<Common::OrdersStruct>> CalculateOrder::transformIdsToOrders(QList<QL
     qDebug() << __PRETTY_FUNCTION__;
     QList<QList<Common::OrdersStruct>> bestOrder;
     QList<Common::OrdersStruct>        oneTruckOrder;
-    //    qDebug() << "Rozmiar listy z listy: " + QString::number(order.size());
-    //    qDebug() << "powinno byc rozmiar 1 i dla niego: " + QString::number(order.at(0).size());
-    //    for (QList<uint> truckIdList : order)
-    //    {
-    //        qDebug() << "Pierwszy for za mnom";
-    //        for (uint orderi : truckIdList)
-    //        {
-    //            oneTruckOrder.append(getCustomerById(truckIdList.at(static_cast<int>(orderi))).id);
-    //        }
-    //        bestOrder.append(oneTruckOrder);
-    //    }
+
     for (int i = 0; i < order.size(); i++)
     {
         for (int j = 0; j < order.at(i).size(); j++)
         {
             oneTruckOrder.append(getOrderByCustomerId(order.at(i).at(j)));
-            //            qDebug() << oneTruckOrder.at(j).customer.name +
-            //                            QString::number(oneTruckOrder.at(j).customer.id);
         }
         bestOrder.append(oneTruckOrder);
         oneTruckOrder.clear();
@@ -327,22 +312,23 @@ QList<QList<Common::OrdersStruct>> CalculateOrder::transformIdsToOrders(QList<QL
 QPair<uint, QList<uint>> CalculateOrder::optimalizeOrder(QList<Common::DistancesStruct> distances,
                                                          QList<uint>                    order)
 {
+    qDebug() << __PRETTY_FUNCTION__;
     QPair<uint, QList<uint>> best(UINT32_MAX, order);
     QPair<uint, QList<uint>> tmp          = best;
-    const uint               numberOfDraw = 10000;
+    const uint               numberOfDraw = 100000;
     for (uint i = 0; i < numberOfDraw; i++)
     {
         tmp.second = drawOrder(tmp.second);
         tmp.first  = getFullTime(tmp.second, distances);
         best       = checkIfDrawIsBetter(best, tmp);
     }
+    qDebug() << best;
     return best;
 }
 
 QPair<uint, QList<uint>> CalculateOrder::checkIfDrawIsBetter(QPair<uint, QList<uint>> best,
                                                              QPair<uint, QList<uint>> tmp)
 {
-
     if (tmp.first < best.first)
     {
         best = tmp;
@@ -364,6 +350,31 @@ CalculateOrder::checkIfDrawIsBetterFor2(QPair<uint, QList<uint>> bestOrderAndTim
         best = tmp;
     }
     return best;
+}
+
+QList<QList<uint>>
+CalculateOrder::divideOrderFor2Trucks(QPair<uint32_t, QList<uint>> bestOrderAndTime)
+{
+    QList<QList<uint>> returnList;
+    QList<uint>        OrderForOneTruck;
+    int                i = 0;
+    while (i < bestOrderAndTime.second.size())
+    {
+        if (bestOrderAndTime.second.at(i) == Common::Benzol.id)
+        {
+            break;
+        }
+        OrderForOneTruck.append(bestOrderAndTime.second.at(i));
+        i++;
+    }
+    returnList.append(OrderForOneTruck);
+    OrderForOneTruck.clear();
+    for (int j = i + 1; j < bestOrderAndTime.second.size(); j++)
+    {
+        OrderForOneTruck.append(bestOrderAndTime.second.at(j));
+    }
+    returnList.append(OrderForOneTruck);
+    return returnList;
 }
 
 } // namespace Algorithms

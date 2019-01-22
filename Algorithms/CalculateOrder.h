@@ -40,6 +40,9 @@ class CalculateOrder
                             QPair<uint, QList<uint>>                     bestOrderAndTime2,
                             QPair<uint, QPair<QList<uint>, QList<uint>>> best);
 
+    QList<QList<uint>> divideOrderFor2Trucks(QPair<uint32_t, QList<uint>> bestOrderAndTime);
+    bool               checkIfBenzolIsInOrder(QList<uint>& order);
+
 public:
     CalculateOrder(DataBaseApi::DataBaseApi&          databaseApiConst,
                    const QList<Common::OrdersStruct>& customers);
