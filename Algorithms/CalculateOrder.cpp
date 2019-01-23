@@ -273,7 +273,8 @@ uint CalculateOrder::getFullTime(QList<uint>                          customers,
         if (i != 0 && customers.at(i) == Common::Benzol.id)
             break;
         fullTime.first +=
-            (getTimeBeetwenTwoPlaces(customers.at(i), customers.at(i + 1), distancesVector));
+            (getTimeBeetwenTwoPlaces(customers.at(i), customers.at(i + 1), distancesVector)) +
+            30 * 60;
         i++;
     }
     if (i < customers.size() - 2)
@@ -281,7 +282,8 @@ uint CalculateOrder::getFullTime(QList<uint>                          customers,
         while (i < customers.size() - 1)
         {
             fullTime.second +=
-                (getTimeBeetwenTwoPlaces(customers.at(i), customers.at(i + 1), distancesVector));
+                (getTimeBeetwenTwoPlaces(customers.at(i), customers.at(i + 1), distancesVector)) +
+                30 * 60;
             i++;
         }
         if (fullTime.first > 8 * 60 * 60 || fullTime.second > 8 * 60 * 60)
