@@ -10,7 +10,7 @@ namespace Algorithms {
 struct PurchaseStruct
 {
     Common::PurchaseStruct purchase;
-    uint                   count;
+    double                 count;
 };
 
 class ClientSuggestion
